@@ -28,10 +28,6 @@
 	status = "disabled";
 };
 
-&max17135 {
-	status = "okay";
-};
-
 &sii902x {
 	status = "disabled";
 };

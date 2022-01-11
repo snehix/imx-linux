@@ -40,6 +40,7 @@
 #include <linux/sysfs.h>
 #include <linux/platform_device.h>
 #include <linux/mfd/tps6518x.h>
+#include <linux/mod_devicetable.h>
 
 /*
 * Conversions
@@ -57,6 +58,7 @@ static int tps6518x_sensor_remove(struct platform_device *pdev);
 
 static const struct platform_device_id tps6518x_sns_id[] = {
 	{ "tps6518x-sns", 0},
+	{ /* sentinel */ },
 };
 MODULE_DEVICE_TABLE(platform, tps6518x_sns_id);
 
