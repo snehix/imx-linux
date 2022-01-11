@@ -194,15 +194,6 @@ static int tps6518x_remove(struct i2c_client *i2c)
 	return 0;
 }
 
-static int tps6518x_suspend(struct i2c_client *client, pm_message_t state)
-{
-	return 0;
-}
-
-static int tps6518x_resume(struct i2c_client *client)
-{
-	return 0;
-}
 
 /* Return 0 if detection is successful, -ENODEV otherwise */
 static int tps6518x_detect(struct i2c_client *client,
@@ -275,8 +266,6 @@ static struct i2c_driver tps6518x_driver = {
 	},
 	.probe = tps6518x_probe,
 	.remove = tps6518x_remove,
-	.suspend = tps6518x_suspend,
-	.resume = tps6518x_resume,
 	.id_table = tps6518x_id,
 	.detect = tps6518x_detect,
 	.address_list = &normal_i2c[0],
