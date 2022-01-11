@@ -195,7 +195,7 @@ enum {
 #define VEE_SEQ_WID     2
 #define VNEG_SEQ_LSH    0
 #define VNEG_SEQ_WID    2
-+/* PWR_SEQ1 */
+/* PWR_SEQ1 */
 #define DLY1_LSH    4
 #define DLY1_WID    4
 #define DLY0_LSH    0

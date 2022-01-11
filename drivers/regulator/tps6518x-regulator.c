@@ -553,7 +553,7 @@ static int tps6518x_pmic_dt_parse_pdata(struct platform_device *pdev,
 
 		rdata->id = i;
 		rdata->initdata = of_get_regulator_init_data(&pdev->dev,
-							     reg_np);
+							     reg_np,&tps6518x_reg[i]);
 		rdata->reg_node = reg_np;
 		rdata++;
 	}
@@ -751,7 +751,7 @@ static int __init tps6518x_setup(char *options)
 		if (!*opt)
 			continue;
 		if (!strncmp(opt, "pass=", 5)) {
-			ret = strict_strtoul((const char *)(opt + 5), 0, &ulResult);
+			ret = kstrtoul((const char *)(opt + 5), 0, &ulResult);
 			tps6518x_pass_num = ulResult;
 			if (ret < 0)
 				return ret;
@@ -760,7 +760,7 @@ static int __init tps6518x_setup(char *options)
 			int offs = 5;
 			if (opt[5] == '-')
 				offs = 6;
-			ret = strict_strtoul((const char *)(opt + offs), 0, &ulResult);
+			ret = kstrtoul((const char *)(opt + offs), 0, &ulResult);
 			tps6518x_vcom = (int) ulResult;
 			if (ret < 0)
 				return ret;
