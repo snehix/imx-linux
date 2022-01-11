@@ -782,7 +782,7 @@ static int __init tps65182_setup(char *options)
 		if (!*opt)
 			continue;
 		if (!strncmp(opt, "pass=", 5)) {
-			ret = strict_strtoul((const char *)(opt + 5), 0, &ulResult);
+			ret = kstrtoul((const char *)(opt + 5), 0, &ulResult);
 			tps6518x_pass_num = ulResult;
 			if (ret < 0)
 				return ret;
@@ -791,7 +791,7 @@ static int __init tps65182_setup(char *options)
 			int offs = 5;
 			if (opt[5] == '-')
 				offs = 6;
-			ret = strict_strtoul((const char *)(opt + offs), 0, &ulResult);
+			ret = kstrtoul((const char *)(opt + offs), 0, &ulResult);
 			tps6518x_vcom = (int) ulResult;
 			if (ret < 0)
 				return ret;
