@@ -240,7 +240,7 @@ static ssize_t set_vcom(struct device *dev,
 static DEVICE_ATTR(temp_input, S_IRUGO, show_temp_input, NULL);
 static DEVICE_ATTR(intr_input, S_IRUGO, show_intr_regs, NULL);
 static DEVICE_ATTR(vcom_value, S_IWUSR | S_IRUGO, show_vcom, set_vcom);
-+
+
 static struct attribute *tps6518x_attributes[] = {
 	&dev_attr_temp_input.attr,
 	&dev_attr_intr_input.attr,
