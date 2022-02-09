@@ -104,6 +104,8 @@ static int vcom2_uV_to_rs(int uV)
 static int epdc_pwr0_enable(struct regulator_dev *reg)
 {
 	struct tps6518x *tps6518x = rdev_get_drvdata(reg);
+	
+	printk("epdc_pwr0_enable\n");
 
 	gpio_set_value(tps6518x->gpio_pmic_powerup, 1);
 
@@ -114,6 +116,8 @@ static int epdc_pwr0_enable(struct regulator_dev *reg)
 static int epdc_pwr0_disable(struct regulator_dev *reg)
 {
 	struct tps6518x *tps6518x = rdev_get_drvdata(reg);
+	
+	printk("epdc_pwr0_disable\n");
 
 	gpio_set_value(tps6518x->gpio_pmic_powerup, 0);
 
@@ -123,6 +127,8 @@ static int epdc_pwr0_disable(struct regulator_dev *reg)
 static int tps6518x_v3p3_enable(struct regulator_dev *reg)
 {
 	struct tps6518x *tps6518x = rdev_get_drvdata(reg);
+	
+	printk("epdc_v3p3_enable\n");
 
 	gpio_set_value(tps6518x->gpio_pmic_powerup, 1);
 	return 0;
@@ -131,6 +137,8 @@ static int tps6518x_v3p3_enable(struct regulator_dev *reg)
 static int tps6518x_v3p3_disable(struct regulator_dev *reg)
 {
 	struct tps6518x *tps6518x = rdev_get_drvdata(reg);
+	
+	printk("epdc_v3p3_disable\n");
 
 	gpio_set_value(tps6518x->gpio_pmic_powerup, 0);
 	return 0;
@@ -139,8 +147,13 @@ static int tps6518x_v3p3_disable(struct regulator_dev *reg)
 static int tps6518x_v3p3_is_enabled(struct regulator_dev *reg)
 {
 	struct tps6518x *tps6518x = rdev_get_drvdata(reg);
+	
+	printk("tps6518x_v3p3_is_enabled\n");
+	
 	int gpio = gpio_get_value(tps6518x->gpio_pmic_powerup);
 
+	printk("tps6518x_v3p3_is_enabled end, return=%d\n",gpio);
+	
 	if (gpio == 0)
 		return 0;
 	else
@@ -154,6 +167,8 @@ static int tps6518x_vcom_set_voltage(struct regulator_dev *reg,
 	unsigned int cur_reg_val; /* current register value to modify */
 	unsigned int new_reg_val; /* new register value to write */
 	int retval;
+	
+	printk("tps6518x_vcom_set_voltage\n");
 
 	/*
 	 * this will not work on tps65182
@@ -196,6 +211,7 @@ static int tps6518x_vcom_set_voltage(struct regulator_dev *reg,
 		default :
 		retval = -1;
 	}
+	printk("tps6518x_vcom_set_voltage return=%d\n",retval);
 	return retval;
 }
 
@@ -206,6 +222,8 @@ static int tps6518x_vcom_get_voltage(struct regulator_dev *reg)
 	unsigned int cur_reg2_val; /* current register value */
 	unsigned int cur_fld_val; /* current bitfield value*/
 	int vcomValue;
+	
+	printk("tps6518x_vcom_get_voltage\n");
 
 	/*
 	 * this will not work on tps65182
@@ -233,6 +251,8 @@ static int tps6518x_vcom_get_voltage(struct regulator_dev *reg)
 			vcomValue = 0;
 	}
 	
+	printk("tps6518x_vcom_get_voltage end\n");
+	
 	return vcomValue;
 
 }
@@ -242,6 +262,8 @@ static int tps6518x_vcom_enable(struct regulator_dev *reg)
 	struct tps6518x *tps6518x = rdev_get_drvdata(reg);
 	unsigned int cur_reg_val; /* current register value */
 	int vcomEnable = 0;
+	
+	printk("tps6518x_vcom_enable\n");
 	/*
 	 * check for the TPS65182 device
 	 */
@@ -284,6 +306,8 @@ static int tps6518x_vcom_enable(struct regulator_dev *reg)
 			vcomEnable = 0;
 	}
 	gpio_set_value(tps6518x->gpio_pmic_vcom_ctrl,vcomEnable);
+	
+	printk("tps6518x_vcom_enable end\n");
 
 	return 0;
 }
@@ -291,16 +315,25 @@ static int tps6518x_vcom_enable(struct regulator_dev *reg)
 static int tps6518x_vcom_disable(struct regulator_dev *reg)
 {
 	struct tps6518x *tps6518x = rdev_get_drvdata(reg);
+	
+	printk("tps6518x_vcom_disbale\n");
 
 	gpio_set_value(tps6518x->gpio_pmic_vcom_ctrl,0);
+	
+	printk("tps6518x_vcom_disbalei end\n");
 	return 0;
 }
 
 static int tps6518x_vcom_is_enabled(struct regulator_dev *reg)
 {
 	struct tps6518x *tps6518x = rdev_get_drvdata(reg);
+	
+	printk("tps6518x_vcom_is_enabled\n");
 
 	int gpio = gpio_get_value(tps6518x->gpio_pmic_vcom_ctrl);
+	
+	printk("tps6518x_vcom_is_enabled end return=%d\n",gpio);
+	
 	if (gpio == 0)
 		return 0;
 	else
@@ -314,6 +347,8 @@ static int tps6518x_is_power_good(struct tps6518x *tps6518x)
 	 * XOR of polarity (starting value) and current
 	 * value yields whether power is good.
 	 */
+	printk("tps6518x_is_power_good\n");
+	
 	return gpio_get_value(tps6518x->gpio_pmic_pwrgood) ^
 		tps6518x->pwrgood_polarity;
 }
@@ -321,9 +356,12 @@ static int tps6518x_is_power_good(struct tps6518x *tps6518x)
 static int tps6518x_wait_power_good(struct tps6518x *tps6518x)
 {
 	int i;
+	printk("tps6518x_wait_power_good\n");
 	for (i = 0; i < tps6518x->max_wait * 3; i++) {
-		if (tps6518x_is_power_good(tps6518x))
+		if (tps6518x_is_power_good(tps6518x)){
+			printk("tps6518x_wait_power_goodi success\n");
 			return 0;
+		}
 
 		msleep(1);
 	}
@@ -337,6 +375,9 @@ static int tps6518x_display_enable(struct regulator_dev *reg)
 	unsigned int fld_mask;	  /* register mask for bitfield to modify */
 	unsigned int fld_val;	  /* new bitfield value to write */
 	unsigned int new_reg_val; /* new register value to write */
+	
+	printk("tps6518x_display_enable\n");
+	
 	if (tps6518x->revID == 65182)
 	{
 		epdc_pwr0_enable(reg);
@@ -345,6 +386,7 @@ static int tps6518x_display_enable(struct regulator_dev *reg)
 	{
 		gpio_set_value(tps6518x->gpio_pmic_wakeup,1);
 
+		printk("enable display regulators\n");
 		/* enable display regulators */
 		cur_reg_val = tps65180_current_Enable_Register & 0x3f;
 		fld_mask = BITFMASK(VDDH_EN) | BITFMASK(VPOS_EN) |
@@ -355,6 +397,7 @@ static int tps6518x_display_enable(struct regulator_dev *reg)
 		tps6518x_reg_write(REG_TPS65180_ENABLE, new_reg_val);
 
 		/* turn on display regulators */
+		printk("turn on display regulators\n");
 		cur_reg_val = tps65180_current_Enable_Register & 0x3f;
 		fld_mask = BITFMASK(ACTIVE);
 		fld_val = BITFVAL(ACTIVE, true);
@@ -372,6 +415,8 @@ static int tps6518x_display_disable(struct regulator_dev *reg)
 	unsigned int fld_mask;	  /* register mask for bitfield to modify */
 	unsigned int fld_val;	  /* new bitfield value to write */
 	unsigned int new_reg_val; /* new register value to write */
+	
+	printk("tps6518x_display_enable\n");
 
 	if (tps6518x->revID == 65182)
 	{
@@ -380,6 +425,7 @@ static int tps6518x_display_disable(struct regulator_dev *reg)
 	else
 	{
 		/* turn off display regulators */
+		printk("turn off display regulators\n");
 		cur_reg_val = tps65180_current_Enable_Register & 0x3f;
 		fld_mask = BITFMASK(VCOM_EN) | BITFMASK(STANDBY);
 		fld_val = BITFVAL(VCOM_EN, true) | BITFVAL(STANDBY, true);
@@ -396,6 +442,7 @@ static int tps6518x_display_disable(struct regulator_dev *reg)
 static int tps6518x_display_is_enabled(struct regulator_dev *reg)
 {
 	struct tps6518x *tps6518x = rdev_get_drvdata(reg);
+	printk("tps6518x_display_is_enabled\n");
 
 	if (tps6518x->revID == 65182)
 		return gpio_get_value(tps6518x->gpio_pmic_wakeup) ? 1:0;
@@ -568,7 +615,7 @@ static int tps6518x_pmic_dt_parse_pdata(struct platform_device *pdev,
 		goto err;
 	}
 	ret = devm_gpio_request_one(&pdev->dev, tps6518x->gpio_pmic_wakeup,
-				GPIOF_OUT_INIT_LOW, "epdc-pmic-wake");
+				GPIOF_OUT_INIT_HIGH, "epdc-pmic-wake");
 	if (ret < 0)
 		goto err;
 
@@ -644,6 +691,7 @@ static int tps6518x_regulator_probe(struct platform_device *pdev)
 
 	if (tps6518x->dev->of_node) {
 		ret = tps6518x_pmic_dt_parse_pdata(pdev, pdata);
+		printk("--->tps6518x_pmic_dt_parse_pdata , ret=%d\n",ret);
 		if (ret)
 			return ret;
 	}
@@ -668,6 +716,8 @@ static int tps6518x_regulator_probe(struct platform_device *pdev)
 	for (i = 0; i < pdata->num_regulators; i++) {
 		int id = pdata->regulators[i].id;
 
+		printk("regulator number=%d, nb regulator=%d\n",i,pdata->num_regulators);
+
 		config.dev = tps6518x->dev;
 		config.init_data = pdata->regulators[i].initdata;
 		config.driver_data = tps6518x;
@@ -689,6 +739,8 @@ static int tps6518x_regulator_probe(struct platform_device *pdev)
 	 * changed a limited number of times according to spec.
 	 */
 	tps6518x_setup_timings(tps6518x);
+
+	tps6518x_detect1();
 
     	printk("tps6518x_regulator_probe success\n");
 	return 0;

@@ -353,5 +353,6 @@ struct tps6518x_regulator_data {
 
 int tps6518x_reg_read(int reg_num, unsigned int *reg_val);
 int tps6518x_reg_write(int reg_num, const unsigned int reg_val);
+int tps6518x_detect1(void);
 
 #endif

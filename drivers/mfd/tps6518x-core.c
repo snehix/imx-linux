@@ -62,6 +62,8 @@ static const unsigned short normal_i2c[] = {EPDC_PMIC_I2C_ADDR, I2C_CLIENT_END};
 int tps6518x_reg_read(int reg_num, unsigned int *reg_val)
 {
 	int result;
+	
+	printk("tps6518x_reg_read\n");
 
 	if (tps6518x_client == NULL)
 		return PMIC_ERROR;
@@ -69,9 +71,11 @@ int tps6518x_reg_read(int reg_num, unsigned int *reg_val)
 	result = i2c_smbus_read_byte_data(tps6518x_client, reg_num);
 	if (result < 0) {
 		dev_err(&tps6518x_client->dev,
-			"Unable to read tps6518x register via I2C\n");
+			"Unable to read tps6518x register =%d via I2C\n",reg_num);
 		return PMIC_ERROR;
 	}
+	
+	printk("tps6518x_reg_read success\n");
 
 	*reg_val = result;
 	return PMIC_SUCCESS;
@@ -81,15 +85,19 @@ int tps6518x_reg_write(int reg_num, const unsigned int reg_val)
 {
 	int result;
 
+	printk("tps6518x_reg_write\n");
+
 	if (tps6518x_client == NULL)
 		return PMIC_ERROR;
 
 	result = i2c_smbus_write_byte_data(tps6518x_client, reg_num, reg_val);
 	if (result < 0) {
 		dev_err(&tps6518x_client->dev,
-			"Unable to write TPS6518x register via I2C\n");
+			"Unable to write TPS6518x register =%d via I2C\n",reg_num);
 		return PMIC_ERROR;
 	}
+	
+	printk("tps6518x_reg_write success\n");
 
 	return PMIC_SUCCESS;
 }
@@ -128,7 +136,6 @@ static int tps6518x_probe(struct i2c_client *client,
 
 	if (!np)
 		return -ENODEV;
-
 	gpio_regulator = devm_regulator_get(&client->dev, "SENSOR");
 	if (!IS_ERR(gpio_regulator)) {
 		ret = regulator_enable(gpio_regulator);
@@ -137,7 +144,6 @@ static int tps6518x_probe(struct i2c_client *client,
 			return ret;
 		}
 	}
-
 
 	/* Create the PMIC data structure */
 	tps6518x = kzalloc(sizeof(struct tps6518x), GFP_KERNEL);
@@ -152,10 +158,11 @@ static int tps6518x_probe(struct i2c_client *client,
 	tps6518x->i2c_client = client;
 
 	tps6518x_client = client;
+#if 0
 	ret = tps6518x_detect(client, NULL);
 	if (ret)
 		goto err1;
-
+#endif
 	mfd_add_devices(tps6518x->dev, -1, tps6518x_devs,
 			ARRAY_SIZE(tps6518x_devs),
 			NULL, 0, NULL);
@@ -194,6 +201,10 @@ static int tps6518x_remove(struct i2c_client *i2c)
 	return 0;
 }
 
+int tps6518x_detect1(void)
+{
+	return tps6518x_detect(tps6518x_client, NULL);
+}
 
 /* Return 0 if detection is successful, -ENODEV otherwise */
 static int tps6518x_detect(struct i2c_client *client,
@@ -230,7 +241,7 @@ static int tps6518x_detect(struct i2c_client *client,
 	{
 		dev_info(&adapter->dev,
 		    "Unsupported chip (Revision ID=0x%02X).\n",  revId);
-		return -ENODEV;
+		//return -ENODEV;
 	}
 
 	if (info) {

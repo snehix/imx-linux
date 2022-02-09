@@ -86,6 +86,7 @@
 					"pfd1_332m", "ahb", "axi";
 			interrupts = <0 112 0x04>, <0 113 0x04>;
 			interrupt-names = "irq_busfreq_0", "irq_busfreq_1";
+			status = "disabled";
 		};
 
 		ocrams_ddr: sram@900000 {
