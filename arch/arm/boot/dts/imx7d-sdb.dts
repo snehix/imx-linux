@@ -693,13 +693,13 @@
 
 &usbotg1 {
 	vbus-supply = <&reg_usb_otg1_vbus>;
-	status = "okay";
+	status = "disabled";
 };
 
 &usbotg2 {
 	vbus-supply = <&reg_usb_otg2_vbus>;
 	dr_mode = "host";
-	status = "okay";
+	status = "disabled";
 };
 
 &usdhc1 {
