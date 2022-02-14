@@ -74,7 +74,7 @@ void __brcmf_err(struct brcmf_bus *bus, const char *func, const char *fmt, ...);
 		__brcmf_err(NULL, __func__, fmt, ##__VA_ARGS__);\
 	} while (0)
 
-#define brcmf_debug(level,fmt, ...)						\
+#define brcmf_dbg(level,fmt, ...)						\
 	do {								\
 		__brcmf_err(NULL, __func__, fmt, ##__VA_ARGS__);\
 	} while (0)
