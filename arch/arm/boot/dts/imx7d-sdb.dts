@@ -722,14 +722,11 @@
 	pinctrl-0 = <&pinctrl_usdhc2 &pinctrl_wifi>;
 	pinctrl-1 = <&pinctrl_usdhc2_100mhz &pinctrl_wifi>;
 	pinctrl-2 = <&pinctrl_usdhc2_200mhz &pinctrl_wifi>;
-	keep-power-in-suspend;
 	non-removable;
 	mmc-pwrseq = <&usdhc2_pwrseq>;
 	fsl,tuning-step = <2>;
 	pm-ignore-notify;
 	cap-power-off-card;
-	voltage-ranges = <3300 3300>;
-	no-1-8-v;
 	status = "okay";
 
 	brcmf: bcrmf@1 {
@@ -748,6 +745,8 @@
 	bus-width = <8>;
 	non-removable;
 	auto-cmd23-broken;
+	voltage-ranges = <3300 3300>;
+	no-1-8-v;
 	status = "okay";
 };
 
