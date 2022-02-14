@@ -75,8 +75,8 @@ static void mmc_pwrseq_simple_post_power_on(struct mmc_host *host)
 {
 	struct mmc_pwrseq_simple *pwrseq = to_pwrseq_simple(host->pwrseq);
 
-printk("mmc_pwrseq_simple_post_power_on -> setting gpio=0\n");
-	mmc_pwrseq_simple_set_gpios_value(pwrseq, 0);
+//printk("mmc_pwrseq_simple_post_power_on -> setting gpio=0\n");
+	//mmc_pwrseq_simple_set_gpios_value(pwrseq, 0);
 
 	if (pwrseq->post_power_on_delay_ms)
 		msleep(pwrseq->post_power_on_delay_ms);
@@ -86,8 +86,8 @@ static void mmc_pwrseq_simple_power_off(struct mmc_host *host)
 {
 	struct mmc_pwrseq_simple *pwrseq = to_pwrseq_simple(host->pwrseq);
 
-printk("mmc_pwrseq_simple_power_off -> setting gpio=0\n");
-	mmc_pwrseq_simple_set_gpios_value(pwrseq, 1);
+//printk("mmc_pwrseq_simple_power_off -> setting gpio=0\n");
+	//mmc_pwrseq_simple_set_gpios_value(pwrseq, 1);
 
 	if (pwrseq->power_off_delay_us)
 		usleep_range(pwrseq->power_off_delay_us,
