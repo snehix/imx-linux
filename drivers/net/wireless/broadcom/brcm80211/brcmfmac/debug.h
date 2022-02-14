@@ -34,6 +34,10 @@
 #undef pr_fmt
 #define pr_fmt(fmt)		KBUILD_MODNAME ": " fmt
 
+#ifndef DEBUG
+#define DEBUG
+#endif
+
 struct brcmf_bus;
 
 __printf(3, 4)
@@ -64,7 +68,9 @@ void __brcmf_err(struct brcmf_bus *bus, const char *func, const char *fmt, ...);
 
 /* For debug/tracing purposes treat info messages as errors */
 #define brcmf_info brcmf_err
+#define brcmf_dbg brcmf_err
 
+#if 0
 __printf(3, 4)
 void __brcmf_dbg(u32 level, const char *func, const char *fmt, ...);
 #define brcmf_dbg(level, fmt, ...)				\
@@ -72,6 +78,7 @@ do {								\
 	__brcmf_dbg(BRCMF_##level##_VAL, __func__,		\
 		    fmt, ##__VA_ARGS__);			\
 } while (0)
+#endif
 #define BRCMF_DATA_ON()		(brcmf_msg_level & BRCMF_DATA_VAL)
 #define BRCMF_CTL_ON()		(brcmf_msg_level & BRCMF_CTL_VAL)
 #define BRCMF_HDRS_ON()		(brcmf_msg_level & BRCMF_HDRS_VAL)
