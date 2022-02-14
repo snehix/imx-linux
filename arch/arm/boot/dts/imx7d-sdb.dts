@@ -728,6 +728,8 @@
 	fsl,tuning-step = <2>;
 	pm-ignore-notify;
 	cap-power-off-card;
+	voltage-ranges = <3300 3300>;
+	no-1-8-v;
 	status = "okay";
 
 	brcmf: bcrmf@1 {
