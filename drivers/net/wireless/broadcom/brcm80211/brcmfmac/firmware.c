@@ -613,7 +613,7 @@ static int brcmf_fw_request_firmware(const struct firmware **fw,
 		strlcat(alt_path, fwctx->req->board_type, BRCMF_FW_NAME_LEN);
 		strlcat(alt_path, ".txt", BRCMF_FW_NAME_LEN);
 
-		printk("alt_path=%s\n",alt_path)
+		printk("alt_path=%s\n",alt_path);
 
 		ret = request_firmware(fw, alt_path, fwctx->dev);
 		if (ret == 0)
