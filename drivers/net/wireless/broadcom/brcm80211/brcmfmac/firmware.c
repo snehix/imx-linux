@@ -620,7 +620,7 @@ static int brcmf_fw_request_firmware(const struct firmware **fw,
 			return ret;
 	}
 	
-	printk("cur_path=%s\n",cur_path);
+	printk("cur->path=%s\n",cur->path);
 
 	return request_firmware(fw, cur->path, fwctx->dev);
 }
