@@ -716,32 +716,26 @@
 };
 
 &usdhc2 {
-	#address-cells = <1>;
-	#size-cells = <0>;
-	pinctrl-names = "default", "state_100mhz", "state_200mhz";
-	pinctrl-0 = <&pinctrl_usdhc2 &pinctrl_wifi>;
+        #address-cells = <1>;
+        #size-cells = <0>;
+        pinctrl-names = "default", "state_100mhz", "state_200mhz";
+        pinctrl-0 = <&pinctrl_usdhc2 &pinctrl_wifi>;
         pinctrl-1 = <&pinctrl_usdhc2_100mhz &pinctrl_wifi>;
         pinctrl-2 = <&pinctrl_usdhc2_200mhz &pinctrl_wifi>;
+        keep-power-in-suspend;
+        non-removable;
+        mmc-pwrseq = <&usdhc2_pwrseq>;
+        fsl,tuning-step = <2>;
+        pm-ignore-notify;
+        cap-power-off-card;
+        status = "okay";
 
-	voltage-ranges = <3300 3300>;
-	no-1-8-v;
-	bus-width = <4>;
-	non-removable;
-	mmc-pwrseq = <&usdhc2_pwrseq>;
-	fsl,tuning-step = <2>;
-	cap-sdio-irq;
-	keep-power-in-suspend;
-	cap-power-off-card;
-	status = "okay";
-
-	brcmf: bcrmf@1 {
-		reg = <1>;
-		compatible = "brcm,bcm4329-fmac";
-		interrupt-parent = <&gpio4>;
-		interrupts = <20 IRQ_TYPE_LEVEL_HIGH>;
-		interrupt-names = "host-wake";
-	};
+        brcmf: bcrmf@1 {
+                reg = <1>;
+                compatible = "brcm,bcm4329-fmac";
+        };
 };
+
 
 &usdhc3 {
 	pinctrl-names = "default", "state_100mhz", "state_200mhz";
