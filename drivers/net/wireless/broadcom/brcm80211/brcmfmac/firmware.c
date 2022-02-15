@@ -613,6 +613,8 @@ static int brcmf_fw_request_firmware(const struct firmware **fw,
 		strlcat(alt_path, fwctx->req->board_type, BRCMF_FW_NAME_LEN);
 		strlcat(alt_path, ".txt", BRCMF_FW_NAME_LEN);
 
+		printk("alt_path=%s\n",alt_path)
+
 		ret = request_firmware(fw, alt_path, fwctx->dev);
 		if (ret == 0)
 			return ret;
@@ -668,8 +670,10 @@ int brcmf_fw_get_firmwares(struct device *dev, struct brcmf_fw_request *req,
 	if (!fw_cb)
 		return -EINVAL;
 
-	if (!brcmf_fw_request_is_valid(req))
+	if (!brcmf_fw_request_is_valid(req)){
+		printk("brcmf_fw_request_is_valid return false\n");
 		return -EINVAL;
+	}
 
 	fwctx = kzalloc(sizeof(*fwctx), GFP_KERNEL);
 	if (!fwctx)
@@ -678,6 +682,8 @@ int brcmf_fw_get_firmwares(struct device *dev, struct brcmf_fw_request *req,
 	fwctx->dev = dev;
 	fwctx->req = req;
 	fwctx->done = fw_cb;
+
+	printk("first->path=%s\n",first->path);
 
 	ret = request_firmware_nowait(THIS_MODULE, true, first->path,
 				      fwctx->dev, GFP_KERNEL, fwctx,

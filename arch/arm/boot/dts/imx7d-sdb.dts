@@ -732,6 +732,9 @@
 	fsl,tuning-step = <2>;
 	pm-ignore-notify;
 	cap-power-off-card;
+	enable-sdio-wakeup;
+	cd-inverted;
+	cd-gpios = <&gpio 20 4>;
 	status = "okay";
 
 	brcmf: bcrmf@1 {
