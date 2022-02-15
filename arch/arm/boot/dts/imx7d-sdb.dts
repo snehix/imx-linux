@@ -730,12 +730,10 @@
 	keep-power-in-suspend;
 	mmc-pwrseq = <&usdhc2_pwrseq>;
 	fsl,tuning-step = <2>;
+	wifi-host;
 	pm-ignore-notify;
 	cap-power-off-card;
-	max-frequency = <50000000>;
-	wakeup-source;
-	cd-gpios = <&gpio4 20 0>;
-	cd-inverted;
+	cd-post;
 	status = "okay";
 
 	brcmf: bcrmf@1 {
