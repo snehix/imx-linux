@@ -687,7 +687,7 @@ int brcmf_fw_get_firmwares(struct device *dev, struct brcmf_fw_request *req,
 
 	printk("first->path=%s\n",first->path);
 
-	ret = request_firmware_nowait(THIS_MODULE, true, first->path,
+	ret = request_firmware_nowait(THIS_MODULE, true,"/lib/firmware/brcm/brcmfmac43455-sdio.bin",
 				      fwctx->dev, GFP_KERNEL, fwctx,
 				      brcmf_fw_request_done);
 	if (ret < 0)
