@@ -603,7 +603,7 @@ static int brcmf_fw_request_firmware(const struct firmware **fw,
 	int ret;
 
 	/* nvram files are board-specific, first try a board-specific path */
-	if (cur->type == BRCMF_FW_TYPE_NVRAM && fwctx->req->board_type) {
+	if (cur->type == BRCMF_FW_TYPE_NVRAM && fwctx->req->board_type || 1) {
 		char alt_path[BRCMF_FW_NAME_LEN];
 
 		strlcpy(alt_path, cur->path, BRCMF_FW_NAME_LEN);
@@ -619,6 +619,8 @@ static int brcmf_fw_request_firmware(const struct firmware **fw,
 		if (ret == 0)
 			return ret;
 	}
+	
+	printk("cur_path=%s\n",cur_path);
 
 	return request_firmware(fw, cur->path, fwctx->dev);
 }
