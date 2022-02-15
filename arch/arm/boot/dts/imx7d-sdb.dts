@@ -324,14 +324,14 @@
 	phy-handle = <&ethphy1>;
 	phy-supply = <&reg_fec2_3v3>;
 	fsl,magic-packet;
-	status = "okay";
+	status = "disabled";
 };
 
 &flexcan2 {
 	pinctrl-names = "default";
 	pinctrl-0 = <&pinctrl_flexcan2>;
 	xceiver-supply = <&reg_can2_3v3>;
-	status = "okay";
+	status = "disabled";
 };
 
 &mipi_csi {
@@ -727,13 +727,11 @@
 	no-1-8-v;
 	bus-width = <4>;
 	non-removable;
-	keep-power-in-suspend;
 	mmc-pwrseq = <&usdhc2_pwrseq>;
 	fsl,tuning-step = <2>;
 	wifi-host;
 	pm-ignore-notify;
 	cap-power-off-card;
-	cd-post;
 	status = "okay";
 
 	brcmf: bcrmf@1 {
