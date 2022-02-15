@@ -603,7 +603,7 @@ static int brcmf_fw_request_firmware(const struct firmware **fw,
 	int ret;
 
 	/* nvram files are board-specific, first try a board-specific path */
-	if (cur->type == BRCMF_FW_TYPE_NVRAM && fwctx->req->board_type || 1) {
+	if (cur->type == BRCMF_FW_TYPE_NVRAM && fwctx->req->board_type) {
 		char alt_path[BRCMF_FW_NAME_LEN];
 
 		strlcpy(alt_path, cur->path, BRCMF_FW_NAME_LEN);
@@ -687,7 +687,7 @@ int brcmf_fw_get_firmwares(struct device *dev, struct brcmf_fw_request *req,
 
 	printk("first->path=%s\n",first->path);
 
-	ret = request_firmware_nowait(THIS_MODULE, true,"/lib/firmware/brcm/brcmfmac43455-sdio.bin",
+	ret = request_firmware_nowait(THIS_MODULE, true first->path,
 				      fwctx->dev, GFP_KERNEL, fwctx,
 				      brcmf_fw_request_done);
 	if (ret < 0)
