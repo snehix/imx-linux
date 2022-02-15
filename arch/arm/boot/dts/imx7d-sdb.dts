@@ -734,6 +734,8 @@
 	cap-power-off-card;
 	max-frequency = <50000000>;
 	wakeup-source;
+	cd-gpios = <&gpio4 20 0>;
+	cd-inverted;
 	status = "okay";
 
 	brcmf: bcrmf@1 {
