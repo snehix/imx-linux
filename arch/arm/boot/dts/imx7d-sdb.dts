@@ -732,6 +732,11 @@
 	fsl,tuning-step = <2>;
 	pm-ignore-notify;
 	cap-power-off-card;
+	cd-gpios = <&gpio4 20 0>;
+	cd-inverted;
+	wp-gpios = <&gpio4 21 0>;
+	max-frequency = <50000000>;
+	wakeup-source;
 	status = "okay";
 
 	brcmf: bcrmf@1 {
