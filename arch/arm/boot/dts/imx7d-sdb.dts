@@ -725,6 +725,7 @@
         keep-power-in-suspend;
         non-removable;
         mmc-pwrseq = <&usdhc2_pwrseq>;
+	fsl,tuning-step = <2>;
         pm-ignore-notify;
         cap-power-off-card;
         status = "okay";
