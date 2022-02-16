@@ -67,8 +67,8 @@ void __brcmf_err(struct brcmf_bus *bus, const char *func, const char *fmt, ...);
 #if defined(DEBUG) || defined(CONFIG_BRCM_TRACING)
 
 /* For debug/tracing purposes treat info messages as errors */
-//#define brcmf_info brcmf_err
 
+#if 0
 #define brcmf_info(fmt, ...)						\
 	do {								\
 		__brcmf_err(NULL, __func__, fmt, ##__VA_ARGS__);\
@@ -79,9 +79,10 @@ void __brcmf_err(struct brcmf_bus *bus, const char *func, const char *fmt, ...);
 		__brcmf_err(NULL, __func__, fmt, ##__VA_ARGS__);\
 	} while (0)
 
+#else
+#define brcmf_info brcmf_err
 
-#if 0
-__printf(3, 4)
+			__printf(3, 4)
 void __brcmf_dbg(u32 level, const char *func, const char *fmt, ...);
 #define brcmf_dbg(level, fmt, ...)				\
 do {								\
