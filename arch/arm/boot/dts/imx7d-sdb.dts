@@ -135,7 +135,7 @@
 		regulator-min-microvolt = <3300000>;
 		regulator-max-microvolt = <3300000>;
 		gpio = <&gpio2 14 GPIO_ACTIVE_LOW>;
-		status = "disabled"
+		status = "disabled";
 	};
 
 	reg_fec2_3v3: regulator-fec2-3v3 {
@@ -146,7 +146,7 @@
 		regulator-min-microvolt = <3300000>;
 		regulator-max-microvolt = <3300000>;
 		gpio = <&gpio1 4 GPIO_ACTIVE_LOW>;
-		status = "disabled"
+		status = "disabled";
 	};
 	
 	reg_sensors: regulator-sensors {
