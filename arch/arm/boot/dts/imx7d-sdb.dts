@@ -5,6 +5,7 @@
 /dts-v1/;
 
 #include "imx7d.dtsi"
+#include "imx7d-sdb-epdc.dtsi"
 
 / {
 	model = "Freescale i.MX7 SabreSD Board";
@@ -677,7 +678,7 @@
 	/* for DTE mode, add below change */
 	/* fsl,dte-mode; */
 	/* pinctrl-0 = <&pinctrl_uart5dte>; */
-	status = "okay";
+	status = "disabled";
 };
 
 &uart6 {
