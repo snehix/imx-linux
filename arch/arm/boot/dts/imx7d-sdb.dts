@@ -642,7 +642,7 @@
 			  <&clks IMX7D_SAI3_ROOT_CLK>;
 	assigned-clock-parents = <&clks IMX7D_PLL_AUDIO_POST_DIV>;
 	assigned-clock-rates = <0>, <36864000>;
-	status = "okay";
+	status = "disabled";
 };
 
 &sim1 {
@@ -650,7 +650,7 @@
 	pinctrl-0 = <&pinctrl_sim1_1>;
 	port = <0>;
 	sven_low_active;
-	status = "okay";
+	status = "disbaled";
 };
 
 &snvs_poweroff {
