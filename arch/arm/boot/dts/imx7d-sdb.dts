@@ -152,13 +152,9 @@
 	reg_sensors: regulator-sensors {
 		compatible = "regulator-fixed";
 		pinctrl-names = "default";
-		pinctrl-0 = <&pinctrl_tps6518>;
 		regulator-name = "sensors-supply";
 		regulator-min-microvolt = <3300000>;
 		regulator-max-microvolt = <3300000>;
-		gpio1 = <&gpio2 23 GPIO_ACTIVE_HIGH>;
-		enable-active-high;
-		gpio2 = <&gpio2 21 GPIO_ACTIVE_LOW>;
 		enable-active-low;
 	};
 
@@ -858,9 +854,9 @@
 				MX7D_PAD_EPDC_GDOE__EPDC_GDOE     0x2
 				MX7D_PAD_EPDC_GDRL__EPDC_GDRL     0x2
 				MX7D_PAD_EPDC_GDSP__EPDC_GDSP     0x2
-				MX7D_PAD_EPDC_SDCE0__EPDC_SDCE0   0x2
 				MX7D_PAD_EPDC_SDCE1__EPDC_SDCE1   0x2
-				MX7D_PAD_EPDC_SDCE2__EPDC_SDCE2   0x2
+				MX7D_PAD_EPDC_SDCE3__EPDC_SDCE2   0x2
+				MX7D_PAD_EPDC_SDCE3__EPDC_SDCE3   0x2
 				MX7D_PAD_EPDC_PWR_STAT__EPDC_PWR_STAT   0x2
 				MX7D_PAD_I2C4_SCL__GPIO4_IO14     0x2
 			>;
