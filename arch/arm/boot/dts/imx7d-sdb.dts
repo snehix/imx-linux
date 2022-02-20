@@ -270,6 +270,7 @@
 	V3P3-supply = <&V3P3_reg>;
 	VCOM-supply = <&VCOM_reg>;
 	DISPLAY-supply = <&DISPLAY_reg>;
+	en-gpios = <&gpio1 4 GPIO_ACTIVE_HIGH>;
 	status = "okay";
 };
 
