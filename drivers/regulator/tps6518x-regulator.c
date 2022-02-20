@@ -348,9 +348,13 @@ static int tps6518x_is_power_good(struct tps6518x *tps6518x)
 	 * value yields whether power is good.
 	 */
 	printk("tps6518x_is_power_good\n");
-	
+
+#if 0	
 	return gpio_get_value(tps6518x->gpio_pmic_pwrgood) ^
 		tps6518x->pwrgood_polarity;
+#else
+	return gpio_get_value(tps6518x->gpio_pmic_pwrgood);
+#endif
 }
 
 static int tps6518x_wait_power_good(struct tps6518x *tps6518x)
