@@ -397,6 +397,9 @@ static int tps6518x_display_enable(struct regulator_dev *reg)
 
 		printk("enable display regulators\n");
 		/* enable display regulators */
+		printk("tps65180_current_Enable_Register=%d,
+				VDDH_EN=%d,VPOS_EN=%d,VEE_EN=%d,VNEG_EN=%d\n",
+				tps65180_current_Enable_Register,VDDH_EN,VPOS_EN,VEE_EN,VNEG_EN);
 		cur_reg_val = tps65180_current_Enable_Register & 0x3f;
 		fld_mask = BITFMASK(VDDH_EN) | BITFMASK(VPOS_EN) |
 			BITFMASK(VEE_EN) | BITFMASK(VNEG_EN);
@@ -410,10 +413,11 @@ static int tps6518x_display_enable(struct regulator_dev *reg)
 		cur_reg_val = tps65180_current_Enable_Register & 0x3f;
 		fld_mask = BITFMASK(ACTIVE);
 		fld_val = BITFVAL(ACTIVE, true);
+		printk("tps65180_current_Enable_Register=%d,fld_mask=%d,fld_val=%d\n",tps65180_current_Enable_Register,fld_mask,fld_val);
 		new_reg_val = tps65180_current_Enable_Register = to_reg_val(cur_reg_val, fld_mask, fld_val);
 		tps6518x_reg_write(REG_TPS65180_ENABLE, new_reg_val);
 		
-		epdc_pwr0_enable(reg);
+		//epdc_pwr0_enable(reg);
 	}
 
 	return tps6518x_wait_power_good(tps6518x);
