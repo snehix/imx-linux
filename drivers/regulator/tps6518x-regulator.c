@@ -537,6 +537,10 @@ static void tps6518x_setup_timings(struct tps6518x *tps6518x)
 		tps6518x_reg_write(REG_TPS65180_PWRSEQ2, tps6518x->pwr_seq2);
 	    }
 	}
+	tps6518x->upseq0=0xe4;	
+	tps6518x->upseq1=0x55;	
+	tps6518x->dwnseq0=0x1e;	
+	tps6518x->dwnseq0=0xe0;	
 
 	if ((tps6518x->revID == TPS65185_PASS0) ||
 		 (tps6518x->revID == TPS65186_PASS0) ||
