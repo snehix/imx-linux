@@ -359,6 +359,25 @@ static struct fb_videomode e97_v110_mode = {
 	.flag = 0,
 };
 
+static struct fb_videomode es103tc1mode = {
+	.name = "ES103TC1",
+	.refresh = 85,
+	.xres = 1872,
+	.yres = 1404,
+	.pixclock = 33333333,
+	.left_margin = 12,
+	.right_margin = 76,
+	.upper_margin = 4,
+	.lower_margin = 5,
+	.hsync_len = 12,
+	.vsync_len = 2,
+	.sync = 0,
+	.vmode = FB_VMODE_NONINTERLACED,
+	.flag = 0,
+};
+
+
+#if 0
 static struct imx_epdc_fb_mode panel_modes[] = {
 	{
 		&ed060xh2c1mode,	/* struct fb_videomode *mode */
@@ -426,6 +445,23 @@ static struct imx_epdc_fb_mode panel_modes[] = {
 		3,      /* num_ce */
 	}
 };
+#else
+static struct imx_epdc_fb_mode panel_modes[] = {
+	{
+		&es103tc1mode,	/* struct fb_videomode *mode */
+		4, 	/* vscan_holdoff */
+		10, 	/* sdoed_width */
+		20, 	/* sdoed_delay */
+		10, 	/* sdoez_width */
+		20, 	/* sdoez_delay */
+		524, 	/* GDCLK_HP */
+		327, 	/* GDSP_OFF */
+		0, 	/* GDOE_OFF */
+		19, 	/* gdclk_offs */
+		1, 	/* num_ce */
+	}
+};
+#endif
 
 static struct imx_epdc_fb_platform_data epdc_data = {
 	.epdc_mode = panel_modes,

@@ -349,12 +349,8 @@ static int tps6518x_is_power_good(struct tps6518x *tps6518x)
 	 */
 	printk("tps6518x_is_power_good\n");
 
-#if 0	
 	return gpio_get_value(tps6518x->gpio_pmic_pwrgood) ^
 		tps6518x->pwrgood_polarity;
-#else
-	return gpio_get_value(tps6518x->gpio_pmic_pwrgood);
-#endif
 }
 
 static int tps6518x_wait_power_good(struct tps6518x *tps6518x)
@@ -389,6 +385,7 @@ static int tps6518x_display_enable(struct regulator_dev *reg)
 	else
 	{
 		gpio_set_value(tps6518x->gpio_pmic_wakeup,1);
+		gpio_set_value(tps6518x->gpio_pmic_powerup, 1);
 
 		printk("enable display regulators\n");
 		/* enable display regulators */
@@ -420,7 +417,7 @@ static int tps6518x_display_disable(struct regulator_dev *reg)
 	unsigned int fld_val;	  /* new bitfield value to write */
 	unsigned int new_reg_val; /* new register value to write */
 	
-	printk("tps6518x_display_enable\n");
+	printk("tps6518x_display_disable\n");
 
 	if (tps6518x->revID == 65182)
 	{
@@ -428,6 +425,7 @@ static int tps6518x_display_disable(struct regulator_dev *reg)
 	}
 	else
 	{
+		gpio_set_value(tps6518x->gpio_pmic_wakeup,0);
 		/* turn off display regulators */
 		printk("turn off display regulators\n");
 		cur_reg_val = tps65180_current_Enable_Register & 0x3f;
