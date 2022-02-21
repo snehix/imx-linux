@@ -412,6 +412,8 @@ static int tps6518x_display_enable(struct regulator_dev *reg)
 		fld_val = BITFVAL(ACTIVE, true);
 		new_reg_val = tps65180_current_Enable_Register = to_reg_val(cur_reg_val, fld_mask, fld_val);
 		tps6518x_reg_write(REG_TPS65180_ENABLE, new_reg_val);
+		
+		epdc_pwr0_enable(reg);
 	}
 
 	return tps6518x_wait_power_good(tps6518x);
