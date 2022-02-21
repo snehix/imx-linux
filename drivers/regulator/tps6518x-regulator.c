@@ -541,7 +541,7 @@ static void tps6518x_setup_timings(struct tps6518x *tps6518x)
 	tps6518x->upseq0=0xe4;	
 	tps6518x->upseq1=0x55;	
 	tps6518x->dwnseq0=0x1e;	
-	tps6518x->dwnseq0=0xe0;	
+	tps6518x->dwnseq1=0xe0;	
 
 	printk("Revision id=0x%x\n",tps6518x->revID);
 
@@ -713,6 +713,8 @@ static int tps6518x_regulator_probe(struct platform_device *pdev)
 
         printk("tps6518x_regulator_probe starting\n");
 
+	tps6518x_setup_timings(tps6518x);
+	
 	if (tps6518x->dev->of_node) {
 		ret = tps6518x_pmic_dt_parse_pdata(pdev, pdata);
 		printk("--->tps6518x_pmic_dt_parse_pdata , ret=%d\n",ret);
@@ -762,7 +764,7 @@ static int tps6518x_regulator_probe(struct platform_device *pdev)
 	 * Should only be done one time!  Timing values may only be
 	 * changed a limited number of times according to spec.
 	 */
-	tps6518x_setup_timings(tps6518x);
+	//tps6518x_setup_timings(tps6518x);
 
 	tps6518x_detect1();
 
