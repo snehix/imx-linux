@@ -385,6 +385,7 @@ static int tps6518x_display_enable(struct regulator_dev *reg)
 	else
 	{
 		gpio_set_value(tps6518x->gpio_pmic_wakeup,1);
+		gpio_set_value(tps6518x->gpio_pmic_powerup,1);
 
 		printk("enable display regulators\n");
 		/* enable display regulators */
@@ -637,7 +638,7 @@ static int tps6518x_pmic_dt_parse_pdata(struct platform_device *pdev,
 		goto err;
 	}
 	ret = devm_gpio_request_one(&pdev->dev, tps6518x->gpio_pmic_powerup,
-				GPIOF_OUT_INIT_HIGH, "epdc-powerup");
+				GPIOF_OUT_INIT_LOW, "epdc-powerup");
 	if (ret < 0)
 		goto err;
 
