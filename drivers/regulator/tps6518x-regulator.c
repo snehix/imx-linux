@@ -713,7 +713,6 @@ static int tps6518x_regulator_probe(struct platform_device *pdev)
 
         printk("tps6518x_regulator_probe starting\n");
 
-	tps6518x_setup_timings(tps6518x);
 	
 	if (tps6518x->dev->of_node) {
 		ret = tps6518x_pmic_dt_parse_pdata(pdev, pdata);
@@ -764,7 +763,7 @@ static int tps6518x_regulator_probe(struct platform_device *pdev)
 	 * Should only be done one time!  Timing values may only be
 	 * changed a limited number of times according to spec.
 	 */
-	//tps6518x_setup_timings(tps6518x);
+	tps6518x_setup_timings(tps6518x);
 
 	tps6518x_detect1();
 
@@ -781,6 +780,8 @@ static int tps6518x_regulator_remove(struct platform_device *pdev)
 	struct tps6518x_data *priv = platform_get_drvdata(pdev);
 	struct regulator_dev **rdev = priv->rdev;
 	int i;
+
+	printk("tps6518x_regulator_remove\n");
 
 	for (i = 0; i < priv->num_regulators; i++)
 		regulator_unregister(rdev[i]);
