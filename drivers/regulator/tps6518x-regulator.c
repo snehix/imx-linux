@@ -521,6 +521,7 @@ static void tps6518x_setup_timings(struct tps6518x *tps6518x)
 {
 
 	int temp0, temp1, temp2, temp3;
+	tps6518x_reg_read(REG_TPS65180_REVID,&tps6518x->revID);
 	printk("Revision id=0x%x\n",tps6518x->revID);
 
 	/* read the current setting in the PMIC */

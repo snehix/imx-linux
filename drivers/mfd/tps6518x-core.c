@@ -222,6 +222,8 @@ static int tps6518x_detect(struct i2c_client *client,
 	revId = i2c_smbus_read_byte_data(client,
 		  REG_TPS6518x_REVID);
 
+	printk("Revision id detected=0x%x\n",revId);
+
 	/*
 	 * Known rev-ids
 	 * tps165180 pass 1 = 0x50, tps65180 pass2 = 0x60, tps65181 pass1 = 0x51, tps65181 pass2 = 0x61, 
@@ -241,7 +243,7 @@ static int tps6518x_detect(struct i2c_client *client,
 	{
 		dev_info(&adapter->dev,
 		    "Unsupported chip (Revision ID=0x%02X).\n",  revId);
-		//return -ENODEV;
+		return -ENODEV;
 	}
 
 	if (info) {
