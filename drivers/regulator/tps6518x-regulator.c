@@ -347,10 +347,19 @@ static int tps6518x_is_power_good(struct tps6518x *tps6518x)
 	 * XOR of polarity (starting value) and current
 	 * value yields whether power is good.
 	 */
+	int val;
 	printk("tps6518x_is_power_good\n");
 
+	val=gpio_get_value(tps6518x->gpio_pmic_pwrgood);
+
+	printk("val=%d,pwrgood_polarity=%d\n",val,tps6518x->pwrgood_polarity);
+
+#if 0
 	return gpio_get_value(tps6518x->gpio_pmic_pwrgood) ^
 		tps6518x->pwrgood_polarity;
+#else
+	return val ^ tps6518x->pwrgood_polarity;
+#endif
 }
 
 static int tps6518x_wait_power_good(struct tps6518x *tps6518x)
@@ -385,7 +394,6 @@ static int tps6518x_display_enable(struct regulator_dev *reg)
 	else
 	{
 		gpio_set_value(tps6518x->gpio_pmic_wakeup,1);
-		gpio_set_value(tps6518x->gpio_pmic_powerup,1);
 
 		printk("enable display regulators\n");
 		/* enable display regulators */
@@ -616,7 +624,7 @@ static int tps6518x_pmic_dt_parse_pdata(struct platform_device *pdev,
 		goto err;
 	}
 	ret = devm_gpio_request_one(&pdev->dev, tps6518x->gpio_pmic_wakeup,
-				GPIOF_OUT_INIT_HIGH, "epdc-pmic-wake");
+				GPIOF_OUT_INIT_LOW, "epdc-pmic-wake");
 	if (ret < 0)
 		goto err;
 
