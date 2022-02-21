@@ -521,6 +521,7 @@ static void tps6518x_setup_timings(struct tps6518x *tps6518x)
 {
 
 	int temp0, temp1, temp2, temp3;
+	printk("Revision id=0x%x\n",tps6518x->revID);
 
 	/* read the current setting in the PMIC */
 	if ((tps6518x->revID == TPS65180_PASS1) || (tps6518x->revID == TPS65181_PASS1) ||
@@ -542,6 +543,8 @@ static void tps6518x_setup_timings(struct tps6518x *tps6518x)
 	tps6518x->dwnseq0=0x1e;	
 	tps6518x->dwnseq0=0xe0;	
 
+	printk("Revision id=0x%x\n",tps6518x->revID);
+
 	if ((tps6518x->revID == TPS65185_PASS0) ||
 		 (tps6518x->revID == TPS65186_PASS0) ||
 		 (tps6518x->revID == TPS65185_PASS1) ||
@@ -556,6 +559,7 @@ static void tps6518x_setup_timings(struct tps6518x *tps6518x)
 		(temp1 != tps6518x->upseq1) ||
 		(temp2 != tps6518x->dwnseq0) ||
 		(temp3 != tps6518x->dwnseq1)) {
+printk("setting the sequence vaues\n");
 		tps6518x_reg_write(REG_TPS65185_UPSEQ0, tps6518x->upseq0);
 		tps6518x_reg_write(REG_TPS65185_UPSEQ1, tps6518x->upseq1);
 		tps6518x_reg_write(REG_TPS65185_DWNSEQ0, tps6518x->dwnseq0);
@@ -635,7 +639,7 @@ static int tps6518x_pmic_dt_parse_pdata(struct platform_device *pdev,
 		goto err;
 	}
 	ret = devm_gpio_request_one(&pdev->dev, tps6518x->gpio_pmic_wakeup,
-				GPIOF_OUT_INIT_LOW, "epdc-pmic-wake");
+				GPIOF_OUT_INIT_HIGH, "epdc-pmic-wake");
 	if (ret < 0)
 		goto err;
 
