@@ -358,8 +358,8 @@ static int tps6518x_is_power_good(struct tps6518x *tps6518x)
 
 	val=gpio_get_value(tps6518x->gpio_pmic_pwrgood);
 
-	tps6518x_reg_read(0x0f, &read_val);
-	printk("read back value = 0x%x\n",read_val);
+	//tps6518x_reg_read(0x0f, &read_val);
+	//printk("read back value = 0x%x\n",read_val);
 	printk("val=%d,pwrgood_polarity=%d\n",val,tps6518x->pwrgood_polarity);
 
 #if 0
@@ -401,7 +401,7 @@ static int tps6518x_display_enable(struct regulator_dev *reg)
 	}
 	else
 	{
-		gpio_set_value(tps6518x->gpio_pmic_wakeup,1);
+		//gpio_set_value(tps6518x->gpio_pmic_wakeup,1);
 
 		printk("enable display regulators\n");
 		/* enable display regulators */
@@ -413,7 +413,7 @@ static int tps6518x_display_enable(struct regulator_dev *reg)
 		printk("tps65180_current_Enable_Register=%d,fld_mask=%d,fld_val=%d\n",tps65180_current_Enable_Register,fld_mask,fld_val);
 		new_reg_val = tps65180_current_Enable_Register = to_reg_val(cur_reg_val, fld_mask, fld_val);
 		printk("new_reg_val=%d\n",new_reg_val);
-		//tps6518x_reg_write(REG_TPS65180_ENABLE, new_reg_val);
+		tps6518x_reg_write(REG_TPS65180_ENABLE, new_reg_val);
 
 		/* turn on display regulators */
 		printk("turn on display regulators\n");
@@ -423,7 +423,7 @@ static int tps6518x_display_enable(struct regulator_dev *reg)
 		printk("tps65180_current_Enable_Register=%d,fld_mask=%d,fld_val=%d\n",tps65180_current_Enable_Register,fld_mask,fld_val);
 		new_reg_val = tps65180_current_Enable_Register = to_reg_val(cur_reg_val, fld_mask, fld_val);
 		printk("new_reg_val=%d\n",new_reg_val);
-		//tps6518x_reg_write(REG_TPS65180_ENABLE, new_reg_val);
+		tps6518x_reg_write(REG_TPS65180_ENABLE, new_reg_val);
 
 		
 	}
