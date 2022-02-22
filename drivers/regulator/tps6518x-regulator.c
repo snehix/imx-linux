@@ -131,7 +131,6 @@ static int tps6518x_v3p3_enable(struct regulator_dev *reg)
 	
 	printk("epdc_v3p3_enable\n");
 
-	return 0;
 
 
 	gpio_set_value(tps6518x->gpio_pmic_powerup, 1);
@@ -144,8 +143,6 @@ static int tps6518x_v3p3_disable(struct regulator_dev *reg)
 	
 	printk("epdc_v3p3_disable\n");
 
-	return 0;
-
 
 	gpio_set_value(tps6518x->gpio_pmic_powerup, 0);
 	return 0;
@@ -157,7 +154,6 @@ static int tps6518x_v3p3_is_enabled(struct regulator_dev *reg)
 	
 	printk("tps6518x_v3p3_is_enabled\n");
 
-	return 1;
 
 	int gpio = gpio_get_value(tps6518x->gpio_pmic_powerup);
 
@@ -417,7 +413,7 @@ static int tps6518x_display_enable(struct regulator_dev *reg)
 		printk("tps65180_current_Enable_Register=%d,fld_mask=%d,fld_val=%d\n",tps65180_current_Enable_Register,fld_mask,fld_val);
 		new_reg_val = tps65180_current_Enable_Register = to_reg_val(cur_reg_val, fld_mask, fld_val);
 		printk("new_reg_val=%d\n",new_reg_val);
-		tps6518x_reg_write(REG_TPS65180_ENABLE, new_reg_val);
+		//tps6518x_reg_write(REG_TPS65180_ENABLE, new_reg_val);
 
 		/* turn on display regulators */
 		printk("turn on display regulators\n");
@@ -427,7 +423,7 @@ static int tps6518x_display_enable(struct regulator_dev *reg)
 		printk("tps65180_current_Enable_Register=%d,fld_mask=%d,fld_val=%d\n",tps65180_current_Enable_Register,fld_mask,fld_val);
 		new_reg_val = tps65180_current_Enable_Register = to_reg_val(cur_reg_val, fld_mask, fld_val);
 		printk("new_reg_val=%d\n",new_reg_val);
-		tps6518x_reg_write(REG_TPS65180_ENABLE, new_reg_val);
+		//tps6518x_reg_write(REG_TPS65180_ENABLE, new_reg_val);
 
 		
 	}
