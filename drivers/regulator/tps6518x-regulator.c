@@ -388,7 +388,7 @@ static int tps6518x_display_enable(struct regulator_dev *reg)
 	
 	printk("tps6518x_display_enable\n");
 	
-	if (tps6518x->revID == 65182)
+	if (tps6518x->revID == 65182 || 1)
 	{
 		epdc_pwr0_enable(reg);
 	}
