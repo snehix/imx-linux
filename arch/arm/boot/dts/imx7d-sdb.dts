@@ -155,7 +155,8 @@
 		regulator-name = "sensors-supply";
 		regulator-min-microvolt = <3300000>;
 		regulator-max-microvolt = <3300000>;
-		enable-active-low;
+		gpio = <&gpio2 23 GPIO_ACTIVE_HIGH>;
+		enable-active-high;
 	};
 
 	backlight: backlight {
