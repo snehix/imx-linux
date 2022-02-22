@@ -554,6 +554,7 @@ static void tps6518x_setup_timings(struct tps6518x *tps6518x)
 	   tps6518x_reg_read(REG_TPS65185_UPSEQ1, &temp1);
 	   tps6518x_reg_read(REG_TPS65185_DWNSEQ0, &temp2);
 	   tps6518x_reg_read(REG_TPS65185_DWNSEQ1, &temp3);
+printk("temp0=0x%x,temp1=0x%x,temp2=0x%x,temp3=0x%x\n",temp0,temp1,temp2,temp3);
 	   if ((temp0 != tps6518x->upseq0) ||
 		(temp1 != tps6518x->upseq1) ||
 		(temp2 != tps6518x->dwnseq0) ||
