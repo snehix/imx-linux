@@ -75,7 +75,7 @@ int tps6518x_reg_read(int reg_num, unsigned int *reg_val)
 		return PMIC_ERROR;
 	}
 	
-	printk("tps6518x_reg_read success reg_num=0x%s,reg_val=0x%x\n",reg_num,result);
+	printk("tps6518x_reg_read success reg_num=0x%x,reg_val=0x%x\n",reg_num,result);
 
 	*reg_val = result;
 	return PMIC_SUCCESS;

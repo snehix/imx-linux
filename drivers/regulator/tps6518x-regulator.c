@@ -406,7 +406,7 @@ static int tps6518x_display_enable(struct regulator_dev *reg)
 		printk("tps65180_current_Enable_Register=%d,fld_mask=%d,fld_val=%d\n",tps65180_current_Enable_Register,fld_mask,fld_val);
 		new_reg_val = tps65180_current_Enable_Register = to_reg_val(cur_reg_val, fld_mask, fld_val);
 		printk("new_reg_val=%d\n",new_reg_val);
-		tps6518x_reg_write(REG_TPS65180_ENABLE, new_reg_val);
+		//tps6518x_reg_write(REG_TPS65180_ENABLE, new_reg_val);
 
 		/* turn on display regulators */
 		printk("turn on display regulators\n");
@@ -644,7 +644,7 @@ static int tps6518x_pmic_dt_parse_pdata(struct platform_device *pdev,
 		goto err;
 	}
 	ret = devm_gpio_request_one(&pdev->dev, tps6518x->gpio_pmic_wakeup,
-				GPIOF_OUT_INIT_HIGH, "epdc-pmic-wake");
+				GPIOF_OUT_INIT_LOW, "epdc-pmic-wake");
 	if (ret < 0)
 		goto err;
 
@@ -655,7 +655,7 @@ static int tps6518x_pmic_dt_parse_pdata(struct platform_device *pdev,
 		goto err;
 	}
 	ret = devm_gpio_request_one(&pdev->dev, tps6518x->gpio_pmic_vcom_ctrl,
-				GPIOF_OUT_INIT_HIGH, "epdc-vcom");
+				GPIOF_OUT_INIT_LOW, "epdc-vcom");
 	if (ret < 0)
 		goto err;
 
