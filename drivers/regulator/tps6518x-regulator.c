@@ -388,7 +388,7 @@ static int tps6518x_display_enable(struct regulator_dev *reg)
 	
 	printk("tps6518x_display_enable\n");
 	
-	if (tps6518x->revID == 65182 || 1)
+	if (tps6518x->revID == 65182)
 	{
 		epdc_pwr0_enable(reg);
 	}
@@ -644,7 +644,7 @@ static int tps6518x_pmic_dt_parse_pdata(struct platform_device *pdev,
 		goto err;
 	}
 	ret = devm_gpio_request_one(&pdev->dev, tps6518x->gpio_pmic_wakeup,
-				GPIOF_OUT_INIT_LOW, "epdc-pmic-wake");
+				GPIOF_OUT_INIT_HIGH, "epdc-pmic-wake");
 	if (ret < 0)
 		goto err;
 
@@ -655,7 +655,7 @@ static int tps6518x_pmic_dt_parse_pdata(struct platform_device *pdev,
 		goto err;
 	}
 	ret = devm_gpio_request_one(&pdev->dev, tps6518x->gpio_pmic_vcom_ctrl,
-				GPIOF_OUT_INIT_LOW, "epdc-vcom");
+				GPIOF_OUT_INIT_HIGH, "epdc-vcom");
 	if (ret < 0)
 		goto err;
 
