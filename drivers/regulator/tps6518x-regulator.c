@@ -101,6 +101,7 @@ static int vcom2_uV_to_rs(int uV)
 	return (-uV) / TPS65185_VCOM_STEP_uV;
 }
 
+
 static int epdc_pwr0_enable(struct regulator_dev *reg)
 {
 	struct tps6518x *tps6518x = rdev_get_drvdata(reg);
@@ -130,6 +131,8 @@ static int tps6518x_v3p3_enable(struct regulator_dev *reg)
 	
 	printk("epdc_v3p3_enable\n");
 
+	return 0;
+
 
 	gpio_set_value(tps6518x->gpio_pmic_powerup, 1);
 	return 0;
@@ -141,6 +144,8 @@ static int tps6518x_v3p3_disable(struct regulator_dev *reg)
 	
 	printk("epdc_v3p3_disable\n");
 
+	return 0;
+
 
 	gpio_set_value(tps6518x->gpio_pmic_powerup, 0);
 	return 0;
@@ -151,6 +156,8 @@ static int tps6518x_v3p3_is_enabled(struct regulator_dev *reg)
 	struct tps6518x *tps6518x = rdev_get_drvdata(reg);
 	
 	printk("tps6518x_v3p3_is_enabled\n");
+
+	return 1;
 
 	int gpio = gpio_get_value(tps6518x->gpio_pmic_powerup);
 
