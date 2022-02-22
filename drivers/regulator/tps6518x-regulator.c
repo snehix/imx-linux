@@ -417,7 +417,6 @@ static int tps6518x_display_enable(struct regulator_dev *reg)
 		printk("new_reg_val=%d\n",new_reg_val);
 		tps6518x_reg_write(REG_TPS65180_ENABLE, new_reg_val);
 		
-		epdc_pwr0_enable(reg);
 	}
 
 	return tps6518x_wait_power_good(tps6518x);
