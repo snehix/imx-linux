@@ -131,7 +131,6 @@ static int tps6518x_v3p3_enable(struct regulator_dev *reg)
 	
 	printk("epdc_v3p3_enable\n");
 
-	return 0;
 
 	gpio_set_value(tps6518x->gpio_pmic_v3p3_ctrl, 1);
 	return 0;
@@ -403,6 +402,7 @@ static int tps6518x_display_enable(struct regulator_dev *reg)
 	}
 	else
 	{
+#if 0
 		gpio_set_value(tps6518x->gpio_pmic_wakeup,1);
 
 		printk("enable display regulators\n");
@@ -427,7 +427,7 @@ static int tps6518x_display_enable(struct regulator_dev *reg)
 		printk("new_reg_val=%d\n",new_reg_val);
 		new_reg_val=191;
 		tps6518x_reg_write(REG_TPS65180_ENABLE, new_reg_val);
-
+#endif
 		
 	}
 
