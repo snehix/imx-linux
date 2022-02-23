@@ -292,6 +292,7 @@ struct tps6518x {
 	/* GPIOs */
 	int gpio_pmic_pwrgood;
 	int gpio_pmic_vcom_ctrl;
+	int gpio_pmic_v3p3_ctrl;
 	int gpio_pmic_wakeup;
 	int gpio_pmic_intr;
 	int gpio_pmic_powerup;
