@@ -267,7 +267,7 @@
 	V3P3-supply = <&V3P3_reg>;
 	VCOM-supply = <&VCOM_reg>;
 	DISPLAY-supply = <&DISPLAY_reg>;
-	en-gpios = <&gpio1 4 GPIO_ACTIVE_HIGH>;
+	en-gpios = <&gpio2 30 GPIO_ACTIVE_HIGH>;
 	status = "okay";
 };
 
@@ -858,6 +858,7 @@
 				MX7D_PAD_EPDC_SDCE1__EPDC_SDCE1   0x2
 				MX7D_PAD_EPDC_SDCE2__EPDC_SDCE2   0x2
 				MX7D_PAD_EPDC_SDCE3__EPDC_SDCE3   0x2
+				MX7D_PAD_EPDC_PWR_COM__EPDC_PWR_COM   0x2
 				MX7D_PAD_EPDC_PWR_STAT__EPDC_PWR_STAT   0x2
 				MX7D_PAD_I2C4_SCL__GPIO4_IO14     0x2
 			>;
