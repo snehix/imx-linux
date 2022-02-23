@@ -358,8 +358,8 @@ static int tps6518x_is_power_good(struct tps6518x *tps6518x)
 
 	val=gpio_get_value(tps6518x->gpio_pmic_pwrgood);
 
-	//tps6518x_reg_read(0x0f, &read_val);
-	//printk("read back value = 0x%x\n",read_val);
+	tps6518x_reg_read(0x0f, &read_val);
+	printk("read back value = 0x%x\n",read_val);
 	printk("val=%d,pwrgood_polarity=%d\n",val,tps6518x->pwrgood_polarity);
 
 #if 0
