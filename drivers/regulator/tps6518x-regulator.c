@@ -131,7 +131,7 @@ static int tps6518x_v3p3_enable(struct regulator_dev *reg)
 	
 	printk("epdc_v3p3_enable\n");
 
-
+	return 0;
 
 	gpio_set_value(tps6518x->gpio_pmic_v3p3_ctrl, 1);
 	return 0;

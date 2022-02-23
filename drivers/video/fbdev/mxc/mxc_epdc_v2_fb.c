@@ -377,7 +377,7 @@ static struct fb_videomode es103tc1mode = {
 };
 
 
-#if 1
+#if 0
 static struct imx_epdc_fb_mode panel_modes[] = {
 	{
 		&ed060xh2c1mode,	/* struct fb_videomode *mode */
