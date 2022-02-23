@@ -267,7 +267,6 @@
 	V3P3-supply = <&V3P3_reg>;
 	VCOM-supply = <&VCOM_reg>;
 	DISPLAY-supply = <&DISPLAY_reg>;
-	en-gpios = <&gpio2 30 GPIO_ACTIVE_HIGH>;
 	status = "okay";
 };
 
@@ -509,6 +508,7 @@
 		
 		gpio_pmic_pwrgood = <&gpio2 31 0>;
 		gpio_pmic_vcom_ctrl = <&gpio4 14 0>;
+		gpio_pmic_v3p3_ctrl = <&gpio2 30 0>;
 		gpio_pmic_wakeup = <&gpio2 23 0>;
 		gpio_pmic_intr = <&gpio2 22 0>;
 		gpio_pmic_powerup = <&gpio2 21 0>;
