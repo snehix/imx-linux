@@ -364,7 +364,7 @@ static struct fb_videomode es103tc1mode = {
 	.refresh = 85,
 	.xres = 1872,
 	.yres = 1404,
-	.pixclock = 33333333,
+	.pixclock =32000000,
 	.left_margin = 12,
 	.right_margin = 76,
 	.upper_margin = 4,
@@ -377,7 +377,7 @@ static struct fb_videomode es103tc1mode = {
 };
 
 
-#if 0
+#if 1
 static struct imx_epdc_fb_mode panel_modes[] = {
 	{
 		&ed060xh2c1mode,	/* struct fb_videomode *mode */
