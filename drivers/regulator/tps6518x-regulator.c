@@ -401,7 +401,7 @@ static int tps6518x_display_enable(struct regulator_dev *reg)
 	}
 	else
 	{
-		//gpio_set_value(tps6518x->gpio_pmic_wakeup,1);
+		gpio_set_value(tps6518x->gpio_pmic_wakeup,1);
 
 		printk("enable display regulators\n");
 		/* enable display regulators */
