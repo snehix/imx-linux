@@ -365,12 +365,12 @@ static struct fb_videomode es103tc1mode = {
 	.xres = 1872,
 	.yres = 1404,
 	.pixclock =32000000,
-	.left_margin = 12,
-	.right_margin = 76,
+	.left_margin = 8,
+	.right_margin = 23,
 	.upper_margin = 4,
-	.lower_margin = 5,
-	.hsync_len = 12,
-	.vsync_len = 2,
+	.lower_margin = 12,
+	.hsync_len = 11,
+	.vsync_len = 1,
 	.sync = 0,
 	.vmode = FB_VMODE_NONINTERLACED,
 	.flag = 0,
@@ -454,10 +454,10 @@ static struct imx_epdc_fb_mode panel_modes[] = {
 		20, 	/* sdoed_delay */
 		10, 	/* sdoez_width */
 		20, 	/* sdoez_delay */
-		524, 	/* GDCLK_HP */
-		327, 	/* GDSP_OFF */
+		1032, 	/* GDCLK_HP */
+		755, 	/* GDSP_OFF */
 		0, 	/* GDOE_OFF */
-		19, 	/* gdclk_offs */
+		91, 	/* gdclk_offs */
 		1, 	/* num_ce */
 	}
 };
@@ -515,7 +515,8 @@ static int epdc_working_buffer_update(struct mxc_epdc_fb_data *fb_data,
 				      struct mxcfb_rect *update_region);
 extern void pxp_get_collision_info(struct pxp_collision_info *info);
 
-#ifdef DEBUG
+//#ifdef DEBUG
+#if 1
 static void dump_pxp_config(struct mxc_epdc_fb_data *fb_data,
 			    struct pxp_config_data *pxp_conf)
 {
