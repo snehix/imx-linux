@@ -455,6 +455,8 @@ static int tps6518x_display_disable(struct regulator_dev *reg)
 		fld_val = BITFVAL(VCOM_EN, true) | BITFVAL(STANDBY, true);
 		new_reg_val = tps65180_current_Enable_Register = to_reg_val(cur_reg_val, fld_mask, fld_val);
 		tps6518x_reg_write(REG_TPS65180_ENABLE, new_reg_val);
+		
+		gpio_set_value(tps6518x->gpio_pmic_wakeup,0);
 
 	}
 
@@ -649,7 +651,7 @@ static int tps6518x_pmic_dt_parse_pdata(struct platform_device *pdev,
 		goto err;
 	}
 	ret = devm_gpio_request_one(&pdev->dev, tps6518x->gpio_pmic_wakeup,
-				GPIOF_OUT_INIT_HIGH, "epdc-pmic-wake");
+				GPIOF_OUT_INIT_LOW, "epdc-pmic-wake");
 	if (ret < 0)
 		goto err;
 

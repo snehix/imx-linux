@@ -4706,6 +4706,8 @@ static void draw_mode0(struct mxc_epdc_fb_data *fb_data)
 		msleep(100);
 	}
 
+	dump_epdc_reg();
+
 	dev_err(fb_data->dev, "Mode0 init failed!\n");
 
 	return;
