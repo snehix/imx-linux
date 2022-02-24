@@ -520,58 +520,58 @@ extern void pxp_get_collision_info(struct pxp_collision_info *info);
 static void dump_pxp_config(struct mxc_epdc_fb_data *fb_data,
 			    struct pxp_config_data *pxp_conf)
 {
-	dev_info(fb_data->dev, "S0 fmt 0x%x",
+	dev_err(fb_data->dev, "S0 fmt 0x%x",
 		pxp_conf->s0_param.pixel_fmt);
-	dev_info(fb_data->dev, "S0 width 0x%x",
+	dev_err(fb_data->dev, "S0 width 0x%x",
 		pxp_conf->s0_param.width);
-	dev_info(fb_data->dev, "S0 height 0x%x",
+	dev_err(fb_data->dev, "S0 height 0x%x",
 		pxp_conf->s0_param.height);
-	dev_info(fb_data->dev, "S0 ckey 0x%x",
+	dev_err(fb_data->dev, "S0 ckey 0x%x",
 		pxp_conf->s0_param.color_key);
-	dev_info(fb_data->dev, "S0 ckey en 0x%x",
+	dev_err(fb_data->dev, "S0 ckey en 0x%x",
 		pxp_conf->s0_param.color_key_enable);
 
-	dev_info(fb_data->dev, "OL0 combine en 0x%x",
+	dev_err(fb_data->dev, "OL0 combine en 0x%x",
 		pxp_conf->ol_param[0].combine_enable);
-	dev_info(fb_data->dev, "OL0 fmt 0x%x",
+	dev_err(fb_data->dev, "OL0 fmt 0x%x",
 		pxp_conf->ol_param[0].pixel_fmt);
-	dev_info(fb_data->dev, "OL0 width 0x%x",
+	dev_err(fb_data->dev, "OL0 width 0x%x",
 		pxp_conf->ol_param[0].width);
-	dev_info(fb_data->dev, "OL0 height 0x%x",
+	dev_err(fb_data->dev, "OL0 height 0x%x",
 		pxp_conf->ol_param[0].height);
-	dev_info(fb_data->dev, "OL0 ckey 0x%x",
+	dev_err(fb_data->dev, "OL0 ckey 0x%x",
 		pxp_conf->ol_param[0].color_key);
-	dev_info(fb_data->dev, "OL0 ckey en 0x%x",
+	dev_err(fb_data->dev, "OL0 ckey en 0x%x",
 		pxp_conf->ol_param[0].color_key_enable);
-	dev_info(fb_data->dev, "OL0 alpha 0x%x",
+	dev_err(fb_data->dev, "OL0 alpha 0x%x",
 		pxp_conf->ol_param[0].global_alpha);
-	dev_info(fb_data->dev, "OL0 alpha en 0x%x",
+	dev_err(fb_data->dev, "OL0 alpha en 0x%x",
 		pxp_conf->ol_param[0].global_alpha_enable);
-	dev_info(fb_data->dev, "OL0 local alpha en 0x%x",
+	dev_err(fb_data->dev, "OL0 local alpha en 0x%x",
 		pxp_conf->ol_param[0].local_alpha_enable);
 
-	dev_info(fb_data->dev, "Out fmt 0x%x",
+	dev_err(fb_data->dev, "Out fmt 0x%x",
 		pxp_conf->out_param.pixel_fmt);
-	dev_info(fb_data->dev, "Out width 0x%x",
+	dev_err(fb_data->dev, "Out width 0x%x",
 		pxp_conf->out_param.width);
-	dev_info(fb_data->dev, "Out height 0x%x",
+	dev_err(fb_data->dev, "Out height 0x%x",
 		pxp_conf->out_param.height);
 
-	dev_info(fb_data->dev,
+	dev_err(fb_data->dev,
 		"drect left 0x%x right 0x%x width 0x%x height 0x%x",
 		pxp_conf->proc_data.drect.left, pxp_conf->proc_data.drect.top,
 		pxp_conf->proc_data.drect.width,
 		pxp_conf->proc_data.drect.height);
-	dev_info(fb_data->dev,
+	dev_err(fb_data->dev,
 		"srect left 0x%x right 0x%x width 0x%x height 0x%x",
 		pxp_conf->proc_data.srect.left, pxp_conf->proc_data.srect.top,
 		pxp_conf->proc_data.srect.width,
 		pxp_conf->proc_data.srect.height);
-	dev_info(fb_data->dev, "Scaling en 0x%x", pxp_conf->proc_data.scaling);
-	dev_info(fb_data->dev, "HFlip en 0x%x", pxp_conf->proc_data.hflip);
-	dev_info(fb_data->dev, "VFlip en 0x%x", pxp_conf->proc_data.vflip);
-	dev_info(fb_data->dev, "Rotation 0x%x", pxp_conf->proc_data.rotate);
-	dev_info(fb_data->dev, "BG Color 0x%x", pxp_conf->proc_data.bgcolor);
+	dev_err(fb_data->dev, "Scaling en 0x%x", pxp_conf->proc_data.scaling);
+	dev_err(fb_data->dev, "HFlip en 0x%x", pxp_conf->proc_data.hflip);
+	dev_err(fb_data->dev, "VFlip en 0x%x", pxp_conf->proc_data.vflip);
+	dev_err(fb_data->dev, "Rotation 0x%x", pxp_conf->proc_data.rotate);
+	dev_err(fb_data->dev, "BG Color 0x%x", pxp_conf->proc_data.bgcolor);
 }
 
 static void dump_epdc_reg(void)
@@ -637,7 +637,7 @@ static void dump_epdc_reg(void)
 static void dump_update_data(struct device *dev,
 			     struct update_data_list *upd_data_list)
 {
-	dev_info(dev,
+	dev_err(dev,
 		"X = %d, Y = %d, Width = %d, Height = %d, WaveMode = %d, "
 		"LUT = %d, Coll Mask = 0x%llx, order = %d\n",
 		upd_data_list->update_desc->upd_data.update_region.left,
@@ -654,11 +654,11 @@ static void dump_collision_list(struct mxc_epdc_fb_data *fb_data)
 {
 	struct update_data_list *plist;
 
-	dev_info(fb_data->dev, "Collision List:\n");
+	dev_err(fb_data->dev, "Collision List:\n");
 	if (list_empty(&fb_data->upd_buf_collision_list))
-		dev_info(fb_data->dev, "Empty");
+		dev_err(fb_data->dev, "Empty");
 	list_for_each_entry(plist, &fb_data->upd_buf_collision_list, list) {
-		dev_info(fb_data->dev, "Virt Addr = 0x%x, Phys Addr = 0x%x ",
+		dev_err(fb_data->dev, "Virt Addr = 0x%x, Phys Addr = 0x%x ",
 			(u32)plist->virt_addr, plist->phys_addr);
 		dump_update_data(fb_data->dev, plist);
 	}
@@ -668,11 +668,11 @@ static void dump_free_list(struct mxc_epdc_fb_data *fb_data)
 {
 	struct update_data_list *plist;
 
-	dev_info(fb_data->dev, "Free List:\n");
+	dev_err(fb_data->dev, "Free List:\n");
 	if (list_empty(&fb_data->upd_buf_free_list))
-		dev_info(fb_data->dev, "Empty");
+		dev_err(fb_data->dev, "Empty");
 	list_for_each_entry(plist, &fb_data->upd_buf_free_list, list)
-		dev_info(fb_data->dev, "Virt Addr = 0x%x, Phys Addr = 0x%x ",
+		dev_err(fb_data->dev, "Virt Addr = 0x%x, Phys Addr = 0x%x ",
 			(u32)plist->virt_addr, plist->phys_addr);
 }
 
@@ -680,11 +680,11 @@ static void dump_queue(struct mxc_epdc_fb_data *fb_data)
 {
 	struct update_data_list *plist;
 
-	dev_info(fb_data->dev, "Queue:\n");
+	dev_err(fb_data->dev, "Queue:\n");
 	if (list_empty(&fb_data->upd_buf_queue))
-		dev_info(fb_data->dev, "Empty");
+		dev_err(fb_data->dev, "Empty");
 	list_for_each_entry(plist, &fb_data->upd_buf_queue, list) {
-		dev_info(fb_data->dev, "Virt Addr = 0x%x, Phys Addr = 0x%x ",
+		dev_err(fb_data->dev, "Virt Addr = 0x%x, Phys Addr = 0x%x ",
 			(u32)plist->virt_addr, plist->phys_addr);
 		dump_update_data(fb_data->dev, plist);
 	}
@@ -693,7 +693,7 @@ static void dump_queue(struct mxc_epdc_fb_data *fb_data)
 static void dump_desc_data(struct device *dev,
 			     struct update_desc_list *upd_desc_list)
 {
-	dev_info(dev,
+	dev_err(dev,
 		"X = %d, Y = %d, Width = %d, Height = %d, WaveMode = %d, "
 		"order = %d\n",
 		upd_desc_list->upd_data.update_region.left,
@@ -708,9 +708,9 @@ static void dump_pending_list(struct mxc_epdc_fb_data *fb_data)
 {
 	struct update_desc_list *plist;
 
-	dev_info(fb_data->dev, "Queue:\n");
+	dev_err(fb_data->dev, "Queue:\n");
 	if (list_empty(&fb_data->upd_pending_list))
-		dev_info(fb_data->dev, "Empty");
+		dev_err(fb_data->dev, "Empty");
 	list_for_each_entry(plist, &fb_data->upd_pending_list, list)
 		dump_desc_data(fb_data->dev, plist);
 }
@@ -720,9 +720,9 @@ static void dump_all_updates(struct mxc_epdc_fb_data *fb_data)
 	dump_free_list(fb_data);
 	dump_queue(fb_data);
 	dump_collision_list(fb_data);
-	dev_info(fb_data->dev, "Current update being processed:\n");
+	dev_err(fb_data->dev, "Current update being processed:\n");
 	if (fb_data->cur_update == NULL)
-		dev_info(fb_data->dev, "No current update\n");
+		dev_err(fb_data->dev, "No current update\n");
 	else
 		dump_update_data(fb_data->dev, fb_data->cur_update);
 }
@@ -730,30 +730,30 @@ static void dump_all_updates(struct mxc_epdc_fb_data *fb_data)
 static void dump_fw_header(struct device *dev,
 			   struct mxcfb_waveform_data_file *fw)
 {
-	dev_dbg(dev, "Firmware Header:\n");
-	dev_dbg(dev, "wi0         0x%08x\n", fw->wdh.wi0);
-	dev_dbg(dev, "wi1         0x%08x\n", fw->wdh.wi1);
-	dev_dbg(dev, "wi2         0x%08x\n", fw->wdh.wi2);
-	dev_dbg(dev, "wi3         0x%08x\n", fw->wdh.wi3);
-	dev_dbg(dev, "wi4         0x%08x\n", fw->wdh.wi4);
-	dev_dbg(dev, "wi5         0x%08x\n", fw->wdh.wi5);
-	dev_dbg(dev, "wi6         0x%08x\n", fw->wdh.wi6);
-	dev_dbg(dev, "xwia:24     0x%06x\n", fw->wdh.xwia);
-	dev_dbg(dev, "cs1:8       0x%02x\n", fw->wdh.cs1);
-	dev_dbg(dev, "wmta:24     0x%06x\n", fw->wdh.wmta);
-	dev_dbg(dev, "fvsn:8      0x%02x\n", fw->wdh.fvsn);
-	dev_dbg(dev, "luts:8      0x%02x\n", fw->wdh.luts);
-	dev_dbg(dev, "mc:8        0x%02x\n", fw->wdh.mc);
-	dev_dbg(dev, "trc:8       0x%02x\n", fw->wdh.trc);
-	dev_dbg(dev, "reserved0_0 0x%02x\n", fw->wdh.reserved0_0);
-	dev_dbg(dev, "eb:8        0x%02x\n", fw->wdh.eb);
-	dev_dbg(dev, "sb:8        0x%02x\n", fw->wdh.sb);
-	dev_dbg(dev, "reserved0_1 0x%02x\n", fw->wdh.reserved0_1);
-	dev_dbg(dev, "reserved0_2 0x%02x\n", fw->wdh.reserved0_2);
-	dev_dbg(dev, "reserved0_3 0x%02x\n", fw->wdh.reserved0_3);
-	dev_dbg(dev, "reserved0_4 0x%02x\n", fw->wdh.reserved0_4);
-	dev_dbg(dev, "reserved0_5 0x%02x\n", fw->wdh.reserved0_5);
-	dev_dbg(dev, "cs2:8       0x%02x\n", fw->wdh.cs2);
+	dev_err(dev, "Firmware Header:\n");
+	dev_err(dev, "wi0         0x%08x\n", fw->wdh.wi0);
+	dev_err(dev, "wi1         0x%08x\n", fw->wdh.wi1);
+	dev_err(dev, "wi2         0x%08x\n", fw->wdh.wi2);
+	dev_err(dev, "wi3         0x%08x\n", fw->wdh.wi3);
+	dev_err(dev, "wi4         0x%08x\n", fw->wdh.wi4);
+	dev_err(dev, "wi5         0x%08x\n", fw->wdh.wi5);
+	dev_err(dev, "wi6         0x%08x\n", fw->wdh.wi6);
+	dev_err(dev, "xwia:24     0x%06x\n", fw->wdh.xwia);
+	dev_err(dev, "cs1:8       0x%02x\n", fw->wdh.cs1);
+	dev_err(dev, "wmta:24     0x%06x\n", fw->wdh.wmta);
+	dev_err(dev, "fvsn:8      0x%02x\n", fw->wdh.fvsn);
+	dev_err(dev, "luts:8      0x%02x\n", fw->wdh.luts);
+	dev_err(dev, "mc:8        0x%02x\n", fw->wdh.mc);
+	dev_err(dev, "trc:8       0x%02x\n", fw->wdh.trc);
+	dev_err(dev, "reserved0_0 0x%02x\n", fw->wdh.reserved0_0);
+	dev_err(dev, "eb:8        0x%02x\n", fw->wdh.eb);
+	dev_err(dev, "sb:8        0x%02x\n", fw->wdh.sb);
+	dev_err(dev, "reserved0_1 0x%02x\n", fw->wdh.reserved0_1);
+	dev_err(dev, "reserved0_2 0x%02x\n", fw->wdh.reserved0_2);
+	dev_err(dev, "reserved0_3 0x%02x\n", fw->wdh.reserved0_3);
+	dev_err(dev, "reserved0_4 0x%02x\n", fw->wdh.reserved0_4);
+	dev_err(dev, "reserved0_5 0x%02x\n", fw->wdh.reserved0_5);
+	dev_err(dev, "cs2:8       0x%02x\n", fw->wdh.cs2);
 }
 
 #else
@@ -845,7 +845,7 @@ static inline void epdc_set_temp(u32 temp)
 		ret=tps6518x_reg_read(REG_TPS6518x_TMST_VAL, &ext_temp);
 		if (ret == 0) {
 			ext_temp = ext_temp >> 8;
-			dev_dbg(g_fb_data->dev, "the current external temperature is %d\n",
+			dev_err(g_fb_data->dev, "the current external temperature is %d\n",
 				ext_temp);
 			ext_temp_index = mxc_epdc_fb_get_temp_index(g_fb_data, ext_temp);
 		}
@@ -1462,7 +1462,7 @@ static void epdc_powerup(struct mxc_epdc_fb_data *fb_data)
 		return;
 	}
 
-	dev_dbg(fb_data->dev, "EPDC Powerup\n");
+	dev_err(fb_data->dev, "EPDC Powerup\n");
 
 	fb_data->updates_active = true;
 
@@ -1519,7 +1519,7 @@ static void epdc_powerdown(struct mxc_epdc_fb_data *fb_data)
 		return;
 	}
 
-	dev_dbg(fb_data->dev, "EPDC Powerdown\n");
+	dev_err(fb_data->dev, "EPDC Powerdown\n");
 
 	/* Disable power to the EPD panel */
 	regulator_disable(fb_data->vcom_regulator);
@@ -1581,7 +1581,7 @@ static int mxc_epdc_fb_mmap(struct fb_info *info, struct vm_area_struct *vma)
 
 	if (remap_pfn_range(vma, vma->vm_start, vma->vm_pgoff,
 			    vma->vm_end - vma->vm_start, vma->vm_page_prot)) {
-		dev_dbg(info->device, "mmap remap_pfn_range failed\n");
+		dev_err(info->device, "mmap remap_pfn_range failed\n");
 		return -ENOBUFS;
 	}
 
@@ -1642,7 +1642,7 @@ static int mxc_epdc_fb_setcmap(struct fb_cmap *cmap, struct fb_info *info)
 	struct mxc_epdc_fb_data *fb_data = (struct mxc_epdc_fb_data *)info;
 	int i;
 
-	dev_dbg(fb_data->dev, "setcmap\n");
+	dev_err(fb_data->dev, "setcmap\n");
 
 	if (info->fix.visual == FB_VISUAL_STATIC_PSEUDOCOLOR) {
 		/* Only support an 8-bit, 256 entry lookup */
@@ -2082,7 +2082,7 @@ static int mxc_epdc_fb_check_var(struct fb_var_screeninfo *var,
 	default:
 		/* Invalid rotation value */
 		var->rotate = 0;
-		dev_dbg(fb_data->dev, "Invalid rotation request\n");
+		dev_err(fb_data->dev, "Invalid rotation request\n");
 		return -EINVAL;
 	}
 
@@ -2138,7 +2138,7 @@ static int mxc_epdc_fb_get_temp_index(struct mxc_epdc_fb_data *fb_data, int temp
 		return DEFAULT_TEMP_INDEX;
 	}
 
-	dev_dbg(fb_data->dev, "Using temperature index %d\n", index);
+	dev_err(fb_data->dev, "Using temperature index %d\n", index);
 
 	return index;
 }
@@ -2161,7 +2161,7 @@ static int mxc_epdc_fb_set_auto_update(u32 auto_mode, struct fb_info *info)
 	struct mxc_epdc_fb_data *fb_data = info ?
 		(struct mxc_epdc_fb_data *)info:g_fb_data;
 
-	dev_dbg(fb_data->dev, "Setting auto update mode to %d\n", auto_mode);
+	dev_err(fb_data->dev, "Setting auto update mode to %d\n", auto_mode);
 
 	if ((auto_mode == AUTO_UPDATE_MODE_AUTOMATIC_MODE)
 		|| (auto_mode == AUTO_UPDATE_MODE_REGION_MODE))
@@ -2179,7 +2179,7 @@ static int mxc_epdc_fb_set_upd_scheme(u32 upd_scheme, struct fb_info *info)
 	struct mxc_epdc_fb_data *fb_data = info ?
 		(struct mxc_epdc_fb_data *)info:g_fb_data;
 
-	dev_dbg(fb_data->dev, "Setting optimization level to %d\n", upd_scheme);
+	dev_err(fb_data->dev, "Setting optimization level to %d\n", upd_scheme);
 
 	/*
 	 * Can't change the scheme until current updates have completed.
@@ -2315,17 +2315,17 @@ static int epdc_working_buffer_update(struct mxc_epdc_fb_data *fb_data,
 			upd_desc_list->upd_data.waveform_mode =
 				fb_data->wv_modes.mode_gc32;
 
-		dev_dbg(fb_data->dev, "hist_stat = 0x%x, new waveform = 0x%x\n",
+		dev_err(fb_data->dev, "hist_stat = 0x%x, new waveform = 0x%x\n",
 			hist_stat, upd_desc_list->upd_data.waveform_mode);
 	}
 
 	if (proc_data->detection_only == 1) {
-		dev_dbg(fb_data->dev, "collision detection only, no real update\n");
+		dev_err(fb_data->dev, "collision detection only, no real update\n");
 		return 0;
 	}
 
 	if (fb_data->col_info.pixel_cnt) {
-		dev_dbg(fb_data->dev, "collision detected, can not do REAGl/-D\n");
+		dev_err(fb_data->dev, "collision detected, can not do REAGl/-D\n");
 		return 0;
 	}
 
@@ -2451,7 +2451,7 @@ static int epdc_process_update(struct update_data_list *upd_data_list,
 		(upd_desc_list->upd_data.waveform_mode == WAVEFORM_MODE_AUTO))
 		|| line_overflow) && (fb_data->rev < 20)) ||
 		fb_data->restrict_width) {
-		dev_dbg(fb_data->dev, "Copying update before processing.\n");
+		dev_err(fb_data->dev, "Copying update before processing.\n");
 
 		/* Update to reflect what the new source buffer will be */
 		src_width = ALIGN(src_upd_region->width, 8);
@@ -2685,7 +2685,7 @@ static int epdc_process_update(struct update_data_list *upd_data_list,
 			upd_desc_list->upd_data.waveform_mode =
 				fb_data->wv_modes.mode_gc32;
 
-		dev_dbg(fb_data->dev, "hist_stat = 0x%x, new waveform = 0x%x\n",
+		dev_err(fb_data->dev, "hist_stat = 0x%x, new waveform = 0x%x\n",
 			hist_stat, upd_desc_list->upd_data.waveform_mode);
 	}
 
@@ -2815,7 +2815,7 @@ static void epdc_submit_work_func(struct work_struct *work)
 		if (next_update->collision_mask != 0)
 			continue;
 
-		dev_dbg(fb_data->dev, "A collision update is ready to go!\n");
+		dev_err(fb_data->dev, "A collision update is ready to go!\n");
 
 		/* Force waveform mode to auto for resubmitted collisions */
 		next_update->update_desc->upd_data.waveform_mode =
@@ -2836,7 +2836,7 @@ static void epdc_submit_work_func(struct work_struct *work)
 						next_update->update_desc,
 						fb_data)) {
 			case MERGE_OK:
-				dev_dbg(fb_data->dev,
+				dev_err(fb_data->dev,
 					"Update merged [collision]\n");
 				list_del_init(&next_update->update_desc->list);
 				kfree(next_update->update_desc);
@@ -2847,11 +2847,11 @@ static void epdc_submit_work_func(struct work_struct *work)
 					 &fb_data->upd_buf_free_list);
 				break;
 			case MERGE_FAIL:
-				dev_dbg(fb_data->dev,
+				dev_err(fb_data->dev,
 					"Update not merged [collision]\n");
 				break;
 			case MERGE_BLOCK:
-				dev_dbg(fb_data->dev,
+				dev_err(fb_data->dev,
 					"Merge blocked [collision]\n");
 				end_merge = true;
 				break;
@@ -2888,7 +2888,7 @@ static void epdc_submit_work_func(struct work_struct *work)
 		list_for_each_entry_safe(next_desc, temp_desc,
 				&fb_data->upd_pending_list, list) {
 
-			dev_dbg(fb_data->dev, "Found a pending update!\n");
+			dev_err(fb_data->dev, "Found a pending update!\n");
 
 			if (!upd_data_list) {
 				if (list_empty(&fb_data->upd_buf_free_list))
@@ -2906,17 +2906,17 @@ static void epdc_submit_work_func(struct work_struct *work)
 				switch (epdc_submit_merge(upd_data_list->update_desc,
 						next_desc, fb_data)) {
 				case MERGE_OK:
-					dev_dbg(fb_data->dev,
+					dev_err(fb_data->dev,
 						"Update merged [queue]\n");
 					list_del_init(&next_desc->list);
 					kfree(next_desc);
 					break;
 				case MERGE_FAIL:
-					dev_dbg(fb_data->dev,
+					dev_err(fb_data->dev,
 						"Update not merged [queue]\n");
 					break;
 				case MERGE_BLOCK:
-					dev_dbg(fb_data->dev,
+					dev_err(fb_data->dev,
 						"Merge blocked [collision]\n");
 					end_merge = true;
 					break;
@@ -2988,7 +2988,7 @@ static void epdc_submit_work_func(struct work_struct *work)
 
 		/* Perform PXP processing - EPDC power will also be enabled */
 		if (epdc_process_update(upd_data_list, fb_data)) {
-			dev_dbg(fb_data->dev, "PXP processing error.\n");
+			dev_err(fb_data->dev, "PXP processing error.\n");
 			/* Protect access to buffer queues and to update HW */
 			mutex_lock(&fb_data->queue_mutex);
 			list_del_init(&upd_data_list->update_desc->list);
@@ -3021,7 +3021,7 @@ static void epdc_submit_work_func(struct work_struct *work)
 	 * to become free. The IST will signal this event.
 	 */
 	if (fb_data->cur_update != NULL) {
-		dev_dbg(fb_data->dev, "working buf busy!\n");
+		dev_err(fb_data->dev, "working buf busy!\n");
 
 		/* Initialize event signalling an update resource is free */
 		init_completion(&fb_data->update_res_free);
@@ -3088,7 +3088,7 @@ static void epdc_submit_work_func(struct work_struct *work)
 		luts_available = fb_data->epdc_wb_mode ? epdc_any_luts_real_available() :
 							 epdc_any_luts_available();
 		if (!luts_available) {
-			dev_dbg(fb_data->dev, "no luts available!\n");
+			dev_err(fb_data->dev, "no luts available!\n");
 
 			/* Initialize event signalling an update resource is free */
 			init_completion(&fb_data->update_res_free);
@@ -3109,7 +3109,7 @@ static void epdc_submit_work_func(struct work_struct *work)
 	 *   - If we go ahead with update, sync update submission with EOF
 	 */
 	if (ret && fb_data->tce_prevent && (fb_data->rev < 20)) {
-		dev_dbg(fb_data->dev, "Waiting for LUT15\n");
+		dev_err(fb_data->dev, "Waiting for LUT15\n");
 
 		/* Initialize event signalling that lut15 is free */
 		init_completion(&fb_data->lut15_free);
@@ -3283,7 +3283,7 @@ static int mxc_epdc_fb_send_single_update(struct mxcfb_update_data *upd_data,
 	 */
 	if ((fb_data->waiting_for_idle) ||
 		(fb_data->blank != FB_BLANK_UNBLANK)) {
-		dev_dbg(fb_data->dev, "EPDC not active."
+		dev_err(fb_data->dev, "EPDC not active."
 			"Update request abort.\n");
 		mutex_unlock(&fb_data->queue_mutex);
 		return -EPERM;
@@ -3447,7 +3447,7 @@ static int mxc_epdc_fb_send_single_update(struct mxcfb_update_data *upd_data,
 	/* LUTs are available, so we get one here */
 	ret = epdc_choose_next_lut(fb_data, &upd_data_list->lut_num);
 	if (ret && fb_data->tce_prevent && (fb_data->rev < 20)) {
-		dev_dbg(fb_data->dev, "Must wait for LUT15\n");
+		dev_err(fb_data->dev, "Must wait for LUT15\n");
 		/* Add processed Y buffer to update list */
 		list_add_tail(&upd_data_list->list, &fb_data->upd_buf_queue);
 
@@ -3599,7 +3599,7 @@ static int mxc_epdc_fb_wait_update_complete(struct mxcfb_update_marker_data *mar
 	list_for_each_entry_safe(next_marker, temp,
 		&fb_data->full_marker_list, full_list) {
 		if (next_marker->update_marker == marker_data->update_marker) {
-			dev_dbg(fb_data->dev, "Waiting for marker %d\n",
+			dev_err(fb_data->dev, "Waiting for marker %d\n",
 				marker_data->update_marker);
 			next_marker->waiting = true;
 			marker_found = true;
@@ -3865,7 +3865,7 @@ static int mxc_epdc_fb_blank(int blank, struct fb_info *info)
 	struct mxc_epdc_fb_data *fb_data = (struct mxc_epdc_fb_data *)info;
 	int ret;
 
-	dev_dbg(fb_data->dev, "blank = %d\n", blank);
+	dev_err(fb_data->dev, "blank = %d\n", blank);
 
 	if (fb_data->blank == blank)
 		return 0;
@@ -3926,12 +3926,12 @@ static int mxc_epdc_fb_pan_display(struct fb_var_screeninfo *var,
 	struct mxc_epdc_fb_data *fb_data = (struct mxc_epdc_fb_data *)info;
 	u_int y_bottom;
 
-	dev_dbg(info->device, "%s: var->yoffset %d, info->var.yoffset %d\n",
+	dev_err(info->device, "%s: var->yoffset %d, info->var.yoffset %d\n",
 		 __func__, var->yoffset, info->var.yoffset);
 	/* check if var is valid; also, xpan is not supported */
 	if (!var || (var->xoffset != info->var.xoffset) ||
 	    (var->yoffset + var->yres > var->yres_virtual)) {
-		dev_dbg(info->device, "x panning not supported\n");
+		dev_err(info->device, "x panning not supported\n");
 		return -EINVAL;
 	}
 
@@ -4024,14 +4024,14 @@ static irqreturn_t mxc_epdc_irq_handler(int irq, void *dev_id)
 		if (epdc_is_working_buffer_complete()) {
 			epdc_working_buf_intr(false);
 			epdc_clear_working_buf_irq();
-			dev_dbg(fb_data->dev, "Cleared WB for init update\n");
+			dev_err(fb_data->dev, "Cleared WB for init update\n");
 		}
 
 		if (epdc_is_lut_complete(fb_data->rev, 0)) {
 			epdc_lut_complete_intr(fb_data->rev, 0, false);
 			epdc_clear_lut_complete_irq(fb_data->rev, 0);
 			fb_data->in_init = false;
-			dev_dbg(fb_data->dev, "Cleared LUT complete for init update\n");
+			dev_err(fb_data->dev, "Cleared LUT complete for init update\n");
 		}
 
 		return IRQ_HANDLED;
@@ -4082,7 +4082,7 @@ static irqreturn_t mxc_epdc_irq_handler(int irq, void *dev_id)
 	__raw_writel(luts1_ints_fired, EPDC_IRQ_MASK1_CLEAR);
 	__raw_writel(luts2_ints_fired, EPDC_IRQ_MASK2_CLEAR);
 
-	dev_dbg(fb_data->dev, "EPDC interrupts fired = 0x%x, "
+	dev_err(fb_data->dev, "EPDC interrupts fired = 0x%x, "
 		"LUTS1 fired = 0x%x, LUTS2 fired = 0x%x\n",
 		ints_fired, luts1_ints_fired, luts2_ints_fired);
 
@@ -4150,7 +4150,7 @@ static void epdc_intr_work_func(struct work_struct *work)
 		if ((epdc_irq_stat & (1ULL << i)) == 0)
 			continue;
 
-		dev_dbg(fb_data->dev, "LUT %d completed\n", i);
+		dev_err(fb_data->dev, "LUT %d completed\n", i);
 
 		/* Disable IRQ for completed LUT */
 		epdc_lut_complete_intr(fb_data->rev, i, false);
@@ -4204,7 +4204,7 @@ static void epdc_intr_work_func(struct work_struct *work)
 				list_del_init(&next_marker->full_list);
 
 				/* Signal completion of update */
-				dev_dbg(fb_data->dev, "Signaling marker %d\n",
+				dev_err(fb_data->dev, "Signaling marker %d\n",
 					next_marker->update_marker);
 				if (next_marker->waiting)
 					complete(&next_marker->update_completion);
@@ -4252,7 +4252,7 @@ static void epdc_intr_work_func(struct work_struct *work)
 	 * If so, update queues and check for collisions
 	 */
 	if (epdc_waiting_on_wb) {
-		dev_dbg(fb_data->dev, "\nWorking buffer completed\n");
+		dev_err(fb_data->dev, "\nWorking buffer completed\n");
 
 		/* Signal completion if submit workqueue was waiting on WB */
 		if (fb_data->waiting_for_wb) {
@@ -4276,7 +4276,7 @@ static void epdc_intr_work_func(struct work_struct *work)
 				else
 					next_marker->collision_test = false;
 
-				dev_dbg(fb_data->dev,
+				dev_err(fb_data->dev,
 					"In IRQ, collision_test = %d\n",
 					next_marker->collision_test);
 
@@ -4284,7 +4284,7 @@ static void epdc_intr_work_func(struct work_struct *work)
 				list_del_init(&next_marker->full_list);
 
 				/* Signal completion of update */
-				dev_dbg(fb_data->dev, "Signaling marker "
+				dev_err(fb_data->dev, "Signaling marker "
 					"for dry-run - %d\n",
 					next_marker->update_marker);
 				complete(&next_marker->update_completion);
@@ -4326,7 +4326,7 @@ static void epdc_intr_work_func(struct work_struct *work)
 				list_del_init(&next_marker->full_list);
 
 				/* Signal completion of update */
-				dev_dbg(fb_data->dev,
+				dev_err(fb_data->dev,
 					"Signaling marker (cancelled) %d\n",
 					next_marker->update_marker);
 				if (next_marker->waiting)
@@ -4349,7 +4349,7 @@ static void epdc_intr_work_func(struct work_struct *work)
 			fb_data->cur_update->collision_mask &=
 				~fb_data->luts_complete_wb;
 
-			dev_dbg(fb_data->dev, "Collision mask = 0x%llx\n",
+			dev_err(fb_data->dev, "Collision mask = 0x%llx\n",
 			       fb_data->epdc_colliding_luts);
 
 			/* For EPDC 2.0 and later, minimum collision bounds
@@ -4388,7 +4388,7 @@ static void epdc_intr_work_func(struct work_struct *work)
 						(coll_size & EPDC_UPD_COL_SIZE_HEIGHT_MASK)
 						>> EPDC_UPD_COL_SIZE_HEIGHT_OFFSET;
 				}
-				dev_dbg(fb_data->dev, "Coll region: l = %d, "
+				dev_err(fb_data->dev, "Coll region: l = %d, "
 					"t = %d, w = %d, h = %d\n",
 					coll_region.left, coll_region.top,
 					coll_region.width, coll_region.height);
@@ -4419,7 +4419,7 @@ static void epdc_intr_work_func(struct work_struct *work)
 				adjust_coordinates(xres, yres, rotate,
 						&coll_region, cur_upd_rect);
 
-				dev_dbg(fb_data->dev, "Adj coll region: l = %d, "
+				dev_err(fb_data->dev, "Adj coll region: l = %d, "
 					"t = %d, w = %d, h = %d\n",
 					cur_upd_rect->left, cur_upd_rect->top,
 					cur_upd_rect->width,
@@ -4441,7 +4441,7 @@ static void epdc_intr_work_func(struct work_struct *work)
 
 				if (fb_data->lut_update_order[lut] >=
 					fb_data->cur_update->update_desc->update_order) {
-					dev_dbg(fb_data->dev,
+					dev_err(fb_data->dev,
 						"Ignoring collision with"
 						"newer update.\n");
 					ignore_collision = true;
@@ -4479,7 +4479,7 @@ static void epdc_intr_work_func(struct work_struct *work)
 					list_del_init(&next_marker->full_list);
 
 					/* Signal completion of update */
-					dev_dbg(fb_data->dev,
+					dev_err(fb_data->dev,
 						"Signaling marker (wb) %d\n",
 						next_marker->update_marker);
 					if (next_marker->waiting)
@@ -4549,7 +4549,7 @@ static void epdc_intr_work_func(struct work_struct *work)
 
 	/* Check to see if any LUTs are free */
 	if (!epdc_luts_avail) {
-		dev_dbg(fb_data->dev, "No luts available.\n");
+		dev_err(fb_data->dev, "No luts available.\n");
 		mutex_unlock(&fb_data->queue_mutex);
 		return;
 	}
@@ -4557,7 +4557,7 @@ static void epdc_intr_work_func(struct work_struct *work)
 	epdc_next_lut_15 = epdc_choose_next_lut(fb_data, &next_lut);
 	/* Check to see if there is a valid LUT to use */
 	if (epdc_next_lut_15 && fb_data->tce_prevent && (fb_data->rev < 20)) {
-		dev_dbg(fb_data->dev, "Must wait for LUT15\n");
+		dev_err(fb_data->dev, "Must wait for LUT15\n");
 		mutex_unlock(&fb_data->queue_mutex);
 		return;
 	}
@@ -4573,7 +4573,7 @@ static void epdc_intr_work_func(struct work_struct *work)
 		if (collision_update->collision_mask != 0)
 			continue;
 
-		dev_dbg(fb_data->dev, "A collision update is ready to go!\n");
+		dev_err(fb_data->dev, "A collision update is ready to go!\n");
 		/*
 		 * We have a collision cleared, so select it
 		 * and we will retry the update
@@ -4590,13 +4590,13 @@ static void epdc_intr_work_func(struct work_struct *work)
 	if (fb_data->cur_update == NULL) {
 		/* Is update list empty? */
 		if (list_empty(&fb_data->upd_buf_queue)) {
-			dev_dbg(fb_data->dev, "No pending updates.\n");
+			dev_err(fb_data->dev, "No pending updates.\n");
 
 			/* No updates pending, so we are done */
 			mutex_unlock(&fb_data->queue_mutex);
 			return;
 		} else {
-			dev_dbg(fb_data->dev, "Found a pending update!\n");
+			dev_err(fb_data->dev, "Found a pending update!\n");
 
 			/* Process next item in update list */
 			fb_data->cur_update =
@@ -4694,13 +4694,13 @@ static void draw_mode0(struct mxc_epdc_fb_data *fb_data)
 	epdc_submit_update(0, fb_data->wv_modes.mode_init, UPDATE_MODE_FULL,
 		false, true, 0xFF);
 
-	dev_dbg(fb_data->dev, "Mode0 update - Waiting for LUT to complete...\n");
+	dev_err(fb_data->dev, "Mode0 update - Waiting for LUT to complete...\n");
 
 	/* Will timeout after ~4-5 seconds */
 
 	for (i = 0; i < 40; i++) {
 		if (!epdc_is_lut_active(0)) {
-			dev_dbg(fb_data->dev, "Mode0 init complete\n");
+			dev_err(fb_data->dev, "Mode0 init complete\n");
 			return;
 		}
 		msleep(100);
@@ -4734,7 +4734,7 @@ static void mxc_epdc_fb_fw_handler(const struct firmware *fw,
 			return;
 
 		/* Try to load default waveform */
-		dev_dbg(fb_data->dev,
+		dev_err(fb_data->dev,
 			"Can't find firmware. Trying fallback fw\n");
 		fb_data->fw_default_load = true;
 		ret = request_firmware_nowait(THIS_MODULE, FW_ACTION_HOTPLUG,
@@ -4756,7 +4756,7 @@ static void mxc_epdc_fb_fw_handler(const struct firmware *fw,
 	fb_data->temp_range_bounds = kzalloc(fb_data->trt_entries, GFP_KERNEL);
 
 	for (i = 0; i < fb_data->trt_entries; i++)
-		dev_dbg(fb_data->dev, "trt entry #%d = 0x%x\n", i, *((u8 *)&wv_file->data + i));
+		dev_err(fb_data->dev, "trt entry #%d = 0x%x\n", i, *((u8 *)&wv_file->data + i));
 
 	/* Copy TRT data */
 	memcpy(fb_data->temp_range_bounds, &wv_file->data, fb_data->trt_entries);
@@ -4783,11 +4783,11 @@ static void mxc_epdc_fb_fw_handler(const struct firmware *fw,
 
 	/* Check for advanced algorithms */
 	if ((wv_file->wdh.luts & WAVEFORM_HDR_LUT_ADVANCED_ALGO_MASK) != 0) {
-		dev_dbg(fb_data->dev,
+		dev_err(fb_data->dev,
 			"Waveform file supports advanced algorithms\n");
 			fb_data->waveform_is_advanced = true;
 	} else {
-		dev_dbg(fb_data->dev,
+		dev_err(fb_data->dev,
 			"Waveform file does not support advanced algorithms\n");
 		fb_data->waveform_is_advanced = false;
 	}
@@ -4890,7 +4890,7 @@ static int mxc_epdc_fb_init_hw(struct fb_info *info)
 				fb_data->fw_str, fb_data->dev, GFP_KERNEL,
 				fb_data, mxc_epdc_fb_fw_handler);
 	if (ret)
-		dev_dbg(fb_data->dev,
+		dev_err(fb_data->dev,
 			"Failed request_firmware_nowait err %d\n", ret);
 
 	return ret;
@@ -4980,13 +4980,13 @@ static int mxc_epdc_fb_probe(struct platform_device *pdev)
 
 	ret = of_property_read_u32_array(np, "epdc-ram", out_val, 3);
 	if (ret) {
-		dev_dbg(&pdev->dev, "no epdc-ram property found\n");
+		dev_err(&pdev->dev, "no epdc-ram property found\n");
 	} else {
 		phandle = *out_val;
 
 		node = of_find_node_by_phandle(phandle);
 		if (!node) {
-			dev_dbg(&pdev->dev, "not find gpr node by phandle\n");
+			dev_err(&pdev->dev, "not find gpr node by phandle\n");
 			ret = PTR_ERR(node);
 			goto out_fbdata;
 		}
@@ -5007,7 +5007,7 @@ static int mxc_epdc_fb_probe(struct platform_device *pdev)
 	if (of_find_property(np, "en-gpios", NULL)) {
 		enable_gpio = of_get_named_gpio_flags(np, "en-gpios", 0, &flag);
 		if (enable_gpio == -EPROBE_DEFER) {
-			dev_info(&pdev->dev, "GPIO requested is not"
+			dev_err(&pdev->dev, "GPIO requested is not"
 				"here yet, deferring the probe\n");
 			return -EPROBE_DEFER;
 		}
@@ -5094,7 +5094,7 @@ static int mxc_epdc_fb_probe(struct platform_device *pdev)
 	if (ret)
 		goto out_fbdata;
 
-	dev_dbg(&pdev->dev, "resolution %dx%d, bpp %d\n",
+	dev_err(&pdev->dev, "resolution %dx%d, bpp %d\n",
 		vmode->xres, vmode->yres, fb_data->default_bpp);
 
 	/*
@@ -5130,7 +5130,7 @@ static int mxc_epdc_fb_probe(struct platform_device *pdev)
 		fb_data->num_screens = NUM_SCREENS_MIN;
 
 	fb_data->map_size = buf_size * fb_data->num_screens;
-	dev_dbg(&pdev->dev, "memory to allocate: %d\n", fb_data->map_size);
+	dev_err(&pdev->dev, "memory to allocate: %d\n", fb_data->map_size);
 
 	res = platform_get_resource(pdev, IORESOURCE_MEM, 0);
 	if (res == NULL) {
@@ -5154,7 +5154,7 @@ static int mxc_epdc_fb_probe(struct platform_device *pdev)
 		ret = -ENOMEM;
 		goto out_cmap;
 	}
-	dev_dbg(&pdev->dev, "allocated at %p:0x%x\n", info->screen_base,
+	dev_err(&pdev->dev, "allocated at %p:0x%x\n", info->screen_base,
 		fb_data->phys_start);
 
 	var_info = &info->var;
@@ -5276,7 +5276,7 @@ static int mxc_epdc_fb_probe(struct platform_device *pdev)
 				EPDC_VERSION_MAJOR_OFFSET) * 10
 			+ ((val & EPDC_VERSION_MINOR_MASK) >>
 				EPDC_VERSION_MINOR_OFFSET);
-	dev_dbg(&pdev->dev, "EPDC version = %d\n", fb_data->rev);
+	dev_err(&pdev->dev, "EPDC version = %d\n", fb_data->rev);
 
 	if (fb_data->rev < 20) {
 		fb_data->num_luts = EPDC_V1_NUM_LUTS;
@@ -5331,7 +5331,7 @@ static int mxc_epdc_fb_probe(struct platform_device *pdev)
 			goto out_upd_buffers;
 		}
 
-		dev_dbg(fb_data->info.device, "allocated %d bytes @ 0x%08X\n",
+		dev_err(fb_data->info.device, "allocated %d bytes @ 0x%08X\n",
 			fb_data->max_pix_size, fb_data->phys_addr_updbuf[i]);
 	}
 
@@ -5750,7 +5750,7 @@ out:
 static void mxc_epdc_restore_qos(struct mxc_epdc_fb_data *data)
 {
 	if (IS_ERR_OR_NULL(data->qos_regmap)) {
-		dev_dbg(data->dev, "no QoS setting found.\n");
+		dev_err(data->dev, "no QoS setting found.\n");
 		return;
 	}
 
@@ -5803,7 +5803,7 @@ static int mxc_epdc_fb_resume(struct device *dev)
 static int mxc_epdc_fb_runtime_suspend(struct device *dev)
 {
 	release_bus_freq(BUS_FREQ_HIGH);
-	dev_dbg(dev, "epdc busfreq high release.\n");
+	dev_err(dev, "epdc busfreq high release.\n");
 
 	return 0;
 }
@@ -5811,7 +5811,7 @@ static int mxc_epdc_fb_runtime_suspend(struct device *dev)
 static int mxc_epdc_fb_runtime_resume(struct device *dev)
 {
 	request_bus_freq(BUS_FREQ_HIGH);
-	dev_dbg(dev, "epdc busfreq high request.\n");
+	dev_err(dev, "epdc busfreq high request.\n");
 
 	return 0;
 }
@@ -5929,7 +5929,7 @@ static int pxp_wfe_a_process_clear_workingbuffer(struct mxc_epdc_fb_data *fb_dat
 	int i, j = 0, ret;
 	int length;
 
-	dev_dbg(fb_data->dev, "Starting PxP WFE_A process for clearing WB.\n");
+	dev_err(fb_data->dev, "Starting PxP WFE_A process for clearing WB.\n");
 
 	/* First, check to see that we have acquired a PxP Channel object */
 	if (fb_data->pxp_chan == NULL) {
@@ -6065,7 +6065,7 @@ static int pxp_clear_wb_work_func(struct mxc_epdc_fb_data *fb_data)
 	unsigned int hist_stat;
 	int ret;
 
-	dev_dbg(fb_data->dev, "PxP WFE to clear working buffer.\n");
+	dev_err(fb_data->dev, "PxP WFE to clear working buffer.\n");
 
 	mutex_lock(&fb_data->pxp_mutex);
 	ret = pxp_wfe_a_process_clear_workingbuffer(fb_data, fb_data->cur_mode->vmode->xres, fb_data->cur_mode->vmode->yres);
@@ -6110,7 +6110,7 @@ static int pxp_legacy_process(struct mxc_epdc_fb_data *fb_data,
 	int i, ret;
 	int length;
 
-	dev_dbg(fb_data->dev, "Starting PxP legacy process.\n");
+	dev_err(fb_data->dev, "Starting PxP legacy process.\n");
 
 	/* First, check to see that we have acquired a PxP Channel object */
 	if (fb_data->pxp_chan == NULL) {
@@ -6247,7 +6247,7 @@ static int pxp_process_dithering(struct mxc_epdc_fb_data *fb_data,
 	int i, j = 0, ret;
 	int length;
 
-	dev_dbg(fb_data->dev, "Starting PxP Dithering process.\n");
+	dev_err(fb_data->dev, "Starting PxP Dithering process.\n");
 
 	/* First, check to see that we have acquired a PxP Channel object */
 	if (fb_data->pxp_chan == NULL) {
@@ -6395,7 +6395,7 @@ static int pxp_wfe_a_process(struct mxc_epdc_fb_data *fb_data,
 	int length;
 	bool is_transform;
 
-	dev_dbg(fb_data->dev, "Starting PxP WFE_A process.\n");
+	dev_err(fb_data->dev, "Starting PxP WFE_A process.\n");
 
 	/* First, check to see that we have acquired a PxP Channel object */
 	if (fb_data->pxp_chan == NULL) {
@@ -6447,7 +6447,7 @@ static int pxp_wfe_a_process(struct mxc_epdc_fb_data *fb_data,
 
 	if (upd_data_list->update_desc->upd_data.flags & EPDC_FLAG_TEST_COLLISION) {
 		proc_data->detection_only = 1;
-		dev_dbg(fb_data->info.device,
+		dev_err(fb_data->info.device,
 			 "collision test_only send to pxp\n");
 	} else
 		proc_data->detection_only = 0;
@@ -6592,7 +6592,7 @@ static int pxp_wfe_b_process_update(struct mxc_epdc_fb_data *fb_data,
 	int i, j = 0, ret;
 	int length;
 
-	dev_dbg(fb_data->dev, "Starting PxP WFE_B process.\n");
+	dev_err(fb_data->dev, "Starting PxP WFE_B process.\n");
 
 	/* First, check to see that we have acquired a PxP Channel object */
 	if (fb_data->pxp_chan == NULL) {
@@ -6742,7 +6742,7 @@ static int pxp_complete_update(struct mxc_epdc_fb_data *fb_data, u32 *hist_stat)
 	 */
 	ret = wait_for_completion_timeout(&fb_data->pxp_tx_cmpl, HZ * 2);
 	if (ret <= 0) {
-		dev_info(fb_data->info.device,
+		dev_err(fb_data->info.device,
 			 "PxP operation failed due to %s\n",
 			 ret < 0 ? "user interrupt" : "timeout");
 		dma_release_channel(&fb_data->pxp_chan->dma_chan);
@@ -6758,7 +6758,7 @@ static int pxp_complete_update(struct mxc_epdc_fb_data *fb_data, u32 *hist_stat)
 	dma_release_channel(&fb_data->pxp_chan->dma_chan);
 	fb_data->pxp_chan = NULL;
 
-	dev_dbg(fb_data->dev, "TX completed\n");
+	dev_err(fb_data->dev, "TX completed\n");
 
 	return 0;
 }
