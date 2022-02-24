@@ -1467,6 +1467,7 @@ static void epdc_powerup(struct mxc_epdc_fb_data *fb_data)
 	fb_data->updates_active = true;
 
 	/* Enable the v3p3 regulator */
+	printk("--------> enable V3P3 regulator\n");
 	ret = regulator_enable(fb_data->v3p3_regulator);
 	if (IS_ERR((void *)ret)) {
 		dev_err(fb_data->dev, "Unable to enable V3P3 regulator."
@@ -1486,6 +1487,7 @@ static void epdc_powerup(struct mxc_epdc_fb_data *fb_data)
 	__raw_writel(EPDC_CTRL_CLKGATE, EPDC_CTRL_CLEAR);
 
 	/* Enable power to the EPD panel */
+	printk("--------> enable DISPLAY regulator\n");
 	ret = regulator_enable(fb_data->display_regulator);
 	if (IS_ERR((void *)ret)) {
 		dev_err(fb_data->dev, "Unable to enable DISPLAY regulator."
@@ -1493,6 +1495,7 @@ static void epdc_powerup(struct mxc_epdc_fb_data *fb_data)
 		mutex_unlock(&fb_data->power_mutex);
 		return;
 	}
+	printk("--------> enable VCOM regulator\n");
 	ret = regulator_enable(fb_data->vcom_regulator);
 	if (IS_ERR((void *)ret)) {
 		dev_err(fb_data->dev, "Unable to enable VCOM regulator."
@@ -2284,6 +2287,7 @@ static int epdc_working_buffer_update(struct mxc_epdc_fb_data *fb_data,
 	/* If needed, enable EPDC HW while ePxP is processing */
 	if ((fb_data->power_state == POWER_STATE_OFF)
 		|| fb_data->powering_down) {
+	printk("--------> 1. powerup from epdc_working_buffer_update\n");
 		epdc_powerup(fb_data);
 	}
 
@@ -2343,6 +2347,7 @@ static int epdc_working_buffer_update(struct mxc_epdc_fb_data *fb_data,
 		/* If needed, enable EPDC HW while ePxP is processing */
 		if ((fb_data->power_state == POWER_STATE_OFF)
 			|| fb_data->powering_down) {
+	printk("-------->2.  powerup from epdc_working_buffer_update\n");
 			epdc_powerup(fb_data);
 		}
 
@@ -2615,6 +2620,7 @@ static int epdc_process_update(struct update_data_list *upd_data_list,
 	/* If needed, enable EPDC HW while ePxP is processing */
 	if ((fb_data->power_state == POWER_STATE_OFF)
 		|| fb_data->powering_down) {
+	printk("-------->1.  powerup from epdc_process_update\n");
 		epdc_powerup(fb_data);
 	}
 
@@ -2647,6 +2653,7 @@ static int epdc_process_update(struct update_data_list *upd_data_list,
 		/* If needed, enable EPDC HW while ePxP is processing */
 		if ((fb_data->power_state == POWER_STATE_OFF)
 			|| fb_data->powering_down) {
+	printk("-------->2.  powerup from epdc_process_update\n");
 			epdc_powerup(fb_data);
 		}
 
@@ -2959,8 +2966,10 @@ static void epdc_submit_work_func(struct work_struct *work)
 
 		/* If needed, enable EPDC HW while ePxP is processing */
 		if ((fb_data->power_state == POWER_STATE_OFF)
-			|| fb_data->powering_down)
+			|| fb_data->powering_down){
+	printk("--------> powerup from epdc_submit_work_func\n");
 			epdc_powerup(fb_data);
+		}
 
 		/*
 		 * Set update buffer pointer to the start of
@@ -3216,6 +3225,8 @@ static int mxc_epdc_fb_send_single_update(struct mxcfb_update_data *upd_data,
 	int ret;
 	struct update_desc_list *upd_desc;
 	struct update_marker_data *marker_data, *next_marker, *temp_marker;
+
+	printk("--------> mxc_epdc_fb_send_single_update\n");
 
 	/* Has EPDC HW been initialized? */
 	if (!fb_data->hw_ready) {
@@ -3521,6 +3532,8 @@ static int mxc_epdc_fb_send_update(struct mxcfb_update_data *upd_data,
 {
 	struct mxc_epdc_fb_data *fb_data = info ?
 		(struct mxc_epdc_fb_data *)info:g_fb_data;
+	
+	printk("--------> mxc_epdc_fb_send_update\n");
 
 	if (!fb_data->restrict_width) {
 		/* No width restriction, send entire update region */
@@ -3582,6 +3595,8 @@ static int mxc_epdc_fb_wait_update_complete(struct mxcfb_update_marker_data *mar
 	struct update_marker_data *temp;
 	bool marker_found = false;
 	int ret = 0;
+	
+	printk("--------> mxc_epdc_fb_wait_update_complete\n");
 
 	/* 0 is an invalid update_marker value */
 	if (marker_data->update_marker == 0)
@@ -4706,8 +4721,6 @@ static void draw_mode0(struct mxc_epdc_fb_data *fb_data)
 		msleep(100);
 	}
 
-	dump_epdc_reg();
-
 	dev_err(fb_data->dev, "Mode0 init failed!\n");
 
 	return;
@@ -4830,6 +4843,9 @@ static void mxc_epdc_fb_fw_handler(const struct firmware *fw,
 
 	epdc_init_sequence(fb_data);
 
+
+	printk("--------> after epdc_init_sequence\n");
+
 	/* Disable clocks */
 	clk_disable_unprepare(fb_data->epdc_clk_axi);
 	clk_disable_unprepare(fb_data->epdc_clk_pix);
@@ -4861,6 +4877,8 @@ static void mxc_epdc_fb_fw_handler(const struct firmware *fw,
 	upd_marker_data.update_marker = update.update_marker;
 
 	mxc_epdc_fb_send_update(&update, &fb_data->info);
+	
+	printk("--------> after mxc_epdc_fb_send_update\n");
 
 	/* Block on initial update */
 	ret = mxc_epdc_fb_wait_update_complete(&upd_marker_data,
@@ -6081,6 +6099,7 @@ static int pxp_clear_wb_work_func(struct mxc_epdc_fb_data *fb_data)
 	/* If needed, enable EPDC HW while ePxP is processing */
 	if ((fb_data->power_state == POWER_STATE_OFF)
 		|| fb_data->powering_down) {
+	printk("--------> powerup from pxp_clear_wb_work_func\n");
 		epdc_powerup(fb_data);
 	}
 
