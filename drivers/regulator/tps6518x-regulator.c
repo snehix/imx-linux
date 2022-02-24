@@ -108,7 +108,7 @@ static int epdc_pwr0_enable(struct regulator_dev *reg)
 	
 	printk("epdc_pwr0_enable\n");
 
-	//gpio_set_value(tps6518x->gpio_pmic_powerup, 1);
+	gpio_set_value(tps6518x->gpio_pmic_powerup, 1);
 
 	return 0;
 
@@ -132,7 +132,7 @@ static int tps6518x_v3p3_enable(struct regulator_dev *reg)
 	printk("epdc_v3p3_enable\n");
 
 
-	gpio_set_value(tps6518x->gpio_pmic_v3p3_ctrl, 1);
+	gpio_set_value(tps6518x->gpio_pmic_v3p3_ctrl, 0);
 	return 0;
 }
 
@@ -143,7 +143,7 @@ static int tps6518x_v3p3_disable(struct regulator_dev *reg)
 	printk("epdc_v3p3_disable\n");
 
 
-	gpio_set_value(tps6518x->gpio_pmic_v3p3_ctrl, 0);
+	gpio_set_value(tps6518x->gpio_pmic_v3p3_ctrl, 1);
 	return 0;
 
 }

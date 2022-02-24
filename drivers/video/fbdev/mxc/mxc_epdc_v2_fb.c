@@ -515,8 +515,7 @@ static int epdc_working_buffer_update(struct mxc_epdc_fb_data *fb_data,
 				      struct mxcfb_rect *update_region);
 extern void pxp_get_collision_info(struct pxp_collision_info *info);
 
-//#ifdef DEBUG
-#if 1
+#ifdef DEBUG
 static void dump_pxp_config(struct mxc_epdc_fb_data *fb_data,
 			    struct pxp_config_data *pxp_conf)
 {
@@ -4722,7 +4721,6 @@ static void draw_mode0(struct mxc_epdc_fb_data *fb_data)
 	}
 
 	dev_err(fb_data->dev, "Mode0 init failed!\n");
-	dump_epdc_reg();
 
 	return;
 }
