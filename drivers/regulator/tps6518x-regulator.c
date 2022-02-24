@@ -549,9 +549,9 @@ static void tps6518x_setup_timings(struct tps6518x *tps6518x)
 	    }
 	}
 	tps6518x->upseq0=0xe4;	
-	tps6518x->upseq1=0x55;	
+	tps6518x->upseq1=0xff;	
 	tps6518x->dwnseq0=0x1e;	
-	tps6518x->dwnseq1=0xe0;	
+	tps6518x->dwnseq1=0x00;	
 
 	printk("Revision id=0x%x\n",tps6518x->revID);
 
