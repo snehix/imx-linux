@@ -424,7 +424,7 @@ static int tps6518x_display_enable(struct regulator_dev *reg)
 		printk("tps65180_current_Enable_Register=%d,fld_mask=%d,fld_val=%d\n",tps65180_current_Enable_Register,fld_mask,fld_val);
 		new_reg_val = tps65180_current_Enable_Register = to_reg_val(cur_reg_val, fld_mask, fld_val);
 		printk("new_reg_val=%d\n",new_reg_val);
-		new_reg_val=191;
+		//new_reg_val=191;
 		tps6518x_reg_write(REG_TPS65180_ENABLE, new_reg_val);
 		
 	}
