@@ -132,7 +132,7 @@ static int tps6518x_v3p3_enable(struct regulator_dev *reg)
 	printk("epdc_v3p3_enable\n");
 
 
-	gpio_set_value(tps6518x->gpio_pmic_v3p3_ctrl, 0);
+	gpio_set_value(tps6518x->gpio_pmic_v3p3_ctrl, 1);
 	return 0;
 }
 
@@ -143,7 +143,7 @@ static int tps6518x_v3p3_disable(struct regulator_dev *reg)
 	printk("epdc_v3p3_disable\n");
 
 
-	gpio_set_value(tps6518x->gpio_pmic_v3p3_ctrl, 1);
+	gpio_set_value(tps6518x->gpio_pmic_v3p3_ctrl, 0);
 	return 0;
 
 }
@@ -423,8 +423,8 @@ static int tps6518x_display_enable(struct regulator_dev *reg)
 		fld_val = BITFVAL(ACTIVE, true);
 		printk("tps65180_current_Enable_Register=%d,fld_mask=%d,fld_val=%d\n",tps65180_current_Enable_Register,fld_mask,fld_val);
 		new_reg_val = tps65180_current_Enable_Register = to_reg_val(cur_reg_val, fld_mask, fld_val);
+		new_reg_val=191;
 		printk("new_reg_val=%d\n",new_reg_val);
-		//new_reg_val=191;
 		tps6518x_reg_write(REG_TPS65180_ENABLE, new_reg_val);
 		
 	}
