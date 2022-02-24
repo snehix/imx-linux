@@ -456,7 +456,6 @@ static int tps6518x_display_disable(struct regulator_dev *reg)
 		new_reg_val = tps65180_current_Enable_Register = to_reg_val(cur_reg_val, fld_mask, fld_val);
 		tps6518x_reg_write(REG_TPS65180_ENABLE, new_reg_val);
 		
-		gpio_set_value(tps6518x->gpio_pmic_wakeup,0);
 
 	}
 
