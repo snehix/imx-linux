@@ -200,7 +200,7 @@ static int tps6518x_vcom_set_voltage(struct regulator_dev *reg,
 			break;
 		case 5 : /* TPS65185 */
 		case 6 : /* TPS65186 */
-			gpio_set_value(tps6518x->gpio_pmic_wakeup,1);
+			printk("REG_TPS65185_VCOM1 -> writing -> 0x%x\n",vcom2_uV_to_rs(uV) & 255);
 			retval = tps6518x_reg_write(REG_TPS65185_VCOM1,
 					vcom2_uV_to_rs(uV) & 255);
 			tps6518x_reg_read( REG_TPS65185_VCOM2,&cur_reg_val);
@@ -208,6 +208,7 @@ static int tps6518x_vcom_set_voltage(struct regulator_dev *reg,
 					BITFMASK(VCOM2_SET),
 					BITFVAL(VCOM2_SET, vcom2_uV_to_rs(uV)/256));
 
+			printk("REG_TPS65185_VCOM2 -> writing -> 0x%x\n",new_reg_val);
 			retval = tps6518x_reg_write(REG_TPS65185_VCOM2,
 					new_reg_val);
 
@@ -255,7 +256,7 @@ static int tps6518x_vcom_get_voltage(struct regulator_dev *reg)
 			vcomValue = 0;
 	}
 	
-	printk("tps6518x_vcom_get_voltage end\n");
+	printk("tps6518x_vcom_get_voltage end, vcomValue=%d\n",vcomValue);
 	
 	return vcomValue;
 
@@ -309,6 +310,7 @@ static int tps6518x_vcom_enable(struct regulator_dev *reg)
 		default:
 			vcomEnable = 0;
 	}
+	printk("vcom set voltage value=%d\n",vcomEnable);
 	gpio_set_value(tps6518x->gpio_pmic_vcom_ctrl,vcomEnable);
 	
 	printk("tps6518x_vcom_enable end\n");
