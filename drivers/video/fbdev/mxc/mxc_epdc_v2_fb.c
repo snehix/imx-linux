@@ -458,7 +458,7 @@ static struct imx_epdc_fb_mode panel_modes[] = {
 		755, 	/* GDSP_OFF */
 		0, 	/* GDOE_OFF */
 		91, 	/* gdclk_offs */
-		1, 	/* num_ce */
+		2, 	/* num_ce */
 	}
 };
 #endif
