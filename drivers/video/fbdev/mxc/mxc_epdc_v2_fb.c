@@ -5088,7 +5088,7 @@ static int mxc_epdc_fb_probe(struct platform_device *pdev)
 
 	fb_data->dev = &pdev->dev;
 
-	if (!fb_data->default_bpp)
+	//if (!fb_data->default_bpp)
 		fb_data->default_bpp = 16;
 
 	/* Set default (first defined mode) before searching for a match */
