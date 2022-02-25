@@ -198,7 +198,7 @@
 		clock-names = "epdc_axi", "epdc_pix";
 		epdc-ram = <&gpr 0x4 30>;
 		qos = <&qosc>;
-		status = "okay";
+		status = "disabled";
 	};
 
 	epxp: epxp@30700000 {
