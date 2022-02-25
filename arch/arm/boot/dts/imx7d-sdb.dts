@@ -263,6 +263,8 @@
 
 &epdc {
 	pinctrl-names = "default";
+	clocks = <0x02 0x70 0x02 0x73>;
+	clock-names = "epdc_axi\0epdc_pix"
 	pinctrl-0 = <&pinctrl_epdc0>;
 	V3P3-supply = <&V3P3_reg>;
 	VCOM-supply = <&VCOM_reg>;
