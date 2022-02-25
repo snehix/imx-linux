@@ -492,8 +492,6 @@
 	};
 
 	tps6518: tps6518@68 {
-		pinctrl-names = "default";
-		pinctrl-0 = <&pinctrl_tps6518>;
 		compatible = "ti,tps6518x";
 		reg = <0x68>;
 		
