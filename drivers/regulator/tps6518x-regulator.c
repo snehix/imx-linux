@@ -325,6 +325,7 @@ static int tps6518x_vcom_disable(struct regulator_dev *reg)
 	printk("tps6518x_vcom_disbale\n");
 
 	gpio_set_value(tps6518x->gpio_pmic_vcom_ctrl,0);
+	tps6518x->vcom_setup = false;
 	
 	printk("tps6518x_vcom_disbalei end\n");
 	return 0;
@@ -459,10 +460,8 @@ static int tps6518x_display_disable(struct regulator_dev *reg)
 		new_reg_val = tps65180_current_Enable_Register = to_reg_val(cur_reg_val, fld_mask, fld_val);
 		tps6518x_reg_write(REG_TPS65180_ENABLE, new_reg_val);
 		
-		gpio_set_value(tps6518x->gpio_pmic_wakeup,0);
+		//gpio_set_value(tps6518x->gpio_pmic_wakeup,0);
 		
-		msleep(18);
-
 	}
 
 	msleep(tps6518x->max_wait);
