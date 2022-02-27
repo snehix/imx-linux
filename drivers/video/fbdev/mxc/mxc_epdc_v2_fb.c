@@ -2318,7 +2318,6 @@ static int epdc_working_buffer_update(struct mxc_epdc_fb_data *fb_data,
 			upd_desc_list->upd_data.waveform_mode =
 				fb_data->wv_modes.mode_gc32;
 
-				fb_data->wv_modes.mode_gc16;
 		dev_err(fb_data->dev, "hist_stat = 0x%x, new waveform = 0x%x\n",
 			hist_stat, upd_desc_list->upd_data.waveform_mode);
 	}
@@ -2692,7 +2691,6 @@ static int epdc_process_update(struct update_data_list *upd_data_list,
 			upd_desc_list->upd_data.waveform_mode =
 				fb_data->wv_modes.mode_gc32;
 
-				fb_data->wv_modes.mode_gc16;
 		dev_err(fb_data->dev, "hist_stat = 0x%x, new waveform = 0x%x\n",
 			hist_stat, upd_desc_list->upd_data.waveform_mode);
 	}
@@ -5090,7 +5088,7 @@ static int mxc_epdc_fb_probe(struct platform_device *pdev)
 
 	fb_data->dev = &pdev->dev;
 
-	//if (!fb_data->default_bpp)
+	if (!fb_data->default_bpp)
 		fb_data->default_bpp = 16;
 
 	/* Set default (first defined mode) before searching for a match */

@@ -205,7 +205,7 @@ static int tps6518x_vcom_set_voltage(struct regulator_dev *reg,
 			retval = tps6518x_reg_write(REG_TPS65185_VCOM1,
 					vcom2_uV_to_rs(uV) & 255);
 #else
-			retval = tps6518x_reg_write(REG_TPS65185_VCOM1,0x7d);
+			retval = tps6518x_reg_write(REG_TPS65185_VCOM1,0x8c);
 #endif
 			tps6518x_reg_read( REG_TPS65185_VCOM2,&cur_reg_val);
 			new_reg_val = to_reg_val(cur_reg_val,
@@ -659,7 +659,7 @@ static int tps6518x_pmic_dt_parse_pdata(struct platform_device *pdev,
 		goto err;
 	}
 	ret = devm_gpio_request_one(&pdev->dev, tps6518x->gpio_pmic_wakeup,
-				GPIOF_OUT_INIT_LOW, "epdc-pmic-wake");
+				GPIOF_OUT_INIT_HIGH, "epdc-pmic-wake");
 	if (ret < 0)
 		goto err;
 
