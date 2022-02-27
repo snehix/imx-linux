@@ -837,7 +837,6 @@ static inline void epdc_set_temp(u32 temp)
 {
 	int ret = 0;
 
-	return;
 	/* used to store external panel temperature value */
 	unsigned int ext_temp, ext_temp_index = temp;
 
