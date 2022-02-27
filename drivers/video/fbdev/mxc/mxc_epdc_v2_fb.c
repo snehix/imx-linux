@@ -449,7 +449,7 @@ static struct imx_epdc_fb_mode panel_modes[] = {
 static struct imx_epdc_fb_mode panel_modes[] = {
 	{
 		&es103tc1mode,	/* struct fb_videomode *mode */
-		4, 	/* vscan_holdoff */
+		8, 	/* vscan_holdoff */
 		10, 	/* sdoed_width */
 		20, 	/* sdoed_delay */
 		10, 	/* sdoez_width */
@@ -458,7 +458,7 @@ static struct imx_epdc_fb_mode panel_modes[] = {
 		755, 	/* GDSP_OFF */
 		0, 	/* GDOE_OFF */
 		91, 	/* gdclk_offs */
-		1, 	/* num_ce */
+		3, 	/* num_ce */
 	}
 };
 #endif
