@@ -364,7 +364,7 @@ static struct fb_videomode es103tc1mode = {
 	.refresh = 85,
 	.xres = 1872,
 	.yres = 1404,
-	.pixclock =32000000,
+	.pixclock =132000000,
 	.left_margin = 8,
 	.right_margin = 23,
 	.upper_margin = 4,
@@ -449,7 +449,7 @@ static struct imx_epdc_fb_mode panel_modes[] = {
 static struct imx_epdc_fb_mode panel_modes[] = {
 	{
 		&es103tc1mode,	/* struct fb_videomode *mode */
-		8, 	/* vscan_holdoff */
+		4, 	/* vscan_holdoff */
 		10, 	/* sdoed_width */
 		20, 	/* sdoed_delay */
 		10, 	/* sdoez_width */
@@ -458,7 +458,7 @@ static struct imx_epdc_fb_mode panel_modes[] = {
 		755, 	/* GDSP_OFF */
 		0, 	/* GDOE_OFF */
 		91, 	/* gdclk_offs */
-		3, 	/* num_ce */
+		1, 	/* num_ce */
 	}
 };
 #endif
@@ -3675,6 +3675,7 @@ static int mxc_epdc_fb_ioctl(struct fb_info *info, unsigned int cmd,
 	switch (cmd) {
 	case MXCFB_SET_WAVEFORM_MODES:
 		{
+			printk("mxc_epdc_fb_ioctl -> MXCFB_SET_WAVEFORM_MODES\n");
 			struct mxcfb_waveform_modes modes;
 			if (!copy_from_user(&modes, argp, sizeof(modes))) {
 				mxc_epdc_fb_set_waveform_modes(&modes, info);
@@ -3684,14 +3685,18 @@ static int mxc_epdc_fb_ioctl(struct fb_info *info, unsigned int cmd,
 		}
 	case MXCFB_SET_TEMPERATURE:
 		{
+			printk("mxc_epdc_fb_ioctl -> MXCFB_SET_WAVEFORM_SET_TEMPERATURE\n");
 			int temperature;
-			if (!get_user(temperature, (int32_t __user *) arg))
+			if (!get_user(temperature, (int32_t __user *) arg)){
+				printk("temperature=%d\n",temperature);
 				ret = mxc_epdc_fb_set_temperature(temperature,
 					info);
+			}
 			break;
 		}
 	case MXCFB_SET_AUTO_UPDATE_MODE:
 		{
+			printk("mxc_epdc_fb_ioctl -> MXCFB_SET_AUTO_UPDATE_MODE\n");
 			u32 auto_mode = 0;
 			if (!get_user(auto_mode, (__u32 __user *) arg))
 				ret = mxc_epdc_fb_set_auto_update(auto_mode,
@@ -3700,6 +3705,7 @@ static int mxc_epdc_fb_ioctl(struct fb_info *info, unsigned int cmd,
 		}
 	case MXCFB_SET_UPDATE_SCHEME:
 		{
+			printk("mxc_epdc_fb_ioctl -> MXCFB_SET_UPDATE_SCHEME\n");
 			u32 upd_scheme = 0;
 			if (!get_user(upd_scheme, (__u32 __user *) arg))
 				ret = mxc_epdc_fb_set_upd_scheme(upd_scheme,
@@ -3708,6 +3714,7 @@ static int mxc_epdc_fb_ioctl(struct fb_info *info, unsigned int cmd,
 		}
 	case MXCFB_SEND_UPDATE:
 		{
+			printk("mxc_epdc_fb_ioctl -> MXCFB_SEND_UPDATE\n");
 			struct mxcfb_update_data upd_data;
 			if (!copy_from_user(&upd_data, argp,
 				sizeof(upd_data))) {
@@ -3723,6 +3730,7 @@ static int mxc_epdc_fb_ioctl(struct fb_info *info, unsigned int cmd,
 		}
 	case MXCFB_WAIT_FOR_UPDATE_COMPLETE:
 		{
+			printk("mxc_epdc_fb_ioctl -> MXCFB_WAIT_FOR_UPDATE_COMPLETE\n");
 			struct mxcfb_update_marker_data upd_marker_data;
 			if (!copy_from_user(&upd_marker_data, argp,
 				sizeof(upd_marker_data))) {
@@ -3740,15 +3748,20 @@ static int mxc_epdc_fb_ioctl(struct fb_info *info, unsigned int cmd,
 
 	case MXCFB_SET_PWRDOWN_DELAY:
 		{
+			printk("mxc_epdc_fb_ioctl -> MXCFB_SET_PWRDOWN_DELAY\n");
 			int delay = 0;
 			if (!get_user(delay, (__u32 __user *) arg))
+			{
+				printk("delay=#d\n",delay);
 				ret =
 				    mxc_epdc_fb_set_pwrdown_delay(delay, info);
+			}
 			break;
 		}
 
 	case MXCFB_GET_PWRDOWN_DELAY:
 		{
+			printk("mxc_epdc_fb_ioctl -> MXCFB_GET_PWRDOWN_DELAY\n");
 			int pwrdown_delay = mxc_epdc_get_pwrdown_delay(info);
 			if (put_user(pwrdown_delay,
 				(int __user *)argp))
@@ -3759,6 +3772,7 @@ static int mxc_epdc_fb_ioctl(struct fb_info *info, unsigned int cmd,
 
 	case MXCFB_GET_WORK_BUFFER:
 		{
+			printk("mxc_epdc_fb_ioctl -> MXCFB_GET_WORK_BUFFER\n");
 			/* copy the epdc working buffer to the user space */
 			struct mxc_epdc_fb_data *fb_data = info ?
 				(struct mxc_epdc_fb_data *)info:g_fb_data;

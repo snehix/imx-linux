@@ -610,7 +610,7 @@ static struct pfuze_chip *syspm_pfuze_chip;
 
 static void pfuze_power_off_prepare(void)
 {
-	dev_info(syspm_pfuze_chip->dev, "Configure standby mode for power off");
+	dev_err(syspm_pfuze_chip->dev, "Configure standby mode for power off");
 
 	/* Switch from default mode: APS/APS to APS/Off */
 	regmap_update_bits(syspm_pfuze_chip->regmap, PFUZE100_SW1ABMODE,
@@ -649,17 +649,17 @@ static void pfuze_power_off_prepare(void)
 static int pfuze_power_off_prepare_init(struct pfuze_chip *pfuze_chip)
 {
 	if (pfuze_chip->chip_id != PFUZE100) {
-		dev_warn(pfuze_chip->dev, "Requested pm_power_off_prepare handler for not supported chip\n");
+		dev_err(pfuze_chip->dev, "Requested pm_power_off_prepare handler for not supported chip\n");
 		return -ENODEV;
 	}
 
 	if (pm_power_off_prepare) {
-		dev_warn(pfuze_chip->dev, "pm_power_off_prepare is already registered.\n");
+		dev_err(pfuze_chip->dev, "pm_power_off_prepare is already registered.\n");
 		return -EBUSY;
 	}
 
 	if (syspm_pfuze_chip) {
-		dev_warn(pfuze_chip->dev, "syspm_pfuze_chip is already set.\n");
+		dev_err(pfuze_chip->dev, "syspm_pfuze_chip is already set.\n");
 		return -EBUSY;
 	}
 
@@ -683,26 +683,26 @@ static int pfuze_identify(struct pfuze_chip *pfuze_chip)
 		 * Freescale misprogrammed 1-3% of parts prior to week 8 of 2013
 		 * as ID=8 in PFUZE100
 		 */
-		dev_info(pfuze_chip->dev, "Assuming misprogrammed ID=0x8");
+		dev_err(pfuze_chip->dev, "Assuming misprogrammed ID=0x8");
 	} else if ((value & 0x0f) != pfuze_chip->chip_id &&
 		   (value & 0xf0) >> 4 != pfuze_chip->chip_id &&
 		   (value != pfuze_chip->chip_id)) {
 		/* device id NOT match with your setting */
-		dev_warn(pfuze_chip->dev, "Illegal ID: %x\n", value);
+		dev_err(pfuze_chip->dev, "Illegal ID: %x\n", value);
 		return -ENODEV;
 	}
 
 	ret = regmap_read(pfuze_chip->regmap, PFUZE100_REVID, &value);
 	if (ret)
 		return ret;
-	dev_info(pfuze_chip->dev,
+	dev_err(pfuze_chip->dev,
 		 "Full layer: %x, Metal layer: %x\n",
 		 (value & 0xf0) >> 4, value & 0x0f);
 
 	ret = regmap_read(pfuze_chip->regmap, PFUZE100_FABID, &value);
 	if (ret)
 		return ret;
-	dev_info(pfuze_chip->dev, "FAB: %x, FIN: %x\n",
+	dev_err(pfuze_chip->dev, "FAB: %x, FIN: %x\n",
 		 (value & 0xc) >> 2, value & 0x3);
 
 	return 0;
@@ -794,7 +794,7 @@ static int pfuze100_regulator_probe(struct i2c_client *client,
 		sw_check_end = PFUZE100_SW4;
 		break;
 	}
-	dev_info(&client->dev, "pfuze%s found.\n",
+	dev_err(&client->dev, "pfuze%s found.\n",
 		(pfuze_chip->chip_id == PFUZE100) ? "100" :
 		(((pfuze_chip->chip_id == PFUZE200) ? "200" :
 		((pfuze_chip->chip_id == PFUZE3000) ? "3000" : "3001"))));

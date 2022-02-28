@@ -200,13 +200,9 @@ static int tps6518x_vcom_set_voltage(struct regulator_dev *reg,
 			break;
 		case 5 : /* TPS65185 */
 		case 6 : /* TPS65186 */
-			printk("REG_TPS65185_VCOM1 -> writing -> 0x%x\n",vcom2_uV_to_rs(uV) & 255);
-#if 0
+			printk("REG_TPS65185_VCOM1 -> writing -> 0x%x, voltage=%d\n",vcom2_uV_to_rs(uV) & 255,uV);
 			retval = tps6518x_reg_write(REG_TPS65185_VCOM1,
 					vcom2_uV_to_rs(uV) & 255);
-#else
-			retval = tps6518x_reg_write(REG_TPS65185_VCOM1,0x7d);
-#endif
 			tps6518x_reg_read( REG_TPS65185_VCOM2,&cur_reg_val);
 			new_reg_val = to_reg_val(cur_reg_val,
 					BITFMASK(VCOM2_SET),
@@ -269,6 +265,7 @@ static int tps6518x_vcom_get_voltage(struct regulator_dev *reg)
 static int tps6518x_vcom_enable(struct regulator_dev *reg)
 {
 	struct tps6518x *tps6518x = rdev_get_drvdata(reg);
+
 	unsigned int cur_reg_val; /* current register value */
 	int vcomEnable = 0;
 	
@@ -539,8 +536,6 @@ static void tps6518x_setup_timings(struct tps6518x *tps6518x)
 
 	int temp0, temp1, temp2, temp3;
 		
-	gpio_set_value(tps6518x->gpio_pmic_wakeup,1);
-	
 	tps6518x_reg_read(REG_TPS65180_REVID,&tps6518x->revID);
 	printk("Revision id=0x%x\n",tps6518x->revID);
 
@@ -661,7 +656,7 @@ static int tps6518x_pmic_dt_parse_pdata(struct platform_device *pdev,
 		goto err;
 	}
 	ret = devm_gpio_request_one(&pdev->dev, tps6518x->gpio_pmic_wakeup,
-				GPIOF_OUT_INIT_LOW, "epdc-pmic-wake");
+				GPIOF_OUT_INIT_HIGH, "epdc-pmic-wake");
 	if (ret < 0)
 		goto err;
 
