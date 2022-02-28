@@ -1486,6 +1486,7 @@ static void epdc_powerup(struct mxc_epdc_fb_data *fb_data)
 
 	__raw_writel(EPDC_CTRL_CLKGATE, EPDC_CTRL_CLEAR);
 
+	msleep(1);
 	/* Enable power to the EPD panel */
 	printk("--------> enable DISPLAY regulator\n");
 	ret = regulator_enable(fb_data->display_regulator);
@@ -1496,6 +1497,7 @@ static void epdc_powerup(struct mxc_epdc_fb_data *fb_data)
 		return;
 	}
 	printk("--------> enable VCOM regulator\n");
+	msleep(1);
 	ret = regulator_enable(fb_data->vcom_regulator);
 	if (IS_ERR((void *)ret)) {
 		dev_err(fb_data->dev, "Unable to enable VCOM regulator."
@@ -1526,7 +1528,9 @@ static void epdc_powerdown(struct mxc_epdc_fb_data *fb_data)
 
 	/* Disable power to the EPD panel */
 	regulator_disable(fb_data->vcom_regulator);
+	msleep(1);
 	regulator_disable(fb_data->display_regulator);
+	msleep(1);
 
 	/* Disable clocks to EPDC */
 	__raw_writel(EPDC_CTRL_CLKGATE, EPDC_CTRL_SET);
@@ -3752,7 +3756,7 @@ static int mxc_epdc_fb_ioctl(struct fb_info *info, unsigned int cmd,
 			int delay = 0;
 			if (!get_user(delay, (__u32 __user *) arg))
 			{
-				printk("delay=#d\n",delay);
+				printk("delay=%d\n",delay);
 				ret =
 				    mxc_epdc_fb_set_pwrdown_delay(delay, info);
 			}
@@ -3903,6 +3907,7 @@ static int mxc_epdc_fb_blank(int blank, struct fb_info *info)
 
 	switch (blank) {
 	case FB_BLANK_POWERDOWN:
+		printk("------> FB_BLANK_POWERDOWN\n");
 		mxc_epdc_fb_flush_updates(fb_data);
 		/* Wait for powerdown */
 		mutex_lock(&fb_data->power_mutex);
