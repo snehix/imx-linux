@@ -40,7 +40,7 @@ struct tps6518x_data {
 
 
 static int tps6518x_pass_num = { 2 };
-static int tps6518x_vcom = { -2680000 };
+static int tps6518x_vcom = { -1250000 };
 static int tps65180_current_Enable_Register = 0;
 
 static int tps6518x_is_power_good(struct tps6518x *tps6518x);
