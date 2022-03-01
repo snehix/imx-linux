@@ -108,7 +108,7 @@ static int epdc_pwr0_enable(struct regulator_dev *reg)
 	
 	printk("epdc_pwr0_enable\n");
 
-	//gpio_set_value(tps6518x->gpio_pmic_powerup, 1);
+	gpio_set_value(tps6518x->gpio_pmic_powerup, 1);
 
 	return 0;
 
@@ -120,7 +120,7 @@ static int epdc_pwr0_disable(struct regulator_dev *reg)
 	
 	printk("epdc_pwr0_disable\n");
 
-	//gpio_set_value(tps6518x->gpio_pmic_powerup, 0);
+	gpio_set_value(tps6518x->gpio_pmic_powerup, 0);
 
 	return 0;
 
@@ -464,7 +464,7 @@ static int tps6518x_display_disable(struct regulator_dev *reg)
 		
 	}
 
-	msleep(tps6518x->max_wait);
+	msleep(tps6518x->max_wait*3);
 
 	return 0;
 }

@@ -88,6 +88,7 @@
 		regulator-max-microvolt = <5000000>;
 		gpio = <&gpio1 12 GPIO_ACTIVE_HIGH>;
 		enable-active-high;
+		status = "disabled";
 	};
 
 	reg_usb_otg2_vbus: regulator-usb-otg2-vbus {
@@ -99,6 +100,7 @@
 		regulator-max-microvolt = <5000000>;
 		gpio = <&gpio1 7 GPIO_ACTIVE_HIGH>;
 		enable-active-high;
+		status = "disabled";
 	};
 
 	reg_vref_1v8: regulator-vref-1v8 {
@@ -125,6 +127,7 @@
 		regulator-min-microvolt = <3300000>;
 		regulator-max-microvolt = <3300000>;
 		gpio = <&extended_io 7 GPIO_ACTIVE_LOW>;
+		status = "disabled";
 	};
 
 	reg_can2_3v3: regulator-can2-3v3 {
@@ -157,6 +160,7 @@
 		regulator-max-microvolt = <3300000>;
 		gpio = <&gpio2 23 GPIO_ACTIVE_HIGH>;
 		enable-active-high;
+		status = "okay";
 	};
 
 	backlight: backlight {
