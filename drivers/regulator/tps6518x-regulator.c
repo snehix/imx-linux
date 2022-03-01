@@ -651,13 +651,13 @@ static int tps6518x_pmic_dt_parse_pdata(struct platform_device *pdev,
 	tps6518x->max_wait = 100;
 
 	tps6518x->gpio_pmic_wakeup = of_get_named_gpio(pmic_np,
-					"gpio_pmic_wakeup", 0);
+					"gpio_pmic_powerup", 0);
 	if (!gpio_is_valid(tps6518x->gpio_pmic_wakeup)) {
 		dev_err(&pdev->dev, "no epdc pmic wakeup pin available\n");
 		goto err;
 	}
 	ret = devm_gpio_request_one(&pdev->dev, tps6518x->gpio_pmic_wakeup,
-				GPIOF_OUT_INIT_HIGH, "epdc-pmic-wake");
+				GPIOF_OUT_INIT_HIGH, "epdc-powerup");
 	if (ret < 0)
 		goto err;
 
@@ -685,13 +685,13 @@ static int tps6518x_pmic_dt_parse_pdata(struct platform_device *pdev,
 
 
 	tps6518x->gpio_pmic_powerup = of_get_named_gpio(pmic_np,
-					"gpio_pmic_powerup", 0);
+					"gpio_pmic_wakeup", 0);
 	if (!gpio_is_valid(tps6518x->gpio_pmic_powerup)) {
 		dev_err(&pdev->dev, "no epdc pmic powerup pin available\n");
 		goto err;
 	}
 	ret = devm_gpio_request_one(&pdev->dev, tps6518x->gpio_pmic_powerup,
-				GPIOF_OUT_INIT_LOW, "epdc-powerup");
+				GPIOF_OUT_INIT_LOW, "epdc-pmic-wake");
 	if (ret < 0)
 		goto err;
 
