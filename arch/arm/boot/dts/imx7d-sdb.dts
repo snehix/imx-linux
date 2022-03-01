@@ -88,7 +88,6 @@
 		regulator-max-microvolt = <5000000>;
 		gpio = <&gpio1 12 GPIO_ACTIVE_HIGH>;
 		enable-active-high;
-		status = "disabled";
 	};
 
 	reg_usb_otg2_vbus: regulator-usb-otg2-vbus {
@@ -100,7 +99,6 @@
 		regulator-max-microvolt = <5000000>;
 		gpio = <&gpio1 7 GPIO_ACTIVE_HIGH>;
 		enable-active-high;
-		status = "disabled";
 	};
 
 	reg_vref_1v8: regulator-vref-1v8 {
