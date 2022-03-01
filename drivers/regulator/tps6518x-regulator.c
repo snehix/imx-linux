@@ -794,7 +794,6 @@ static int tps6518x_regulator_probe(struct platform_device *pdev)
 	 * changed a limited number of times according to spec.
 	 */
 	gpio_set_value(tps6518x->gpio_pmic_wakeup,1);
-	gpio_set_value(tps6518x->gpio_pmic_powerup,1);
 
 	tps6518x_setup_timings(tps6518x);
 
