@@ -185,6 +185,7 @@ static int tps6518x_vcom_set_voltage(struct regulator_dev *reg,
 		return 0;
 #endif
 
+	gpio_set_value(tps6518x->gpio_pmic_wakeup,1);
 	switch (tps6518x->revID & 15)
 	{
 		case 0 : /* TPS65180 */
@@ -217,6 +218,7 @@ static int tps6518x_vcom_set_voltage(struct regulator_dev *reg,
 		retval = -1;
 	}
 	printk("tps6518x_vcom_set_voltage return=%d\n",retval);
+	gpio_set_value(tps6518x->gpio_pmic_wakeup,0);
 	return retval;
 }
 
@@ -236,6 +238,7 @@ static int tps6518x_vcom_get_voltage(struct regulator_dev *reg)
 	if (tps6518x->revID == 65182)
 		return 0;
 	
+	gpio_set_value(tps6518x->gpio_pmic_wakeup,1);
 	switch (tps6518x->revID & 15)
 	{
 		case 0 : /* TPS65180 */
@@ -257,6 +260,7 @@ static int tps6518x_vcom_get_voltage(struct regulator_dev *reg)
 	}
 	
 	printk("tps6518x_vcom_get_voltage end, vcomValue=%d\n",vcomValue);
+	gpio_set_value(tps6518x->gpio_pmic_wakeup,0);
 	
 	return vcomValue;
 
@@ -279,6 +283,7 @@ static int tps6518x_vcom_enable(struct regulator_dev *reg)
 		return 0;
 	}
 
+	gpio_set_value(tps6518x->gpio_pmic_wakeup,1);
 	/*
 	 * Check to see if we need to set the VCOM voltage.
 	 * Should only be done one time. And, we can
@@ -313,6 +318,7 @@ static int tps6518x_vcom_enable(struct regulator_dev *reg)
 	}
 	printk("vcom set voltage value=%d\n",vcomEnable);
 	gpio_set_value(tps6518x->gpio_pmic_vcom_ctrl,vcomEnable);
+	gpio_set_value(tps6518x->gpio_pmic_wakeup,0);
 	
 	printk("tps6518x_vcom_enable end\n");
 
@@ -460,7 +466,7 @@ static int tps6518x_display_disable(struct regulator_dev *reg)
 		new_reg_val = tps65180_current_Enable_Register = to_reg_val(cur_reg_val, fld_mask, fld_val);
 		tps6518x_reg_write(REG_TPS65180_ENABLE, new_reg_val);
 		
-		//gpio_set_value(tps6518x->gpio_pmic_wakeup,0);
+		gpio_set_value(tps6518x->gpio_pmic_wakeup,0);
 		
 	}
 
@@ -798,6 +804,8 @@ static int tps6518x_regulator_probe(struct platform_device *pdev)
 	tps6518x_setup_timings(tps6518x);
 
 	tps6518x_detect1();
+	
+	gpio_set_value(tps6518x->gpio_pmic_wakeup,0);
 
     	printk("tps6518x_regulator_probe success\n");
 	return 0;
