@@ -364,12 +364,12 @@ static struct fb_videomode es103tc1mode = {
 	.refresh = 85,
 	.xres = 1872,
 	.yres = 1404,
-	.pixclock =32000000,
-	.left_margin = 8,
-	.right_margin = 23,
+	.pixclock =142857142,
+	.left_margin = 32,
+	.right_margin = 92,
 	.upper_margin = 4,
 	.lower_margin = 12,
-	.hsync_len = 11,
+	.hsync_len = 44,
 	.vsync_len = 1,
 	.sync = 0,
 	.vmode = FB_VMODE_NONINTERLACED,
@@ -5110,6 +5110,7 @@ static int mxc_epdc_fb_probe(struct platform_device *pdev)
 
 	if (!fb_data->default_bpp)
 		fb_data->default_bpp = 16;
+	fb_data->default_bpp = 8;
 
 	/* Set default (first defined mode) before searching for a match */
 	fb_data->cur_mode = &fb_data->pdata->epdc_mode[0];
