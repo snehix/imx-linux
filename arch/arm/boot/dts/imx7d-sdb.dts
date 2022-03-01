@@ -156,7 +156,7 @@
 		regulator-name = "sensors-supply";
 		regulator-min-microvolt = <3300000>;
 		regulator-max-microvolt = <3300000>;
-		gpio = <&gpio2 23 GPIO_ACTIVE_HIGH>;
+		gpio = <&gpio3 23 GPIO_ACTIVE_HIGH>;
 		enable-active-high;
 		status = "okay";
 	};
@@ -508,12 +508,12 @@
                 
                 SENSOR-supply = <&reg_sensors>;
 		
-		gpio_pmic_pwrgood = <&gpio2 31 0>;
-		gpio_pmic_vcom_ctrl = <&gpio4 14 0>;
-		gpio_pmic_v3p3_ctrl = <&gpio2 30 0>;
-		gpio_pmic_wakeup = <&gpio2 23 0>;
-		gpio_pmic_intr = <&gpio2 22 0>;
-		gpio_pmic_powerup = <&gpio2 21 0>;
+		gpio_pmic_pwrgood = <&gpio3 31 0>;
+		gpio_pmic_vcom_ctrl = <&gpio5 14 0>;
+		gpio_pmic_v3p3_ctrl = <&gpio3 30 0>;
+		gpio_pmic_wakeup = <&gpio3 23 0>;
+		gpio_pmic_intr = <&gpio3 22 0>;
+		gpio_pmic_powerup = <&gpio3 21 0>;
 
 		regulators {
 			DISPLAY_reg: DISPLAY {
