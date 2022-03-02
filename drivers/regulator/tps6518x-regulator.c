@@ -171,6 +171,7 @@ static int tps6518x_vcom_set_voltage(struct regulator_dev *reg,
 	unsigned int cur_reg_val; /* current register value to modify */
 	unsigned int new_reg_val; /* new register value to write */
 	int retval;
+	int gpio;
 	
 	printk("tps6518x_vcom_set_voltage\n");
 
@@ -184,8 +185,10 @@ static int tps6518x_vcom_set_voltage(struct regulator_dev *reg,
 	if (uV < 200000)
 		return 0;
 #endif
-
-	gpio_set_value(tps6518x->gpio_pmic_wakeup,1);
+ 	gpio = gpio_get_value(tps6518x->gpio_pmic_wakeup);
+	if(gpio==0){
+		gpio_set_value(tps6518x->gpio_pmic_wakeup,1);
+	}
 	switch (tps6518x->revID & 15)
 	{
 		case 0 : /* TPS65180 */
@@ -218,7 +221,9 @@ static int tps6518x_vcom_set_voltage(struct regulator_dev *reg,
 		retval = -1;
 	}
 	printk("tps6518x_vcom_set_voltage return=%d\n",retval);
-	gpio_set_value(tps6518x->gpio_pmic_wakeup,0);
+	if(gpio==0){
+		gpio_set_value(tps6518x->gpio_pmic_wakeup,0);
+	}
 	return retval;
 }
 
@@ -229,6 +234,7 @@ static int tps6518x_vcom_get_voltage(struct regulator_dev *reg)
 	unsigned int cur_reg2_val; /* current register value */
 	unsigned int cur_fld_val; /* current bitfield value*/
 	int vcomValue;
+	int gpio;
 	
 	printk("tps6518x_vcom_get_voltage\n");
 
@@ -238,7 +244,10 @@ static int tps6518x_vcom_get_voltage(struct regulator_dev *reg)
 	if (tps6518x->revID == 65182)
 		return 0;
 	
-	gpio_set_value(tps6518x->gpio_pmic_wakeup,1);
+ 	gpio = gpio_get_value(tps6518x->gpio_pmic_wakeup);
+	if(gpio==0){
+		gpio_set_value(tps6518x->gpio_pmic_wakeup,1);
+	}
 	switch (tps6518x->revID & 15)
 	{
 		case 0 : /* TPS65180 */
@@ -260,7 +269,9 @@ static int tps6518x_vcom_get_voltage(struct regulator_dev *reg)
 	}
 	
 	printk("tps6518x_vcom_get_voltage end, vcomValue=%d\n",vcomValue);
-	gpio_set_value(tps6518x->gpio_pmic_wakeup,0);
+	if(gpio==0){
+		gpio_set_value(tps6518x->gpio_pmic_wakeup,0);
+	}
 	
 	return vcomValue;
 
@@ -272,6 +283,7 @@ static int tps6518x_vcom_enable(struct regulator_dev *reg)
 
 	unsigned int cur_reg_val; /* current register value */
 	int vcomEnable = 0;
+	int gpio;
 	
 	printk("tps6518x_vcom_enable\n");
 	/*
@@ -283,7 +295,10 @@ static int tps6518x_vcom_enable(struct regulator_dev *reg)
 		return 0;
 	}
 
-	gpio_set_value(tps6518x->gpio_pmic_wakeup,1);
+ 	gpio = gpio_get_value(tps6518x->gpio_pmic_wakeup);
+	if(gpio==0){
+		gpio_set_value(tps6518x->gpio_pmic_wakeup,1);
+	}
 	/*
 	 * Check to see if we need to set the VCOM voltage.
 	 * Should only be done one time. And, we can
@@ -318,7 +333,9 @@ static int tps6518x_vcom_enable(struct regulator_dev *reg)
 	}
 	printk("vcom set voltage value=%d\n",vcomEnable);
 	gpio_set_value(tps6518x->gpio_pmic_vcom_ctrl,vcomEnable);
-	gpio_set_value(tps6518x->gpio_pmic_wakeup,0);
+	if(gpio==0){
+		gpio_set_value(tps6518x->gpio_pmic_wakeup,0);
+	}
 	
 	printk("tps6518x_vcom_enable end\n");
 
@@ -663,7 +680,7 @@ static int tps6518x_pmic_dt_parse_pdata(struct platform_device *pdev,
 		goto err;
 	}
 	ret = devm_gpio_request_one(&pdev->dev, tps6518x->gpio_pmic_wakeup,
-				GPIOF_OUT_INIT_LOW, "epdc-pmic-wake");
+				GPIOF_OUT_INIT_HIGH, "epdc-pmic-wake");
 	if (ret < 0)
 		goto err;
 
@@ -799,13 +816,11 @@ static int tps6518x_regulator_probe(struct platform_device *pdev)
 	 * Should only be done one time!  Timing values may only be
 	 * changed a limited number of times according to spec.
 	 */
-	gpio_set_value(tps6518x->gpio_pmic_wakeup,1);
 
 	tps6518x_setup_timings(tps6518x);
 
 	tps6518x_detect1();
 	
-	//gpio_set_value(tps6518x->gpio_pmic_wakeup,0);
 
     	printk("tps6518x_regulator_probe success\n");
 	return 0;

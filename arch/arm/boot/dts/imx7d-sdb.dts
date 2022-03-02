@@ -499,10 +499,10 @@
 		pwr_seq1 = <0x30>;
 		pwr_seq2 = <0x33>;
 	
-		upseq0 = <0xe4>;	
-		upseq1 = <0x55>;
-		dwnseq0 = <0x1b>;
-		dwnseq1 = <0xe0>;
+		upseq0 = <0xe1>;	
+		upseq1 = <0xff>;
+		dwnseq0 = <0x1e>;
+		dwnseq1 = <0x00>;
                 
                 SENSOR-supply = <&reg_sensors>;
 		
