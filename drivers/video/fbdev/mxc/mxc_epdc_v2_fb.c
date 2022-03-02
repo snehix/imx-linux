@@ -4983,7 +4983,8 @@ static int mxc_epdc_fb_probe(struct platform_device *pdev)
 	struct resource *res;
 	struct fb_info *info;
 	char *options, *opt;
-	char panel_str[] = "ES103TC1";
+	//char panel_str[] = "ES103TC1";
+	char *panel_str = NULL;
 	char name[] = "mxcepdcfb";
 	struct fb_videomode *vmode;
 	int xres_virt, yres_virt, buf_size;
