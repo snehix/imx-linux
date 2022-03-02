@@ -364,7 +364,7 @@ static struct fb_videomode es103tc1mode = {
 	.refresh = 85,
 	.xres = 1872,
 	.yres = 1404,
-	.pixclock =142857142,
+	.pixclock =120000000,
 	.left_margin = 32,
 	.right_margin = 92,
 	.upper_margin = 4,
@@ -454,10 +454,10 @@ static struct imx_epdc_fb_mode panel_modes[] = {
 		20, 	/* sdoed_delay */
 		10, 	/* sdoez_width */
 		20, 	/* sdoez_delay */
-		1032, 	/* GDCLK_HP */
-		755, 	/* GDSP_OFF */
+		632, 	/* GDCLK_HP */
+		20, 	/* GDSP_OFF */
 		0, 	/* GDOE_OFF */
-		91, 	/* gdclk_offs */
+		1, 	/* gdclk_offs */
 		1, 	/* num_ce */
 	}
 };

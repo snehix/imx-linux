@@ -805,7 +805,7 @@ static int tps6518x_regulator_probe(struct platform_device *pdev)
 
 	tps6518x_detect1();
 	
-	gpio_set_value(tps6518x->gpio_pmic_wakeup,0);
+	//gpio_set_value(tps6518x->gpio_pmic_wakeup,0);
 
     	printk("tps6518x_regulator_probe success\n");
 	return 0;
