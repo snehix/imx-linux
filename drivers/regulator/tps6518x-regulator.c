@@ -435,7 +435,7 @@ static int tps6518x_display_enable(struct regulator_dev *reg)
 		printk("new_reg_val=%d\n",new_reg_val);
 		tps6518x_reg_write(REG_TPS65180_ENABLE, new_reg_val);
 
-		msleep(18);
+		msleep(72);
 		
 	}
 
@@ -560,10 +560,10 @@ static void tps6518x_setup_timings(struct tps6518x *tps6518x)
 		tps6518x_reg_write(REG_TPS65180_PWRSEQ2, tps6518x->pwr_seq2);
 	    }
 	}
-	tps6518x->upseq0=0xe4;	
-	tps6518x->upseq1=0x55;	
-	tps6518x->dwnseq0=0x1b;	
-	tps6518x->dwnseq1=0xe0;	
+	tps6518x->upseq0=0xe1;	
+	tps6518x->upseq1=0xff;	
+	tps6518x->dwnseq0=0x1e;	
+	tps6518x->dwnseq1=0x00;	
 
 	printk("Revision id=0x%x\n",tps6518x->revID);
 
@@ -654,7 +654,7 @@ static int tps6518x_pmic_dt_parse_pdata(struct platform_device *pdev,
 	of_node_put(regulators_np);
 
 	//tps6518x->max_wait = (6 + 6 + 6 + 6);
-	tps6518x->max_wait = 100;
+	tps6518x->max_wait = 140;
 
 	tps6518x->gpio_pmic_wakeup = of_get_named_gpio(pmic_np,
 					"gpio_pmic_wakeup", 0);
