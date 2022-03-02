@@ -419,6 +419,7 @@ static int tps6518x_display_enable(struct regulator_dev *reg)
 	unsigned int fld_mask;	  /* register mask for bitfield to modify */
 	unsigned int fld_val;	  /* new bitfield value to write */
 	unsigned int new_reg_val; /* new register value to write */
+	int gpio;
 	
 	printk("tps6518x_display_enable\n");
 	
@@ -428,7 +429,10 @@ static int tps6518x_display_enable(struct regulator_dev *reg)
 	}
 	else
 	{
-		gpio_set_value(tps6518x->gpio_pmic_wakeup,1);
+		gpio = gpio_get_value(tps6518x->gpio_pmic_wakeup);
+		if(gpio==0){
+			gpio_set_value(tps6518x->gpio_pmic_wakeup,1);
+		}
 
 		printk("enable display regulators\n");
 		/* enable display regulators */
@@ -483,7 +487,7 @@ static int tps6518x_display_disable(struct regulator_dev *reg)
 		new_reg_val = tps65180_current_Enable_Register = to_reg_val(cur_reg_val, fld_mask, fld_val);
 		tps6518x_reg_write(REG_TPS65180_ENABLE, new_reg_val);
 		
-		gpio_set_value(tps6518x->gpio_pmic_wakeup,0);
+		//gpio_set_value(tps6518x->gpio_pmic_wakeup,0);
 		
 	}
 
