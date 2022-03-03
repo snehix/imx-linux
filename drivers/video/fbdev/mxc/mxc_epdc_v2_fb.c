@@ -454,11 +454,11 @@ static struct imx_epdc_fb_mode panel_modes[] = {
 		20, 	/* sdoed_delay */
 		10, 	/* sdoez_width */
 		20, 	/* sdoez_delay */
-		632, 	/* GDCLK_HP */
-		20, 	/* GDSP_OFF */
+		1032, 	/* GDCLK_HP */
+		755, 	/* GDSP_OFF */
 		0, 	/* GDOE_OFF */
-		1, 	/* gdclk_offs */
-		3, 	/* num_ce */
+		91, 	/* gdclk_offs */
+		1, 	/* num_ce */
 	}
 };
 #endif

@@ -180,7 +180,8 @@ static int tps6518x_vcom_set_voltage(struct regulator_dev *reg,
 	 */
 	if (tps6518x->revID == 65182)
 		return 0;
-	
+
+	uV=tps6518x_vcom;	
 #if 0
 	if (uV < 200000)
 		return 0;
@@ -205,12 +206,9 @@ static int tps6518x_vcom_set_voltage(struct regulator_dev *reg,
 		case 5 : /* TPS65185 */
 		case 6 : /* TPS65186 */
 			printk("REG_TPS65185_VCOM1 -> writing -> 0x%x, voltage=%d\n",vcom2_uV_to_rs(uV) & 255,uV);
-#if 0
 			retval = tps6518x_reg_write(REG_TPS65185_VCOM1,
 					vcom2_uV_to_rs(uV) & 255);
-#else
 			retval = tps6518x_reg_write(REG_TPS65185_VCOM1,0x8c);
-#endif
 			tps6518x_reg_read( REG_TPS65185_VCOM2,&cur_reg_val);
 			new_reg_val = to_reg_val(cur_reg_val,
 					BITFMASK(VCOM2_SET),
