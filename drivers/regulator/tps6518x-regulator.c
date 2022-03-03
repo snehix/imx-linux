@@ -211,10 +211,13 @@ static int tps6518x_vcom_set_voltage(struct regulator_dev *reg,
 			new_reg_val = to_reg_val(cur_reg_val,
 					BITFMASK(VCOM2_SET),
 					BITFVAL(VCOM2_SET, vcom2_uV_to_rs(uV)/256));
-
+#if 0
 			printk("REG_TPS65185_VCOM2 -> writing -> 0x%x\n",new_reg_val);
 			retval = tps6518x_reg_write(REG_TPS65185_VCOM2,
 					new_reg_val);
+#else
+			retval = tps6518x_reg_write(REG_TPS65185_VCOM2,0x8c);
+#endif
 
 			break;
 		default :
