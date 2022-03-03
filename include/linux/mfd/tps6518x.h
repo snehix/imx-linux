@@ -296,6 +296,8 @@ struct tps6518x {
 	int gpio_pmic_wakeup;
 	int gpio_pmic_intr;
 	int gpio_pmic_powerup;
+	int gpio_epdc_bdr0;
+	int gpio_epdc_bdr1;
 
 	/* TPS6518x part variables */
 	int pass_num;
@@ -339,6 +341,8 @@ struct tps6518x_platform_data {
 	int gpio_pmic_wakeup;
 	int gpio_pmic_intr;
 	int gpio_pmic_powerup;
+	int gpio_epdc_bdr0;
+	int gpio_epdc_bdr1;
 	int pass_num;
 	int vcom_uV;
 

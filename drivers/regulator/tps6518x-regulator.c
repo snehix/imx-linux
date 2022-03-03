@@ -744,6 +744,27 @@ static int tps6518x_pmic_dt_parse_pdata(struct platform_device *pdev,
 	if (ret < 0)
 		goto err;
 
+	tps6518x->gpio_epdc_bdr0 = of_get_named_gpio(pmic_np,
+					"gpio_epdc_brd0", 0);
+	if (!gpio_is_valid(tps6518x->gpio_epdc_bdr0)) {
+		dev_err(&pdev->dev, "no epdc bdr0 pin available\n");
+		goto err;
+	}
+	ret = devm_gpio_request_one(&pdev->dev, tps6518x->gpio_epdc_bdr0,
+				GPIOF_OUT_INIT_LOW, "epdc-bdr0");
+	if (ret < 0)
+		goto err;
+
+	tps6518x->gpio_epdc_bdr1 = of_get_named_gpio(pmic_np,
+					"gpio_epdc_brd1", 0);
+	if (!gpio_is_valid(tps6518x->gpio_epdc_bdr1)) {
+		dev_err(&pdev->dev, "no epdc bdr1 pin available\n");
+		goto err;
+	}
+	ret = devm_gpio_request_one(&pdev->dev, tps6518x->gpio_epdc_bdr1,
+				GPIOF_OUT_INIT_LOW, "epdc-bdr1");
+	if (ret < 0)
+		goto err;
 err:
 	return 0;
 

@@ -513,6 +513,8 @@
 		gpio_pmic_wakeup = <&gpio2 23 0>;
 		gpio_pmic_intr = <&gpio2 22 0>;
 		gpio_pmic_powerup = <&gpio2 21 0>;
+		gpio_epdc_brd0 = <&gpio2 28 0>;		
+		gpio_epdc_brd1 = <&gpio2 29 0>;		
 
 		regulators {
 			DISPLAY_reg: DISPLAY {
@@ -1014,6 +1016,8 @@
 				MX7D_PAD_EPDC_SDCE3__GPIO2_IO23		0x80000000  /* wakeup */
 				MX7D_PAD_EPDC_SDCE2__GPIO2_IO22		0x80000000  /* pwr int */
 				MX7D_PAD_EPDC_SDCE1__GPIO2_IO21		0x80000000  /* powerup */
+				MX7D_PAD_EPDC_BDR0__GPIO2_IO28		0x80000000  /* bdr0 */
+				MX7D_PAD_EPDC_BDR1__GPIO2_IO29		0x80000000  /* bdr1 */
 			>;
 		};
 		pinctrl_spi4: spi4grp {
