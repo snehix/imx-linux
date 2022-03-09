@@ -472,6 +472,11 @@
 		compatible = "fsl,mpl3115";
 		reg = <0x60>;
 	};
+	
+	 wacom-emr-dev@09 {
+		compatible = "fsl,wacom-emr-dev";
+		reg = <0x09>;
+	};
 };
 
 &i2c3 {
