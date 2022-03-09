@@ -532,12 +532,6 @@
 			};
 		};
 	};
-	 
-	wacom-emr-dev@09 {
-		compatible = "wacom,wac_i2c_emr";
-		reg = <0x09>;
-		status = "okay";
-	};
 };
 
 &i2c4 {
