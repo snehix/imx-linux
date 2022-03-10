@@ -708,7 +708,7 @@ static int tps6518x_pmic_dt_parse_pdata(struct platform_device *pdev,
 		goto err;
 	}
 	ret = devm_gpio_request_one(&pdev->dev, tps6518x->gpio_pmic_v3p3_ctrl,
-				GPIOF_OUT_INIT_LOW, "epdc-v3p3");
+				GPIOF_OUT_INIT_HIGH, "epdc-v3p3");
 	if (ret < 0)
 		goto err;
 
