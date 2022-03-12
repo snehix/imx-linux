@@ -616,7 +616,7 @@
 					offset = <0x38>;
 					value = <0x60>;
 					mask = <0x60>;
-					status = "disabled";
+					status = "okay";
 				};
 
 				snvs_pwrkey: snvs-powerkey {
@@ -627,7 +627,7 @@
 					clock-names = "snvs-pwrkey";
 					linux,keycode = <KEY_POWER>;
 					wakeup-source;
-					status = "disabled";
+					status = "okay";
 				};
 			};
 
