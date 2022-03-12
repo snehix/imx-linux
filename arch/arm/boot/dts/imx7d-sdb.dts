@@ -43,6 +43,7 @@
 		compatible = "gpio-keys";
 		pinctrl-names = "default";
 		pinctrl-0 = <&pinctrl_gpio_keys>;
+		status = "disabled";
 
 		volume-up {
 			label = "Volume Up";
@@ -57,7 +58,6 @@
 			linux,code = <KEY_VOLUMEDOWN>;
 			wakeup-source;
 		};
-		status = "disabled";
 	};
 
 	spi4 {
