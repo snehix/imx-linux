@@ -57,6 +57,7 @@
 			linux,code = <KEY_VOLUMEDOWN>;
 			wakeup-source;
 		};
+		status = "disabled";
 	};
 
 	spi4 {

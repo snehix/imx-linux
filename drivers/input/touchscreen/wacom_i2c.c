@@ -196,7 +196,9 @@ static int wacom_i2c_probe(struct i2c_client *client,
 			     0, features.pressure_max, 0, 0);
 
 	input_set_drvdata(input, wac_i2c);
-
+	
+	/* this should come from dts file
+	 * SAI1_TXFS=GPIO6_IO14=174*/
 	client->irq = gpio_to_irq(174);
 	error = request_threaded_irq(client->irq, NULL, wacom_i2c_irq,
 				     IRQF_ONESHOT,
