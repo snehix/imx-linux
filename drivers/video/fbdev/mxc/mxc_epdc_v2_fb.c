@@ -359,6 +359,7 @@ static struct fb_videomode e97_v110_mode = {
 	.flag = 0,
 };
 
+#if 0
 static struct fb_videomode es103tc1mode = {
 	.name = "ES103TC1",
 	.refresh = 85,
@@ -375,6 +376,24 @@ static struct fb_videomode es103tc1mode = {
 	.vmode = FB_VMODE_NONINTERLACED,
 	.flag = 0,
 };
+#else
+static struct fb_videomode es103tc1mode = {
+	.name = "ES103TC1",
+	.refresh = 85,
+	.xres = 1872,
+	.yres = 1404,
+	.pixclock =132000000,
+	.left_margin = 8,
+	.right_margin = 23,
+	.upper_margin = 4,
+	.lower_margin = 12,
+	.hsync_len = 11,
+	.vsync_len = 1,
+	.sync = 0,
+	.vmode = FB_VMODE_NONINTERLACED,
+	.flag = 0,
+};
+#endif
 
 
 #if 0
