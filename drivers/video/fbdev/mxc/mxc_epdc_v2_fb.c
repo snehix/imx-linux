@@ -465,6 +465,7 @@ static struct imx_epdc_fb_mode panel_modes[] = {
 	}
 };
 #else
+#if 0
 static struct imx_epdc_fb_mode panel_modes[] = {
 	{
 		&es103tc1mode,	/* struct fb_videomode *mode */
@@ -480,6 +481,23 @@ static struct imx_epdc_fb_mode panel_modes[] = {
 		1, 	/* num_ce */
 	}
 };
+#else
+static struct imx_epdc_fb_mode panel_modes[] = {
+	{
+		&es103tc1mode,	/* struct fb_videomode *mode */
+		4, 	/* vscan_holdoff */
+		10, 	/* sdoed_width */
+		20, 	/* sdoed_delay */
+		10, 	/* sdoez_width */
+		20, 	/* sdoez_delay */
+		1464, 	/* GDCLK_HP */
+		732, 	/* GDSP_OFF */
+		0, 	/* GDOE_OFF */
+		66, 	/* gdclk_offs */
+		1, 	/* num_ce */
+	}
+};
+#endif
 #endif
 
 static struct imx_epdc_fb_platform_data epdc_data = {
