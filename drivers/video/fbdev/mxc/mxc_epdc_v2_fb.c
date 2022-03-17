@@ -359,7 +359,7 @@ static struct fb_videomode e97_v110_mode = {
 	.flag = 0,
 };
 
-#if 0
+#if 1
 static struct fb_videomode es103tc1mode = {
 	.name = "ES103TC1",
 	.refresh = 85,
