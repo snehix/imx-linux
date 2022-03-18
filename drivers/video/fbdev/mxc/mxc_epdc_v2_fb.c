@@ -3572,6 +3572,7 @@ static int mxc_epdc_fb_send_update(struct mxcfb_update_data *upd_data,
 
 	if (!fb_data->restrict_width) {
 		/* No width restriction, send entire update region */
+		printk("No width restriction, send entire update region\n");
 		return mxc_epdc_fb_send_single_update(upd_data, info);
 	} else {
 		int ret;
@@ -3584,16 +3585,21 @@ static int mxc_epdc_fb_send_update(struct mxcfb_update_data *upd_data,
 		  * alignment requirement
 		  */
 		if (fb_data->epdc_fb_var.rotate != FB_ROTATE_UR)
+		{
 			max_upd_width -= EPDC_V2_ROTATION_ALIGNMENT;
+			printk("!FB_ROTATE_UR, max_upd_width=%d\n",max_upd_width);
+		}
 
 		/* Select split of width or height based on rotation */
 		if ((fb_data->epdc_fb_var.rotate == FB_ROTATE_UR) ||
 			(fb_data->epdc_fb_var.rotate == FB_ROTATE_UD)) {
 			region_width = &upd_data->update_region.width;
 			region_left = &upd_data->update_region.left;
+			printk("FB_ROTATE_UR || FB_ROTATE_UD, region_width=%d, region_left=%d\n",region_width,region_left);
 		} else {
 			region_width = &upd_data->update_region.height;
 			region_left = &upd_data->update_region.top;
+			printk("!FB_ROTATE_UR && !FB_ROTATE_UD, region_width=%d, region_left=%d\n",region_width,region_left);
 		}
 
 		if (*region_width <= max_upd_width)
@@ -3850,6 +3856,8 @@ static void mxc_epdc_fb_update_pages(struct mxc_epdc_fb_data *fb_data,
 	update.update_marker = 0;
 	update.temp = TEMP_USE_AMBIENT;
 	update.flags = 0;
+
+	printk("[x=%d,y=%d,w=%d,h=%d]\n",update.update_region.left,update.update_region.width,update.update_region.top,update.update_region.height);
 
 	mxc_epdc_fb_send_update(&update, &fb_data->info);
 }
@@ -4913,6 +4921,8 @@ static void mxc_epdc_fb_fw_handler(const struct firmware *fw,
 		yres = screeninfo->yres;
 	}
 
+	printk("xres=%d,yres=%d\n",xres,yres);
+
 	update.update_region.left = 0;
 	update.update_region.width = xres;
 	update.update_region.top = 0;
@@ -5142,7 +5152,7 @@ static int mxc_epdc_fb_probe(struct platform_device *pdev)
 
 	if (!fb_data->default_bpp)
 		fb_data->default_bpp = 16;
-		fb_data->default_bpp = 8;
+		//fb_data->default_bpp = 8;
 
 	/* Set default (first defined mode) before searching for a match */
 	fb_data->cur_mode = &fb_data->pdata->epdc_mode[0];
