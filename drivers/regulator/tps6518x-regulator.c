@@ -550,7 +550,7 @@ static struct regulator_ops tps6518x_vcom_ops = {
 	.is_enabled = tps6518x_vcom_is_enabled,
 };
 
-#if 0
+#if 1
 static struct regulator_ops tps6518x_v3p3_ops = {
 	.enable = tps6518x_v3p3_enable,
 	.disable = tps6518x_v3p3_disable,
@@ -614,10 +614,17 @@ static void tps6518x_setup_timings(struct tps6518x *tps6518x)
 		tps6518x_reg_write(REG_TPS65180_PWRSEQ2, tps6518x->pwr_seq2);
 	    }
 	}
+#if 0
 	tps6518x->upseq0=0xe1;	
 	tps6518x->upseq1=0xff;	
 	tps6518x->dwnseq0=0x1e;	
 	tps6518x->dwnseq1=0x00;	
+#else
+	tps6518x->upseq0=0xe4;	
+	tps6518x->upseq1=0x55;	
+	tps6518x->dwnseq0=0x1e;	
+	tps6518x->dwnseq1=0xe0;	
+#endif
 
 	printk("Revision id=0x%x\n",tps6518x->revID);
 
