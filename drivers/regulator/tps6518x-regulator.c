@@ -133,7 +133,7 @@ static int epdc_pwr0_is_enabled(struct regulator_dev *reg)
 	printk("epdc_pwr0_is_enabled\n");
 
 
-	int gpio = gpio_get_value(tps6518x->gpio_pmic_powerup,);
+	int gpio = gpio_get_value(tps6518x->gpio_pmic_powerup);
 
 	printk("epdc_pwr0_is_enabled end, return=%d\n",gpio);
 	
