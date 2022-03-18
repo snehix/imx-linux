@@ -683,8 +683,8 @@ static int tps6518x_pmic_dt_parse_pdata(struct platform_device *pdev,
 	}
 	of_node_put(regulators_np);
 
-	tps6518x->max_wait = (6 + 6 + 6 + 6);
-	//tps6518x->max_wait = 140;
+	//tps6518x->max_wait = (6 + 6 + 6 + 6);
+	tps6518x->max_wait = 140;
 
 	tps6518x->gpio_pmic_wakeup = of_get_named_gpio(pmic_np,
 					"gpio_pmic_wakeup", 0);
