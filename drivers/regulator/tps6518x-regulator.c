@@ -125,6 +125,24 @@ static int epdc_pwr0_disable(struct regulator_dev *reg)
 	return 0;
 
 }
+
+static int epdc_pwr0_is_enabled(struct regulator_dev *reg)
+{
+	struct tps6518x *tps6518x = rdev_get_drvdata(reg);
+	
+	printk("epdc_pwr0_is_enabled\n");
+
+
+	int gpio = gpio_get_value(tps6518x->gpio_pmic_powerup,);
+
+	printk("epdc_pwr0_is_enabled end, return=%d\n",gpio);
+	
+	if (gpio == 0)
+		return 0;
+	else
+		return 1;
+}
+
 static int tps6518x_v3p3_enable(struct regulator_dev *reg)
 {
 	struct tps6518x *tps6518x = rdev_get_drvdata(reg);
@@ -532,11 +550,19 @@ static struct regulator_ops tps6518x_vcom_ops = {
 	.is_enabled = tps6518x_vcom_is_enabled,
 };
 
+#if 0
 static struct regulator_ops tps6518x_v3p3_ops = {
 	.enable = tps6518x_v3p3_enable,
 	.disable = tps6518x_v3p3_disable,
 	.is_enabled = tps6518x_v3p3_is_enabled,
 };
+#else
+static struct regulator_ops tps6518x_v3p3_ops = {
+	.enable = epdc_pwr0_enable,
+	.disable = epdc_pwr0_disable,
+	.is_enabled = epdc_pwr0_is_enabled,
+};
+#endif
 
 /*
  * Regulator descriptors
@@ -713,7 +739,7 @@ static int tps6518x_pmic_dt_parse_pdata(struct platform_device *pdev,
 		goto err;
 	}
 	ret = devm_gpio_request_one(&pdev->dev, tps6518x->gpio_pmic_v3p3_ctrl,
-				GPIOF_OUT_INIT_LOW, "epdc-v3p3");
+				GPIOF_OUT_INIT_HIGH, "epdc-v3p3");
 	if (ret < 0)
 		goto err;
 
