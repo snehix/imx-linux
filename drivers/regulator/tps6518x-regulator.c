@@ -142,7 +142,7 @@ static int tps6518x_v3p3_disable(struct regulator_dev *reg)
 	
 	printk("epdc_v3p3_disable\n");
 
-	return 0;
+
 	gpio_set_value(tps6518x->gpio_pmic_v3p3_ctrl, 0);
 	return 0;
 
@@ -583,17 +583,10 @@ static void tps6518x_setup_timings(struct tps6518x *tps6518x)
 		tps6518x_reg_write(REG_TPS65180_PWRSEQ2, tps6518x->pwr_seq2);
 	    }
 	}
-#if 0
-	tps6518x->upseq0=0xe4;	
-	tps6518x->upseq1=0x55;	
-	tps6518x->dwnseq0=0x1e;	
-	tps6518x->dwnseq1=0xe0;	
-#else
 	tps6518x->upseq0=0xe1;	
 	tps6518x->upseq1=0xff;	
 	tps6518x->dwnseq0=0x1e;	
 	tps6518x->dwnseq1=0x00;	
-#endif
 
 	printk("Revision id=0x%x\n",tps6518x->revID);
 
@@ -715,7 +708,7 @@ static int tps6518x_pmic_dt_parse_pdata(struct platform_device *pdev,
 		goto err;
 	}
 	ret = devm_gpio_request_one(&pdev->dev, tps6518x->gpio_pmic_v3p3_ctrl,
-				GPIOF_OUT_INIT_HIGH, "epdc-v3p3");
+				GPIOF_OUT_INIT_LOW, "epdc-v3p3");
 	if (ret < 0)
 		goto err;
 
