@@ -477,7 +477,8 @@ static int tps6518x_display_enable(struct regulator_dev *reg)
 		fld_val = BITFVAL(ACTIVE, true);
 		printk("tps65180_current_Enable_Register=%d,fld_mask=%d,fld_val=%d\n",tps65180_current_Enable_Register,fld_mask,fld_val);
 		new_reg_val = tps65180_current_Enable_Register = to_reg_val(cur_reg_val, fld_mask, fld_val);
-	
+
+		new_reg_val=0xBF;	
 		printk("new_reg_val=%d\n",new_reg_val);
 		tps6518x_reg_write(REG_TPS65180_ENABLE, new_reg_val);
 
@@ -614,7 +615,7 @@ static void tps6518x_setup_timings(struct tps6518x *tps6518x)
 		tps6518x_reg_write(REG_TPS65180_PWRSEQ2, tps6518x->pwr_seq2);
 	    }
 	}
-#if 0
+#if 1
 	tps6518x->upseq0=0xe1;	
 	tps6518x->upseq1=0xff;	
 	tps6518x->dwnseq0=0x1e;	
@@ -746,7 +747,7 @@ static int tps6518x_pmic_dt_parse_pdata(struct platform_device *pdev,
 		goto err;
 	}
 	ret = devm_gpio_request_one(&pdev->dev, tps6518x->gpio_pmic_v3p3_ctrl,
-				GPIOF_OUT_INIT_HIGH, "epdc-v3p3");
+				GPIOF_OUT_INIT_LOW, "epdc-v3p3");
 	if (ret < 0)
 		goto err;
 
