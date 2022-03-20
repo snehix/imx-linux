@@ -40,7 +40,8 @@ struct tps6518x_data {
 
 
 static int tps6518x_pass_num = { 2 };
-static int tps6518x_vcom = { -2680000 };
+//static int tps6518x_vcom = { -2680000 };
+static int tps6518x_vcom = { -1400000 };
 static int tps65180_current_Enable_Register = 0;
 
 static int tps6518x_is_power_good(struct tps6518x *tps6518x);
@@ -224,21 +225,23 @@ static int tps6518x_vcom_set_voltage(struct regulator_dev *reg,
 		case 5 : /* TPS65185 */
 		case 6 : /* TPS65186 */
 			printk("REG_TPS65185_VCOM1 -> writing -> 0x%x, voltage=%d\n",vcom2_uV_to_rs(uV) & 255,uV);
-#if 0
+#if 1
 			retval = tps6518x_reg_write(REG_TPS65185_VCOM1,
 					vcom2_uV_to_rs(uV) & 255);
-#endif
+#else
 			retval = tps6518x_reg_write(REG_TPS65185_VCOM1,0x8c);
+#endif
 			tps6518x_reg_read( REG_TPS65185_VCOM2,&cur_reg_val);
 			new_reg_val = to_reg_val(cur_reg_val,
 					BITFMASK(VCOM2_SET),
 					BITFVAL(VCOM2_SET, vcom2_uV_to_rs(uV)/256));
 			printk("REG_TPS65185_VCOM2 -> writing -> 0x%x\n",new_reg_val);
-#if 0
+#if 1
 			retval = tps6518x_reg_write(REG_TPS65185_VCOM2,
 					new_reg_val);
-#endif
+#else
 			retval = tps6518x_reg_write(REG_TPS65185_VCOM2,0x0);
+#endif
 
 			break;
 		default :
@@ -478,11 +481,12 @@ static int tps6518x_display_enable(struct regulator_dev *reg)
 		printk("tps65180_current_Enable_Register=%d,fld_mask=%d,fld_val=%d\n",tps65180_current_Enable_Register,fld_mask,fld_val);
 		new_reg_val = tps65180_current_Enable_Register = to_reg_val(cur_reg_val, fld_mask, fld_val);
 
-		new_reg_val=0xBF;	
+		//new_reg_val=0xBF;	
 		printk("new_reg_val=%d\n",new_reg_val);
 		tps6518x_reg_write(REG_TPS65180_ENABLE, new_reg_val);
 
-		msleep(72);
+		//msleep(72);
+		msleep(24);
 		
 	}
 
@@ -517,7 +521,8 @@ static int tps6518x_display_disable(struct regulator_dev *reg)
 		
 	}
 
-	msleep(tps6518x->max_wait*3);
+	//msleep(tps6518x->max_wait*3);
+	msleep(tps6518x->max_wait);
 
 	return 0;
 }
@@ -715,8 +720,8 @@ static int tps6518x_pmic_dt_parse_pdata(struct platform_device *pdev,
 	}
 	of_node_put(regulators_np);
 
-	//tps6518x->max_wait = (6 + 6 + 6 + 6);
-	tps6518x->max_wait = 140;
+	tps6518x->max_wait = (6 + 6 + 6 + 6);
+	//tps6518x->max_wait = 140;
 
 	tps6518x->gpio_pmic_wakeup = of_get_named_gpio(pmic_np,
 					"gpio_pmic_wakeup", 0);
