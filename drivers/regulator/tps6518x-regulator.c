@@ -150,6 +150,8 @@ static int tps6518x_v3p3_enable(struct regulator_dev *reg)
 	
 	printk("epdc_v3p3_enable\n");
 
+	return 0;
+
 
 	gpio_set_value(tps6518x->gpio_pmic_v3p3_ctrl, 1);
 	return 0;
@@ -161,6 +163,7 @@ static int tps6518x_v3p3_disable(struct regulator_dev *reg)
 	
 	printk("epdc_v3p3_disable\n");
 
+	return 0;
 
 	gpio_set_value(tps6518x->gpio_pmic_v3p3_ctrl, 0);
 	return 0;
@@ -172,6 +175,7 @@ static int tps6518x_v3p3_is_enabled(struct regulator_dev *reg)
 	
 	printk("tps6518x_v3p3_is_enabled\n");
 
+	return 1;
 
 	int gpio = gpio_get_value(tps6518x->gpio_pmic_v3p3_ctrl);
 
@@ -752,7 +756,7 @@ static int tps6518x_pmic_dt_parse_pdata(struct platform_device *pdev,
 		goto err;
 	}
 	ret = devm_gpio_request_one(&pdev->dev, tps6518x->gpio_pmic_v3p3_ctrl,
-				GPIOF_OUT_INIT_LOW, "epdc-v3p3");
+				GPIOF_OUT_INIT_HIGH, "epdc-v3p3");
 	if (ret < 0)
 		goto err;
 
