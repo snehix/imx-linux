@@ -479,6 +479,11 @@
 		reg = <0x60>;
 	};
 	
+	bq25895@6a {
+		compatible = "ti,bq25895";
+		reg = <0x6a>;
+	};
+	
 };
 
 &i2c3 {
