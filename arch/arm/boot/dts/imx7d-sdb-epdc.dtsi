@@ -43,7 +43,7 @@
 &i2c3 {
 	elan@10 {
 		pinctrl-names = "default";
-		pinctrl-0 = <&pinctrl_epdc_elan_touch>;
+		//pinctrl-0 = <&pinctrl_epdc_elan_touch>;
 		compatible = "elan,elan-touch";
 		reg = <0x10>;
 		interrupt-parent = <&gpio6>;
