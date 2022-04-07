@@ -749,6 +749,7 @@ static int tps6518x_pmic_dt_parse_pdata(struct platform_device *pdev,
 	if (ret < 0)
 		goto err;
 	
+#if 0
 	tps6518x->gpio_pmic_v3p3_ctrl = of_get_named_gpio(pmic_np,
 					"gpio_pmic_v3p3_ctrl", 0);
 	if (!gpio_is_valid(tps6518x->gpio_pmic_v3p3_ctrl)) {
@@ -756,10 +757,10 @@ static int tps6518x_pmic_dt_parse_pdata(struct platform_device *pdev,
 		goto err;
 	}
 	ret = devm_gpio_request_one(&pdev->dev, tps6518x->gpio_pmic_v3p3_ctrl,
-				GPIOF_OUT_INIT_HIGH, "epdc-v3p3");
+				GPIOF_OUT_INIT_LOW, "epdc-v3p3");
 	if (ret < 0)
 		goto err;
-
+#endif
 
 	tps6518x->gpio_pmic_powerup = of_get_named_gpio(pmic_np,
 					"gpio_pmic_powerup", 0);

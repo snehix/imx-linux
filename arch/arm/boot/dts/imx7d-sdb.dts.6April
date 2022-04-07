@@ -531,7 +531,7 @@
 		
 		gpio_pmic_pwrgood = <&gpio2 31 0>;
 		gpio_pmic_vcom_ctrl = <&gpio4 14 0>;
-		//gpio_pmic_v3p3_ctrl = <&gpio2 30 0>;
+		gpio_pmic_v3p3_ctrl = <&gpio2 30 0>;
 		gpio_pmic_wakeup = <&gpio2 23 0>;
 		gpio_pmic_intr = <&gpio2 22 0>;
 		gpio_pmic_powerup = <&gpio2 21 0>;
@@ -571,7 +571,6 @@
 
 				parade,irq_gpio = <&gpio6 12 0>;
 				parade,rst_gpio = <&gpio6 15 0>;
-				parade,vddi_gpio = <&gpio2 30 0>;
 				parade,hid_desc_register = <1>;
 				/* 
 				 * PT_CORE_FLAG_NONE = 0x00
@@ -905,7 +904,6 @@
 			fsl,pins = <
 				MX7D_PAD_SAI1_RX_DATA__GPIO6_IO12 0x59
 				MX7D_PAD_SAI1_TX_DATA__GPIO6_IO15 0x1b
-				MX7D_PAD_EPDC_PWR_COM__GPIO2_IO30	0x80000000  /* v3p3 control */
 			>;
 		};
 		pinctrl_mipi_dsi_reset: mipi_dsi_reset_grp {
@@ -1137,6 +1135,7 @@
 		pinctrl_tps6518: tps6518grp-1 {
 			fsl,pins = <
 				MX7D_PAD_EPDC_PWR_STAT__GPIO2_IO31	0x80000000  /* pwrgood */
+				MX7D_PAD_EPDC_PWR_COM__GPIO2_IO30	0x80000000  /* v3p3 control */
 				MX7D_PAD_I2C4_SCL__GPIO4_IO14		0x80000000  /* vcom_ctrl */
 				MX7D_PAD_EPDC_SDCE3__GPIO2_IO23		0x80000000  /* wakeup */
 				MX7D_PAD_EPDC_SDCE2__GPIO2_IO22		0x80000000  /* pwr int */
