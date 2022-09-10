@@ -41,7 +41,8 @@ struct tps6518x_data {
 
 static int tps6518x_pass_num = { 2 };
 //static int tps6518x_vcom = { -2680000 };
-static int tps6518x_vcom = { -1400000 };
+//static int tps6518x_vcom = { -1400000 };
+static int tps6518x_vcom = { -1830000 };
 static int tps65180_current_Enable_Register = 0;
 
 static int tps6518x_is_power_good(struct tps6518x *tps6518x);
@@ -490,7 +491,9 @@ static int tps6518x_display_enable(struct regulator_dev *reg)
 		tps6518x_reg_write(REG_TPS65180_ENABLE, new_reg_val);
 
 		//msleep(72);
-		msleep(24);
+		//msleep(24);
+		msleep(10);
+		
 		
 	}
 
@@ -624,7 +627,7 @@ static void tps6518x_setup_timings(struct tps6518x *tps6518x)
 		tps6518x_reg_write(REG_TPS65180_PWRSEQ2, tps6518x->pwr_seq2);
 	    }
 	}
-#if 1
+#if 0
 	tps6518x->upseq0=0xe1;	
 	tps6518x->upseq1=0xff;	
 	tps6518x->dwnseq0=0x1e;	

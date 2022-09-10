@@ -372,7 +372,7 @@ SND_SOC_DAPM_MIXER("Left Output Mixer", WM8960_POWER3, 3, 0,
 	&wm8960_loutput_mixer[0],
 	ARRAY_SIZE(wm8960_loutput_mixer)),
 SND_SOC_DAPM_MIXER("Right Output Mixer", WM8960_POWER3, 2, 0,
-	&wm8960_routput_mixer[0],
+	&wm8960_routput_mixer[1],
 	ARRAY_SIZE(wm8960_routput_mixer)),
 
 SND_SOC_DAPM_PGA("LOUT1 PGA", WM8960_POWER2, 6, 0, NULL, 0),
@@ -1319,6 +1319,7 @@ static struct snd_soc_dai_driver wm8960_dai = {
 
 static int wm8960_probe(struct snd_soc_component *component)
 {
+	int ret;
 	struct wm8960_priv *wm8960 = snd_soc_component_get_drvdata(component);
 	struct wm8960_data *pdata = &wm8960->pdata;
 
@@ -1327,8 +1328,11 @@ static int wm8960_probe(struct snd_soc_component *component)
 	else
 		wm8960->set_bias_level = wm8960_set_bias_level_out3;
 
-	snd_soc_add_component_controls(component, wm8960_snd_controls,
+	ret=snd_soc_add_component_controls(component, wm8960_snd_controls,
 				     ARRAY_SIZE(wm8960_snd_controls));
+	if(ret<0){
+		pr_debug("Failed writing audio sound control\n");
+	}
 	wm8960_add_widgets(component);
 
 	return 0;
@@ -1447,7 +1451,7 @@ static int wm8960_i2c_probe(struct i2c_client *i2c,
 			   wm8960->pdata.hp_cfg[1] << 5);
 	regmap_update_bits(wm8960->regmap, WM8960_ADDCTL1, 3,
 			   wm8960->pdata.hp_cfg[2]);
-
+	
 	i2c_set_clientdata(i2c, wm8960);
 
 	ret = devm_snd_soc_register_component(&i2c->dev,
