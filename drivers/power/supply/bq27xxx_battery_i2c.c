@@ -10,6 +10,7 @@
 #include <linux/interrupt.h>
 #include <linux/module.h>
 #include <asm/unaligned.h>
+#include <linux/gpio.h>
 
 #include <linux/power/bq27xxx_battery.h>
 
@@ -143,6 +144,8 @@ static int bq27xxx_battery_i2c_probe(struct i2c_client *client,
 	int ret;
 	char *name;
 	int num;
+	
+	//client->irq = gpio_to_irq(200);
 
 	/* Get new ID for the new battery device */
 	mutex_lock(&battery_mutex);
@@ -151,6 +154,7 @@ static int bq27xxx_battery_i2c_probe(struct i2c_client *client,
 	if (num < 0)
 		return num;
 
+	printk( "--ratta --i2c --bq27220  id->driver_data = %d ,%s\n",id->driver_data,__FUNCTION__);
 	name = devm_kasprintf(&client->dev, GFP_KERNEL, "%s-%d", id->name, num);
 	if (!name)
 		goto err_mem;
@@ -179,6 +183,7 @@ static int bq27xxx_battery_i2c_probe(struct i2c_client *client,
 	i2c_set_clientdata(client, di);
 
 	if (client->irq) {
+		printk("ratta --bq27220--  IRQ error\n");	
 		ret = devm_request_threaded_irq(&client->dev, client->irq,
 				NULL, bq27xxx_battery_irq_handler_thread,
 				IRQF_ONESHOT,
@@ -220,6 +225,7 @@ static int bq27xxx_battery_i2c_remove(struct i2c_client *client)
 static const struct i2c_device_id bq27xxx_i2c_id_table[] = {
 	{ "bq27200", BQ27000 },
 	{ "bq27210", BQ27010 },
+	{ "bq27220", BQ27220 },
 	{ "bq27500", BQ2750X },
 	{ "bq27510", BQ2751X },
 	{ "bq27520", BQ2752X },
@@ -256,6 +262,7 @@ MODULE_DEVICE_TABLE(i2c, bq27xxx_i2c_id_table);
 static const struct of_device_id bq27xxx_battery_i2c_of_match_table[] = {
 	{ .compatible = "ti,bq27200" },
 	{ .compatible = "ti,bq27210" },
+	{ .compatible = "ti,bq27220" },
 	{ .compatible = "ti,bq27500" },
 	{ .compatible = "ti,bq27510" },
 	{ .compatible = "ti,bq27520" },

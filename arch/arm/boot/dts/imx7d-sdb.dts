@@ -493,6 +493,14 @@
 		ti,boost-max-current = <500000>; /* uA */
 	};
 	
+	bq27220@55{
+		pinctrl-names = "default";
+		pinctrl-0 = <&pinctrl_bq27220>;		
+		compatible = "ti,bq27220";
+		reg = <0x55>;
+		interrupt-parent = <&gpio7>;
+		interrupts = <8 IRQ_TYPE_LEVEL_LOW>;
+	};	
 };
 
 &i2c3 {
@@ -1147,6 +1155,13 @@
 				MX7D_PAD_EPDC_SDCE1__GPIO2_IO21		0x80000000  /* powerup */
 			>;
 		};
+	
+		pinctrl_bq27220: pinctrl_bq27220-grp {
+			fsl,pins = <
+				MX7D_PAD_ENET1_RGMII_TD2__GPIO7_IO8 0x15
+			>;
+		};
+
 		pinctrl_spi4: spi4grp {
 			fsl,pins = <
 				MX7D_PAD_GPIO1_IO09__GPIO1_IO9	0x59
