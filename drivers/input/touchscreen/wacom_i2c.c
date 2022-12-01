@@ -154,6 +154,8 @@ static int wacom_i2c_probe(struct i2c_client *client,
 	struct wacom_features features = { 0 };
 	int error;
 
+	printk("---> wacom_i2c_probe\n");
+
 	if (!i2c_check_functionality(client->adapter, I2C_FUNC_I2C)) {
 		dev_err(dev, "i2c_check_functionality error\n");
 		return -EIO;
@@ -198,10 +200,10 @@ static int wacom_i2c_probe(struct i2c_client *client,
 	input_set_drvdata(input, wac_i2c);
 	
 	/* this should come from dts file
-	 * SAI1_TXFS=GPIO6_IO14=174*/
-	client->irq = gpio_to_irq(174);
+	 * SAI1_TXC=GPIO6_IO13=173*/
+	client->irq = gpio_to_irq(173);
 	error = request_threaded_irq(client->irq, NULL, wacom_i2c_irq,
-				     IRQF_ONESHOT,
+				      IRQF_TRIGGER_LOW | IRQF_ONESHOT,
 				     "wacom_i2c", wac_i2c);
 	if (error) {
 		dev_err(dev, "Failed to request IRQ irqNb %u: %d\n",client->irq, error);

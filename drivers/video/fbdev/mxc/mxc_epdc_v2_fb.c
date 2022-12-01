@@ -87,6 +87,7 @@
 
 static u64 used_luts = 0x1;	/* do not use LUT0 */
 static unsigned long default_bpp = 16;
+static DEFINE_MUTEX(hard_lock);
 
 struct update_marker_data {
 	struct list_head full_list;
@@ -360,6 +361,7 @@ static struct fb_videomode e97_v110_mode = {
 	.flag = 0,
 };
 
+#if 0
 static struct fb_videomode es103tc1mode = {
 	.name = "ES103TC1",
 	.refresh = 85,
@@ -376,6 +378,24 @@ static struct fb_videomode es103tc1mode = {
 	.vmode = FB_VMODE_NONINTERLACED,
 	.flag = 0,
 };
+#else
+static struct fb_videomode es103tc1mode = {
+	.name = "ES103TC1",
+	.refresh = 85,
+	.xres = 1872,
+	.yres = 1404,
+	.pixclock =240000000,
+	.left_margin = 32,
+	.right_margin = 313,
+	.upper_margin = 4,
+	.lower_margin = 12,
+	.hsync_len = 44,
+	.vsync_len = 1,
+	.sync = 0,
+	.vmode = FB_VMODE_NONINTERLACED,
+	.flag = 0,
+};
+#endif
 
 
 #if 0
@@ -447,7 +467,7 @@ static struct imx_epdc_fb_mode panel_modes[] = {
 	}
 };
 #else
-#if 0
+#if 1
 static struct imx_epdc_fb_mode panel_modes[] = {
 	{
 		&es103tc1mode,	/* struct fb_videomode *mode */
@@ -464,12 +484,13 @@ static struct imx_epdc_fb_mode panel_modes[] = {
 	}
 };
 #else
+#if 0
 static struct fb_videomode ed103tc2_mode = {
 	.name="ED103TC2",
 	.refresh=85,
 	.xres=1872,
 	.yres=1404,
-	.pixclock=160000000,
+	.pixclock=240000000,
 	.left_margin=68,
 	.right_margin=249,
 	.upper_margin=4,
@@ -497,6 +518,44 @@ static struct imx_epdc_fb_mode panel_modes[] = {
 		1, 	/* num_ce */
 	}
 };
+#else
+static struct fb_videomode ec103th2_mode = {
+	.name="EC103TH2",
+	.refresh=85,
+	.xres=1872,
+	.yres=1404,
+	.pixclock=160000000,
+	.left_margin=32,
+	.right_margin=313,
+	.upper_margin=4,
+	.lower_margin=12,
+	.hsync_len=44,
+	.vsync_len=1,
+	.sync=0,
+	.vmode=FB_VMODE_NONINTERLACED,
+	.flag=0,
+};
+
+
+static struct imx_epdc_fb_mode panel_modes[] = {
+	{
+		&ec103th2_mode, 	/* struct fb_videomode *mode */
+		4, 	/* vscan_holdoff */
+		10, 	/* sdoed_width */
+		20, 	/* sdoed_delay */
+		10, 	/* sdoez_width */
+		20, 	/* sdoez_delay */
+		960, 	/* GDCLK_HP */
+		841, 	/* GDSP_OFF */
+		0, 	/* GDOE_OFF */
+		177, 	/* gdclk_offs */
+		1, 	/* num_ce */
+	},
+};
+
+
+/* end of waveform timing data structures for EC103TH2 */
+#endif
 #endif
 #endif
 
@@ -612,62 +671,62 @@ static void dump_pxp_config(struct mxc_epdc_fb_data *fb_data,
 
 static void dump_epdc_reg(void)
 {
-	//printk( "\n\n");
-	//printk( "EPDC_CTRL 0x%x\n", __raw_readl(EPDC_CTRL));
-	//printk( "EPDC_WVADDR 0x%x\n", __raw_readl(EPDC_WVADDR));
-	//printk( "EPDC_WB_ADDR 0x%x\n", __raw_readl(EPDC_WB_ADDR));
-	//printk( "EPDC_RES 0x%x\n", __raw_readl(EPDC_RES));
-	//printk( "EPDC_FORMAT 0x%x\n", __raw_readl(EPDC_FORMAT));
-	//printk( "EPDC_FIFOCTRL 0x%x\n", __raw_readl(EPDC_FIFOCTRL));
-	//printk( "EPDC_UPD_ADDR 0x%x\n", __raw_readl(EPDC_UPD_ADDR));
-	//printk( "EPDC_UPD_STRIDE 0x%x\n", __raw_readl(EPDC_UPD_STRIDE));
-	//printk( "EPDC_UPD_FIXED 0x%x\n", __raw_readl(EPDC_UPD_FIXED));
-	//printk( "EPDC_UPD_CORD 0x%x\n", __raw_readl(EPDC_UPD_CORD));
-	//printk( "EPDC_UPD_SIZE 0x%x\n", __raw_readl(EPDC_UPD_SIZE));
-	//printk( "EPDC_UPD_CTRL 0x%x\n", __raw_readl(EPDC_UPD_CTRL));
-	//printk( "EPDC_TEMP 0x%x\n", __raw_readl(EPDC_TEMP));
-	//printk( "EPDC_AUTOWV_LUT 0x%x\n", __raw_readl(EPDC_AUTOWV_LUT));
-	//printk( "EPDC_TCE_CTRL 0x%x\n", __raw_readl(EPDC_TCE_CTRL));
-	//printk( "EPDC_TCE_SDCFG 0x%x\n", __raw_readl(EPDC_TCE_SDCFG));
-	//printk( "EPDC_TCE_GDCFG 0x%x\n", __raw_readl(EPDC_TCE_GDCFG));
-	//printk( "EPDC_TCE_HSCAN1 0x%x\n", __raw_readl(EPDC_TCE_HSCAN1));
-	//printk( "EPDC_TCE_HSCAN2 0x%x\n", __raw_readl(EPDC_TCE_HSCAN2));
-	//printk( "EPDC_TCE_VSCAN 0x%x\n", __raw_readl(EPDC_TCE_VSCAN));
-	//printk( "EPDC_TCE_OE 0x%x\n", __raw_readl(EPDC_TCE_OE));
-	//printk( "EPDC_TCE_POLARITY 0x%x\n", __raw_readl(EPDC_TCE_POLARITY));
-	//printk( "EPDC_TCE_TIMING1 0x%x\n", __raw_readl(EPDC_TCE_TIMING1));
-	//printk( "EPDC_TCE_TIMING2 0x%x\n", __raw_readl(EPDC_TCE_TIMING2));
-	//printk( "EPDC_TCE_TIMING3 0x%x\n", __raw_readl(EPDC_TCE_TIMING3));
-	//printk( "EPDC_PIGEON_CTRL0 0x%x\n", __raw_readl(EPDC_PIGEON_CTRL0));
-	//printk( "EPDC_PIGEON_CTRL1 0x%x\n", __raw_readl(EPDC_PIGEON_CTRL1));
-	//printk( "EPDC_IRQ_MASK1 0x%x\n", __raw_readl(EPDC_IRQ_MASK1));
-	//printk( "EPDC_IRQ_MASK2 0x%x\n", __raw_readl(EPDC_IRQ_MASK2));
-	//printk( "EPDC_IRQ1 0x%x\n", __raw_readl(EPDC_IRQ1));
-	//printk( "EPDC_IRQ2 0x%x\n", __raw_readl(EPDC_IRQ2));
-	//printk( "EPDC_IRQ_MASK 0x%x\n", __raw_readl(EPDC_IRQ_MASK));
-	//printk( "EPDC_IRQ 0x%x\n", __raw_readl(EPDC_IRQ));
-	//printk( "EPDC_STATUS_LUTS 0x%x\n", __raw_readl(EPDC_STATUS_LUTS));
-	//printk( "EPDC_STATUS_LUTS2 0x%x\n", __raw_readl(EPDC_STATUS_LUTS2));
-	//printk( "EPDC_STATUS_NEXTLUT 0x%x\n", __raw_readl(EPDC_STATUS_NEXTLUT));
-	//printk( "EPDC_STATUS_COL1 0x%x\n", __raw_readl(EPDC_STATUS_COL));
-	//printk( "EPDC_STATUS_COL2 0x%x\n", __raw_readl(EPDC_STATUS_COL2));
-	//printk( "EPDC_STATUS 0x%x\n", __raw_readl(EPDC_STATUS));
-	//printk( "EPDC_UPD_COL_CORD 0x%x\n", __raw_readl(EPDC_UPD_COL_CORD));
-	//printk( "EPDC_UPD_COL_SIZE 0x%x\n", __raw_readl(EPDC_UPD_COL_SIZE));
-	//printk( "EPDC_DEBUG 0x%x\n", __raw_readl(EPDC_DEBUG));
-	//printk( "EPDC_DEBUG_LUT 0x%x\n", __raw_readl(EPDC_DEBUG_LUT));
-	//printk( "EPDC_HIST1_PARAM 0x%x\n", __raw_readl(EPDC_HIST1_PARAM));
-	//printk( "EPDC_HIST2_PARAM 0x%x\n", __raw_readl(EPDC_HIST2_PARAM));
-	//printk( "EPDC_HIST4_PARAM 0x%x\n", __raw_readl(EPDC_HIST4_PARAM));
-	//printk( "EPDC_HIST8_PARAM0 0x%x\n", __raw_readl(EPDC_HIST8_PARAM0));
-	//printk( "EPDC_HIST8_PARAM1 0x%x\n", __raw_readl(EPDC_HIST8_PARAM1));
-	//printk( "EPDC_HIST16_PARAM0 0x%x\n", __raw_readl(EPDC_HIST16_PARAM0));
-	//printk( "EPDC_HIST16_PARAM1 0x%x\n", __raw_readl(EPDC_HIST16_PARAM1));
-	//printk( "EPDC_HIST16_PARAM2 0x%x\n", __raw_readl(EPDC_HIST16_PARAM2));
-	//printk( "EPDC_HIST16_PARAM3 0x%x\n", __raw_readl(EPDC_HIST16_PARAM3));
-	//printk( "EPDC_GPIO 0x%x\n", __raw_readl(EPDC_GPIO));
-	//printk( "EPDC_VERSION 0x%x\n", __raw_readl(EPDC_VERSION));
-	//printk( "\n\n");
+	printk(KERN_DEBUG "\n\n");
+	printk(KERN_DEBUG "EPDC_CTRL 0x%x\n", __raw_readl(EPDC_CTRL));
+	printk(KERN_DEBUG "EPDC_WVADDR 0x%x\n", __raw_readl(EPDC_WVADDR));
+	printk(KERN_DEBUG "EPDC_WB_ADDR 0x%x\n", __raw_readl(EPDC_WB_ADDR));
+	printk(KERN_DEBUG "EPDC_RES 0x%x\n", __raw_readl(EPDC_RES));
+	printk(KERN_DEBUG "EPDC_FORMAT 0x%x\n", __raw_readl(EPDC_FORMAT));
+	printk(KERN_DEBUG "EPDC_FIFOCTRL 0x%x\n", __raw_readl(EPDC_FIFOCTRL));
+	printk(KERN_DEBUG "EPDC_UPD_ADDR 0x%x\n", __raw_readl(EPDC_UPD_ADDR));
+	printk(KERN_DEBUG "EPDC_UPD_STRIDE 0x%x\n", __raw_readl(EPDC_UPD_STRIDE));
+	printk(KERN_DEBUG "EPDC_UPD_FIXED 0x%x\n", __raw_readl(EPDC_UPD_FIXED));
+	printk(KERN_DEBUG "EPDC_UPD_CORD 0x%x\n", __raw_readl(EPDC_UPD_CORD));
+	printk(KERN_DEBUG "EPDC_UPD_SIZE 0x%x\n", __raw_readl(EPDC_UPD_SIZE));
+	printk(KERN_DEBUG "EPDC_UPD_CTRL 0x%x\n", __raw_readl(EPDC_UPD_CTRL));
+	printk(KERN_DEBUG "EPDC_TEMP 0x%x\n", __raw_readl(EPDC_TEMP));
+	printk(KERN_DEBUG "EPDC_AUTOWV_LUT 0x%x\n", __raw_readl(EPDC_AUTOWV_LUT));
+	printk(KERN_DEBUG "EPDC_TCE_CTRL 0x%x\n", __raw_readl(EPDC_TCE_CTRL));
+	printk(KERN_DEBUG "EPDC_TCE_SDCFG 0x%x\n", __raw_readl(EPDC_TCE_SDCFG));
+	printk(KERN_DEBUG "EPDC_TCE_GDCFG 0x%x\n", __raw_readl(EPDC_TCE_GDCFG));
+	printk(KERN_DEBUG "EPDC_TCE_HSCAN1 0x%x\n", __raw_readl(EPDC_TCE_HSCAN1));
+	printk(KERN_DEBUG "EPDC_TCE_HSCAN2 0x%x\n", __raw_readl(EPDC_TCE_HSCAN2));
+	printk(KERN_DEBUG "EPDC_TCE_VSCAN 0x%x\n", __raw_readl(EPDC_TCE_VSCAN));
+	printk(KERN_DEBUG "EPDC_TCE_OE 0x%x\n", __raw_readl(EPDC_TCE_OE));
+	printk(KERN_DEBUG "EPDC_TCE_POLARITY 0x%x\n", __raw_readl(EPDC_TCE_POLARITY));
+	printk(KERN_DEBUG "EPDC_TCE_TIMING1 0x%x\n", __raw_readl(EPDC_TCE_TIMING1));
+	printk(KERN_DEBUG "EPDC_TCE_TIMING2 0x%x\n", __raw_readl(EPDC_TCE_TIMING2));
+	printk(KERN_DEBUG "EPDC_TCE_TIMING3 0x%x\n", __raw_readl(EPDC_TCE_TIMING3));
+	printk(KERN_DEBUG "EPDC_PIGEON_CTRL0 0x%x\n", __raw_readl(EPDC_PIGEON_CTRL0));
+	printk(KERN_DEBUG "EPDC_PIGEON_CTRL1 0x%x\n", __raw_readl(EPDC_PIGEON_CTRL1));
+	printk(KERN_DEBUG "EPDC_IRQ_MASK1 0x%x\n", __raw_readl(EPDC_IRQ_MASK1));
+	printk(KERN_DEBUG "EPDC_IRQ_MASK2 0x%x\n", __raw_readl(EPDC_IRQ_MASK2));
+	printk(KERN_DEBUG "EPDC_IRQ1 0x%x\n", __raw_readl(EPDC_IRQ1));
+	printk(KERN_DEBUG "EPDC_IRQ2 0x%x\n", __raw_readl(EPDC_IRQ2));
+	printk(KERN_DEBUG "EPDC_IRQ_MASK 0x%x\n", __raw_readl(EPDC_IRQ_MASK));
+	printk(KERN_DEBUG "EPDC_IRQ 0x%x\n", __raw_readl(EPDC_IRQ));
+	printk(KERN_DEBUG "EPDC_STATUS_LUTS 0x%x\n", __raw_readl(EPDC_STATUS_LUTS));
+	printk(KERN_DEBUG "EPDC_STATUS_LUTS2 0x%x\n", __raw_readl(EPDC_STATUS_LUTS2));
+	printk(KERN_DEBUG "EPDC_STATUS_NEXTLUT 0x%x\n", __raw_readl(EPDC_STATUS_NEXTLUT));
+	printk(KERN_DEBUG "EPDC_STATUS_COL1 0x%x\n", __raw_readl(EPDC_STATUS_COL));
+	printk(KERN_DEBUG "EPDC_STATUS_COL2 0x%x\n", __raw_readl(EPDC_STATUS_COL2));
+	printk(KERN_DEBUG "EPDC_STATUS 0x%x\n", __raw_readl(EPDC_STATUS));
+	printk(KERN_DEBUG "EPDC_UPD_COL_CORD 0x%x\n", __raw_readl(EPDC_UPD_COL_CORD));
+	printk(KERN_DEBUG "EPDC_UPD_COL_SIZE 0x%x\n", __raw_readl(EPDC_UPD_COL_SIZE));
+	printk(KERN_DEBUG "EPDC_DEBUG 0x%x\n", __raw_readl(EPDC_DEBUG));
+	printk(KERN_DEBUG "EPDC_DEBUG_LUT 0x%x\n", __raw_readl(EPDC_DEBUG_LUT));
+	printk(KERN_DEBUG "EPDC_HIST1_PARAM 0x%x\n", __raw_readl(EPDC_HIST1_PARAM));
+	printk(KERN_DEBUG "EPDC_HIST2_PARAM 0x%x\n", __raw_readl(EPDC_HIST2_PARAM));
+	printk(KERN_DEBUG "EPDC_HIST4_PARAM 0x%x\n", __raw_readl(EPDC_HIST4_PARAM));
+	printk(KERN_DEBUG "EPDC_HIST8_PARAM0 0x%x\n", __raw_readl(EPDC_HIST8_PARAM0));
+	printk(KERN_DEBUG "EPDC_HIST8_PARAM1 0x%x\n", __raw_readl(EPDC_HIST8_PARAM1));
+	printk(KERN_DEBUG "EPDC_HIST16_PARAM0 0x%x\n", __raw_readl(EPDC_HIST16_PARAM0));
+	printk(KERN_DEBUG "EPDC_HIST16_PARAM1 0x%x\n", __raw_readl(EPDC_HIST16_PARAM1));
+	printk(KERN_DEBUG "EPDC_HIST16_PARAM2 0x%x\n", __raw_readl(EPDC_HIST16_PARAM2));
+	printk(KERN_DEBUG "EPDC_HIST16_PARAM3 0x%x\n", __raw_readl(EPDC_HIST16_PARAM3));
+	printk(KERN_DEBUG "EPDC_GPIO 0x%x\n", __raw_readl(EPDC_GPIO));
+	printk(KERN_DEBUG "EPDC_VERSION 0x%x\n", __raw_readl(EPDC_VERSION));
+	printk(KERN_DEBUG "\n\n");
 }
 
 static void dump_update_data(struct device *dev,
@@ -963,6 +1022,8 @@ static void epdc_submit_update(u32 lut_num, u32 waveform_mode, u32 update_mode,
 {
 	u32 reg_val = 0;
 
+	mutex_lock(&hard_lock);
+	
 	if (use_test_mode) {
 		reg_val |=
 		    ((np_val << EPDC_UPD_FIXED_FIXNP_OFFSET) &
@@ -995,9 +1056,11 @@ static void epdc_submit_update(u32 lut_num, u32 waveform_mode, u32 update_mode,
 
 	epdc_set_used_lut(lut_num);
 #endif
-	dump_epdc_reg();
-	//printk("epdc_submit_update, reg_val=0x%x\n",reg_val);
+	//dump_epdc_reg();
+	//printk(KERN_DEBUG"epdc_submit_update, reg_val=0x%x\n",reg_val);
 	__raw_writel(reg_val, EPDC_UPD_CTRL);
+	
+	mutex_unlock(&hard_lock);
 }
 
 static inline bool epdc_is_lut_complete(int rev, u32 lut_num)
@@ -1114,9 +1177,11 @@ static int epdc_choose_next_lut(struct mxc_epdc_fb_data *fb_data, int *next_lut)
 		pxp_clear_wb_work_func(fb_data);
 		used_luts &= ~luts_complete;
 		fb_data->luts_complete &= ~luts_complete;
+#if 1
 		mutex_unlock(&fb_data->queue_mutex);
 		msleep(10);
 		mutex_lock(&fb_data->queue_mutex);
+#endif
 	}
 
 	used_luts |= 0x1;
@@ -1487,6 +1552,11 @@ static void epdc_init_settings(struct mxc_epdc_fb_data *fb_data)
 static void epdc_powerup(struct mxc_epdc_fb_data *fb_data)
 {
 	int ret = 0;
+
+#if 0
+	printk("epdc powerup, state=%s,powering down=%s\n",
+			fb_data->power_state == POWER_STATE_ON ?"ON":"OFF",fb_data->powering_down?"Yes":"No");
+#endif
 	mutex_lock(&fb_data->power_mutex);
 
 	/*
@@ -1506,7 +1576,7 @@ static void epdc_powerup(struct mxc_epdc_fb_data *fb_data)
 	fb_data->updates_active = true;
 
 	/* Enable the v3p3 regulator */
-	//printk("--------> enable V3P3 regulator\n");
+	//printk(KERN_DEBUG"--------> enable V3P3 regulator\n");
 	ret = regulator_enable(fb_data->v3p3_regulator);
 	if (IS_ERR((void *)ret)) {
 		dev_dbg(fb_data->dev, "Unable to enable V3P3 regulator."
@@ -1524,7 +1594,7 @@ static void epdc_powerup(struct mxc_epdc_fb_data *fb_data)
 	__raw_writel(EPDC_CTRL_CLKGATE, EPDC_CTRL_CLEAR);
 
 	/* Enable power to the EPD panel */
-	//printk("--------> enable DISPLAY regulator\n");
+	//printk(KERN_DEBUG"--------> enable DISPLAY regulator\n");
 	ret = regulator_enable(fb_data->display_regulator);
 	if (IS_ERR((void *)ret)) {
 		dev_dbg(fb_data->dev, "Unable to enable DISPLAY regulator."
@@ -1532,7 +1602,7 @@ static void epdc_powerup(struct mxc_epdc_fb_data *fb_data)
 		mutex_unlock(&fb_data->power_mutex);
 		return;
 	}
-	//printk("--------> enable VCOM regulator\n");
+	//printk(KERN_DEBUG"--------> enable VCOM regulator\n");
 	ret = regulator_enable(fb_data->vcom_regulator);
 	if (IS_ERR((void *)ret)) {
 		dev_dbg(fb_data->dev, "Unable to enable VCOM regulator."
@@ -1546,10 +1616,15 @@ static void epdc_powerup(struct mxc_epdc_fb_data *fb_data)
 	dev_dbg(fb_data->dev, "EPDC Powerup Done\n");
 
 	mutex_unlock(&fb_data->power_mutex);
+	//printk(KERN_DEBUG"epdc powerup complete, state=%s\n",fb_data->power_state == POWER_STATE_ON ?"ON":"OFF");
 }
 
 static void epdc_powerdown(struct mxc_epdc_fb_data *fb_data)
 {
+#if 0
+	printk("epdc powerdown, state=%s,powering down=%s\n",
+			fb_data->power_state == POWER_STATE_ON ?"ON":"OFF",fb_data->powering_down?"Yes":"No");
+#endif
 	mutex_lock(&fb_data->power_mutex);
 
 	/* If powering_down has been cleared, a powerup
@@ -1588,6 +1663,7 @@ static void epdc_powerdown(struct mxc_epdc_fb_data *fb_data)
 	dev_dbg(fb_data->dev, "EPDC Powerdown Complete\n");
 
 	mutex_unlock(&fb_data->power_mutex);
+//	printk("epdc powerdown complete, state=%s\n",fb_data->power_state == POWER_STATE_ON ?"ON":"OFF");
 }
 
 static void epdc_init_sequence(struct mxc_epdc_fb_data *fb_data)
@@ -1956,7 +2032,7 @@ static int mxc_epdc_fb_set_par(struct fb_info *info)
 			}
 
 			if (!found_match) {
-				dev_dbg(fb_data->dev,
+				dev_err(fb_data->dev,
 					"Failed to match requested "
 					"video mode\n");
 				return EINVAL;
@@ -2162,7 +2238,7 @@ static int mxc_epdc_fb_get_temp_index(struct mxc_epdc_fb_data *fb_data, int temp
 	int index = -1;
 
 	if (fb_data->trt_entries == 0) {
-		dev_dbg(fb_data->dev,
+		dev_err(fb_data->dev,
 			"No TRT exists...using default temp index\n");
 		return DEFAULT_TEMP_INDEX;
 	}
@@ -2177,7 +2253,7 @@ static int mxc_epdc_fb_get_temp_index(struct mxc_epdc_fb_data *fb_data, int temp
 	}
 
 	if (index < 0) {
-		dev_dbg(fb_data->dev,
+		dev_err(fb_data->dev,
 			"No TRT index match...using default temp index\n");
 		return DEFAULT_TEMP_INDEX;
 	}
@@ -2211,7 +2287,7 @@ static int mxc_epdc_fb_set_auto_update(u32 auto_mode, struct fb_info *info)
 		|| (auto_mode == AUTO_UPDATE_MODE_REGION_MODE))
 		fb_data->auto_mode = auto_mode;
 	else {
-		dev_dbg(fb_data->dev, "Invalid auto update mode parameter.\n");
+		dev_err(fb_data->dev, "Invalid auto update mode parameter.\n");
 		return -EINVAL;
 	}
 
@@ -2236,7 +2312,7 @@ static int mxc_epdc_fb_set_upd_scheme(u32 upd_scheme, struct fb_info *info)
 		|| (upd_scheme == UPDATE_SCHEME_QUEUE_AND_MERGE))
 		fb_data->upd_scheme = upd_scheme;
 	else {
-		dev_dbg(fb_data->dev, "Invalid update scheme specified.\n");
+		dev_err(fb_data->dev, "Invalid update scheme specified.\n");
 		return -EINVAL;
 	}
 
@@ -2320,7 +2396,7 @@ static int epdc_working_buffer_update(struct mxc_epdc_fb_data *fb_data,
 
 	ret = pxp_wfe_a_process(fb_data, update_region, upd_data_list);
 	if (ret) {
-		dev_dbg(fb_data->dev, "Unable to submit PxP update task.\n");
+		dev_err(fb_data->dev, "Unable to submit PxP update task.\n");
 		mutex_unlock(&fb_data->pxp_mutex);
 		return ret;
 	}
@@ -2328,14 +2404,14 @@ static int epdc_working_buffer_update(struct mxc_epdc_fb_data *fb_data,
 	/* If needed, enable EPDC HW while ePxP is processing */
 	if ((fb_data->power_state == POWER_STATE_OFF)
 		|| fb_data->powering_down) {
-	//printk("--------> 1. powerup from epdc_working_buffer_update\n");
+	//printk(KERN_DEBUG"--------> 1. powerup from epdc_working_buffer_update\n");
 		epdc_powerup(fb_data);
 	}
 
 	/* This is a blocking call, so upon return PxP tx should be done */
 	ret = pxp_complete_update(fb_data, &fb_data->hist_status);
 	if (ret) {
-		dev_dbg(fb_data->dev, "Unable to complete PxP update task: main process\n");
+		dev_err(fb_data->dev, "Unable to complete PxP update task: main process\n");
 		return ret;
 	}
 
@@ -2380,7 +2456,7 @@ static int epdc_working_buffer_update(struct mxc_epdc_fb_data *fb_data,
 		/* This is a blocking call, so upon return PxP tx should be done */
 		ret = pxp_wfe_b_process_update(fb_data, update_region);
 		if (ret) {
-			dev_dbg(fb_data->dev, "Unable to submit PxP update task.\n");
+			dev_err(fb_data->dev, "Unable to submit PxP update task.\n");
 			mutex_unlock(&fb_data->pxp_mutex);
 			return ret;
 		}
@@ -2388,14 +2464,14 @@ static int epdc_working_buffer_update(struct mxc_epdc_fb_data *fb_data,
 		/* If needed, enable EPDC HW while ePxP is processing */
 		if ((fb_data->power_state == POWER_STATE_OFF)
 			|| fb_data->powering_down) {
-	//printk("-------->2.  powerup from epdc_working_buffer_update\n");
+	//printk(KERN_DEBUG"-------->2.  powerup from epdc_working_buffer_update\n");
 			epdc_powerup(fb_data);
 		}
 
 		/* This is a blocking call, so upon return PxP tx should be done */
 		ret = pxp_complete_update(fb_data, &hist_stat);
 		if (ret) {
-			dev_dbg(fb_data->dev, "Unable to complete PxP update task: reagl/-d process\n");
+			dev_err(fb_data->dev, "Unable to complete PxP update task: reagl/-d process\n");
 			mutex_unlock(&fb_data->pxp_mutex);
 			return ret;
 		}
@@ -2653,7 +2729,7 @@ static int epdc_process_update(struct update_data_list *upd_data_list,
 	ret = pxp_legacy_process(fb_data, src_width, src_height,
 		&pxp_upd_region);
 	if (ret) {
-		dev_dbg(fb_data->dev, "Unable to submit PxP update task.\n");
+		dev_err(fb_data->dev, "Unable to submit PxP update task.\n");
 		mutex_unlock(&fb_data->pxp_mutex);
 		return ret;
 	}
@@ -2661,14 +2737,14 @@ static int epdc_process_update(struct update_data_list *upd_data_list,
 	/* If needed, enable EPDC HW while ePxP is processing */
 	if ((fb_data->power_state == POWER_STATE_OFF)
 		|| fb_data->powering_down) {
-	//printk("-------->1.  powerup from epdc_process_update\n");
+	//printk(KERN_DEBUG"-------->1.  powerup from epdc_process_update\n");
 		epdc_powerup(fb_data);
 	}
 
 	/* This is a blocking call, so upon return PxP tx should be done */
 	ret = pxp_complete_update(fb_data, &hist_stat);
 	if (ret) {
-		dev_dbg(fb_data->dev, "Unable to complete PxP update task: pre_prcoess.\n");
+		dev_err(fb_data->dev, "Unable to complete PxP update task: pre_prcoess.\n");
 		mutex_unlock(&fb_data->pxp_mutex);
 		return ret;
 	}
@@ -2686,7 +2762,7 @@ static int epdc_process_update(struct update_data_list *upd_data_list,
 		/* This is a blocking call, so upon return PxP tx should be done */
 		ret = pxp_process_dithering(fb_data, &pxp_upd_region);
 		if (ret) {
-			dev_dbg(fb_data->dev, "Unable to submit PxP update task.\n");
+			dev_err(fb_data->dev, "Unable to submit PxP update task.\n");
 			mutex_unlock(&fb_data->pxp_mutex);
 			return ret;
 		}
@@ -2694,14 +2770,14 @@ static int epdc_process_update(struct update_data_list *upd_data_list,
 		/* If needed, enable EPDC HW while ePxP is processing */
 		if ((fb_data->power_state == POWER_STATE_OFF)
 			|| fb_data->powering_down) {
-	//printk("-------->2.  powerup from epdc_process_update\n");
+	//printk(KERN_DEBUG"-------->2.  powerup from epdc_process_update\n");
 			epdc_powerup(fb_data);
 		}
 
 		/* This is a blocking call, so upon return PxP tx should be done */
 		ret = pxp_complete_update(fb_data, &hist_stat);
 		if (ret) {
-			dev_dbg(fb_data->dev, "Unable to complete PxP update task: dithering process\n");
+			dev_err(fb_data->dev, "Unable to complete PxP update task: dithering process\n");
 			mutex_unlock(&fb_data->pxp_mutex);
 			return ret;
 		}
@@ -2717,9 +2793,11 @@ static int epdc_process_update(struct update_data_list *upd_data_list,
 	/* Update waveform mode from PxP histogram results */
 	if ((fb_data->rev <= 20) &&
 		(upd_desc_list->upd_data.waveform_mode == WAVEFORM_MODE_AUTO)) {
-		if (hist_stat & 0x1)
+		if (hist_stat & 0x1){
+			//printk(KERN_DEBUG"---------> waveform mode DU=1\n");
 			upd_desc_list->upd_data.waveform_mode =
 				fb_data->wv_modes.mode_du;
+		}
 		else if (hist_stat & 0x2)
 			upd_desc_list->upd_data.waveform_mode =
 				fb_data->wv_modes.mode_gc4;
@@ -3008,7 +3086,7 @@ static void epdc_submit_work_func(struct work_struct *work)
 		/* If needed, enable EPDC HW while ePxP is processing */
 		if ((fb_data->power_state == POWER_STATE_OFF)
 			|| fb_data->powering_down){
-	//printk("--------> powerup from epdc_submit_work_func\n");
+	//printk(KERN_DEBUG"--------> powerup from epdc_submit_work_func\n");
 			epdc_powerup(fb_data);
 		}
 
@@ -3191,7 +3269,7 @@ static void epdc_submit_work_func(struct work_struct *work)
 		ret = wait_for_completion_timeout(&fb_data->eof_event,
 			msecs_to_jiffies(1000));
 		if (!ret) {
-			dev_dbg(fb_data->dev, "Missed EOF event!\n");
+			dev_err(fb_data->dev, "Missed EOF event!\n");
 			epdc_eof_intr(false);
 		}
 		udelay(fb_data->eof_sync_period);
@@ -3226,9 +3304,10 @@ static void epdc_submit_work_func(struct work_struct *work)
 	epdc_working_buf_intr(true);
 
 	/* add working buffer update here for external mode */
-	if (fb_data->epdc_wb_mode)
+	if (fb_data->epdc_wb_mode){
 		ret = epdc_working_buffer_update(fb_data, upd_data_list,
 				&adj_update_region);
+	}
 
 	/* Program EPDC update to process buffer */
 	if (upd_data_list->update_desc->upd_data.temp != TEMP_USE_AMBIENT) {
@@ -3242,9 +3321,21 @@ static void epdc_submit_work_func(struct work_struct *work)
 	epdc_set_update_addr(update_addr);
 	//printk("--> epdc_set_update_coord, left=%d,top=%d\n",adj_update_region.left, adj_update_region.top);
 	epdc_set_update_coord(adj_update_region.left, adj_update_region.top);
-	//printk("--> epdc_set_update_dimensions, width=%d,height=%d\n",adj_update_region.width, adj_update_region.height);
+#if 1
 	epdc_set_update_dimensions(adj_update_region.width,
-				   adj_update_region.height);
+			adj_update_region.height);
+#else
+	if((upd_data_list->update_desc->upd_data.waveform_mode!=0x1) &&
+			(upd_data_list->update_desc->upd_data.waveform_mode!=0x4)){
+		epdc_set_update_dimensions(adj_update_region.width,
+				adj_update_region.height);
+	}
+	else{
+		epdc_set_update_dimensions(32,32);
+	}
+#endif
+
+	//printk("--> epdc_set_update_dimensions, width=%d,height=%d\n",adj_update_region.width, adj_update_region.height);
 	if (fb_data->rev > 20)
 		epdc_set_update_stride(upd_data_list->update_desc->epdc_stride);
 	if (fb_data->wv_modes_update &&
@@ -3254,7 +3345,7 @@ static void epdc_submit_work_func(struct work_struct *work)
 		fb_data->wv_modes_update = false;
 	}
 
-	//printk("calling epdc_submit_update from epdc_submit_work_func\n");
+	//printk(KERN_DEBUG"calling epdc_submit_update from epdc_submit_work_func\n");
 	epdc_submit_update(upd_data_list->lut_num,
 			   upd_data_list->update_desc->upd_data.waveform_mode,
 			   upd_data_list->update_desc->upd_data.update_mode,
@@ -3278,13 +3369,13 @@ static int mxc_epdc_fb_send_single_update(struct mxcfb_update_data *upd_data,
 	struct update_desc_list *upd_desc;
 	struct update_marker_data *marker_data, *next_marker, *temp_marker;
 
-	//printk("--------> mxc_epdc_fb_send_single_update\n");
+	//printk(KERN_DEBUG"--------> mxc_epdc_fb_send_single_update\n");
 
 	/* Has EPDC HW been initialized? */
 	if (!fb_data->hw_ready) {
 		/* Throw message if we are not mid-initialization */
 		if (!fb_data->hw_initializing)
-			dev_dbg(fb_data->dev, "Display HW not properly"
+			dev_err(fb_data->dev, "Display HW not properly"
 				"initialized. Aborting update.\n");
 		return -EPERM;
 	}
@@ -3292,14 +3383,14 @@ static int mxc_epdc_fb_send_single_update(struct mxcfb_update_data *upd_data,
 	/* Check validity of update params */
 	if ((upd_data->update_mode != UPDATE_MODE_PARTIAL) &&
 		(upd_data->update_mode != UPDATE_MODE_FULL)) {
-		dev_dbg(fb_data->dev,
+		dev_err(fb_data->dev,
 			"Update mode 0x%x is invalid.  Aborting update.\n",
 			upd_data->update_mode);
 		return -EINVAL;
 	}
 	if ((upd_data->waveform_mode > 255) &&
 		(upd_data->waveform_mode != WAVEFORM_MODE_AUTO)) {
-		dev_dbg(fb_data->dev,
+		dev_err(fb_data->dev,
 			"Update waveform mode 0x%x is invalid."
 			"  Aborting update.\n",
 			upd_data->waveform_mode);
@@ -3311,18 +3402,18 @@ static int mxc_epdc_fb_send_single_update(struct mxcfb_update_data *upd_data,
 		(upd_data->update_region.height > fb_data->epdc_fb_var.yres) ||
 		(upd_data->update_region.left + upd_data->update_region.width > fb_data->epdc_fb_var.xres) ||
 		(upd_data->update_region.top + upd_data->update_region.height > fb_data->epdc_fb_var.yres)) {
-		dev_dbg(fb_data->dev,
+		dev_err(fb_data->dev,
 			"Update region is outside bounds of framebuffer."
 			"Aborting update.\n");
 		return -EINVAL;
 	}
 	if (upd_data->flags & EPDC_FLAG_USE_ALT_BUFFER) {
-	//printk("upd_data->flags = EPDC_FLAG_USE_ALT_BUFFER\n");
+	//printk(KERN_DEBUG"upd_data->flags = EPDC_FLAG_USE_ALT_BUFFER\n");
 		if ((upd_data->update_region.width !=
 			upd_data->alt_buffer_data.alt_update_region.width) ||
 			(upd_data->update_region.height !=
 			upd_data->alt_buffer_data.alt_update_region.height)) {
-			dev_dbg(fb_data->dev,
+			dev_err(fb_data->dev,
 				"Alternate update region dimensions must "
 				"match screen update region dimensions.\n");
 			return -EINVAL;
@@ -3332,7 +3423,7 @@ static int mxc_epdc_fb_send_single_update(struct mxcfb_update_data *upd_data,
 			fb_data->info.fix.smem_start) ||
 			(upd_data->alt_buffer_data.phys_addr >
 			fb_data->info.fix.smem_start + fb_data->map_size)) {
-			dev_dbg(fb_data->dev,
+			dev_err(fb_data->dev,
 				"Invalid physical address for alternate "
 				"buffer.  Aborting update...\n");
 			return -EINVAL;
@@ -3357,7 +3448,7 @@ static int mxc_epdc_fb_send_single_update(struct mxcfb_update_data *upd_data,
 		int count = 0;
 		struct update_data_list *plist;
 
-	//printk("fb_data->upd_scheme == UPDATE_SCHEME_SNAPSHOT\n");
+	//printk(KERN_DEBUG"fb_data->upd_scheme == UPDATE_SCHEME_SNAPSHOT\n");
 		/*
 		 * If next update is a FULL mode update, then we must
 		 * ensure that all pending & active updates are complete
@@ -3379,7 +3470,7 @@ static int mxc_epdc_fb_send_single_update(struct mxcfb_update_data *upd_data,
 		 * free buffers to handle this update request */
 		if (count + fb_data->max_num_buffers
 			<= fb_data->max_num_updates) {
-			dev_dbg(fb_data->dev,
+			dev_err(fb_data->dev,
 				"No free intermediate buffers available.\n");
 			mutex_unlock(&fb_data->queue_mutex);
 			return -ENOMEM;
@@ -3399,7 +3490,7 @@ static int mxc_epdc_fb_send_single_update(struct mxcfb_update_data *upd_data,
 	 */
 	upd_desc = kzalloc(sizeof(struct update_desc_list), GFP_KERNEL);
 	if (!upd_desc) {
-		dev_dbg(fb_data->dev,
+		dev_err(fb_data->dev,
 			"Insufficient system memory for update! Aborting.\n");
 		if (fb_data->upd_scheme == UPDATE_SCHEME_SNAPSHOT) {
 			list_add(&upd_data_list->list,
@@ -3416,12 +3507,12 @@ static int mxc_epdc_fb_send_single_update(struct mxcfb_update_data *upd_data,
 
 	/* If marker specified, associate it with a completion */
 	if (upd_data->update_marker != 0) {
-	//printk("upd_data->update_marker != 0\n");
+	//printk(KERN_DEBUG"upd_data->update_marker != 0\n");
 		/* Allocate new update marker and set it up */
 		marker_data = kzalloc(sizeof(struct update_marker_data),
 				GFP_KERNEL);
 		if (!marker_data) {
-			dev_dbg(fb_data->dev, "No memory for marker!\n");
+			dev_err(fb_data->dev, "No memory for marker!\n");
 			mutex_unlock(&fb_data->queue_mutex);
 			return -ENOMEM;
 		}
@@ -3442,7 +3533,7 @@ static int mxc_epdc_fb_send_single_update(struct mxcfb_update_data *upd_data,
 		/* Queued update scheme processing */
 
 		mutex_unlock(&fb_data->queue_mutex);
-	//printk("---------------> queue_work\n");
+	//printk(KERN_DEBUG"---------------> queue_work\n");
 
 		/* Signal workqueue to handle new update */
 		queue_work(fb_data->epdc_submit_workqueue,
@@ -3474,11 +3565,11 @@ static int mxc_epdc_fb_send_single_update(struct mxcfb_update_data *upd_data,
 	if (fb_data->upd_buffer_num > fb_data->max_num_buffers-1)
 		fb_data->upd_buffer_num = 0;
 
-	//printk("calling epdc_process_update\n");
+	//printk(KERN_DEBUG"calling epdc_process_update\n");
 	ret = epdc_process_update(upd_data_list, fb_data);
 	if (ret) {
 		mutex_unlock(&fb_data->pxp_mutex);
-	//printk("calling epdc_process_update ret=%d\n",ret);
+	//printk(KERN_DEBUG"calling epdc_process_update ret=%d\n",ret);
 		return ret;
 	}
 
@@ -3516,7 +3607,7 @@ static int mxc_epdc_fb_send_single_update(struct mxcfb_update_data *upd_data,
 	}
 
 	/* LUTs are available, so we get one here */
-	//printk("epdc_choose_next_lut\n");
+	//printk(KERN_DEBUG"epdc_choose_next_lut\n");
 	ret = epdc_choose_next_lut(fb_data, &upd_data_list->lut_num);
 	if (ret && fb_data->tce_prevent && (fb_data->rev < 20)) {
 		dev_dbg(fb_data->dev, "Must wait for LUT15\n");
@@ -3577,7 +3668,7 @@ static int mxc_epdc_fb_send_single_update(struct mxcfb_update_data *upd_data,
 		fb_data->wv_modes_update = false;
 	}
 
-	//printk("calling epdc_submit_update\n");
+	//printk(KERN_DEBUG"calling epdc_submit_update\n");
 	epdc_submit_update(upd_data_list->lut_num,
 			   upd_desc->upd_data.waveform_mode,
 			   upd_desc->upd_data.update_mode,
@@ -3595,11 +3686,11 @@ static int mxc_epdc_fb_send_update(struct mxcfb_update_data *upd_data,
 	struct mxc_epdc_fb_data *fb_data = info ?
 		(struct mxc_epdc_fb_data *)info:g_fb_data;
 	
-	//printk("--------> mxc_epdc_fb_send_update\n");
+	//printk(KERN_DEBUG"--------> mxc_epdc_fb_send_update\n");
 
 	if (!fb_data->restrict_width) {
 		/* No width restriction, send entire update region */
-		//printk("No width restriction, send entire update region\n");
+		//printk(KERN_DEBUG"No width restriction, send entire update region\n");
 		return mxc_epdc_fb_send_single_update(upd_data, info);
 	} else {
 		int ret;
@@ -3614,7 +3705,7 @@ static int mxc_epdc_fb_send_update(struct mxcfb_update_data *upd_data,
 		if (fb_data->epdc_fb_var.rotate != FB_ROTATE_UR)
 		{
 			max_upd_width -= EPDC_V2_ROTATION_ALIGNMENT;
-			//printk("!FB_ROTATE_UR, max_upd_width=%d\n",max_upd_width);
+			//printk(KERN_DEBUG"!FB_ROTATE_UR, max_upd_width=%d\n",max_upd_width);
 		}
 
 		/* Select split of width or height based on rotation */
@@ -3622,11 +3713,11 @@ static int mxc_epdc_fb_send_update(struct mxcfb_update_data *upd_data,
 			(fb_data->epdc_fb_var.rotate == FB_ROTATE_UD)) {
 			region_width = &upd_data->update_region.width;
 			region_left = &upd_data->update_region.left;
-			//printk("FB_ROTATE_UR || FB_ROTATE_UD, region_width=%d, region_left=%d\n",region_width,region_left);
+			//printk(KERN_DEBUG"FB_ROTATE_UR || FB_ROTATE_UD, region_width=%d, region_left=%d\n",region_width,region_left);
 		} else {
 			region_width = &upd_data->update_region.height;
 			region_left = &upd_data->update_region.top;
-			//printk("!FB_ROTATE_UR && !FB_ROTATE_UD, region_width=%d, region_left=%d\n",region_width,region_left);
+			//printk(KERN_DEBUG"!FB_ROTATE_UR && !FB_ROTATE_UD, region_width=%d, region_left=%d\n",region_width,region_left);
 		}
 
 		if (*region_width <= max_upd_width)
@@ -3664,7 +3755,7 @@ static int mxc_epdc_fb_wait_update_complete(struct mxcfb_update_marker_data *mar
 	bool marker_found = false;
 	int ret = 0;
 	
-	//printk("--------> mxc_epdc_fb_wait_update_complete\n");
+	//printk(KERN_DEBUG"--------> mxc_epdc_fb_wait_update_complete\n");
 
 	/* 0 is an invalid update_marker value */
 	if (marker_data->update_marker == 0)
@@ -3702,7 +3793,7 @@ static int mxc_epdc_fb_wait_update_complete(struct mxcfb_update_marker_data *mar
 	ret = wait_for_completion_timeout(&next_marker->update_completion,
 						msecs_to_jiffies(5000));
 	if (!ret) {
-		dev_dbg(fb_data->dev,
+		dev_err(fb_data->dev,
 			"Timed out waiting for update completion\n");
 		return -ETIMEDOUT;
 	}
@@ -3744,7 +3835,7 @@ static int mxc_epdc_fb_ioctl(struct fb_info *info, unsigned int cmd,
 	switch (cmd) {
 	case MXCFB_SET_WAVEFORM_MODES:
 		{
-			//printk("mxc_epdc_fb_ioctl -> MXCFB_SET_WAVEFORM_MODES\n");
+			//printk(KERN_DEBUG"mxc_epdc_fb_ioctl -> MXCFB_SET_WAVEFORM_MODES\n");
 			struct mxcfb_waveform_modes modes;
 			if (!copy_from_user(&modes, argp, sizeof(modes))) {
 				mxc_epdc_fb_set_waveform_modes(&modes, info);
@@ -3754,10 +3845,10 @@ static int mxc_epdc_fb_ioctl(struct fb_info *info, unsigned int cmd,
 		}
 	case MXCFB_SET_TEMPERATURE:
 		{
-			//printk("mxc_epdc_fb_ioctl -> MXCFB_SET_WAVEFORM_SET_TEMPERATURE\n");
+			//printk(KERN_DEBUG"mxc_epdc_fb_ioctl -> MXCFB_SET_WAVEFORM_SET_TEMPERATURE\n");
 			int temperature;
 			if (!get_user(temperature, (int32_t __user *) arg)){
-				//printk("temperature=%d\n",temperature);
+				//printk(KERN_DEBUG"temperature=%d\n",temperature);
 				ret = mxc_epdc_fb_set_temperature(temperature,
 					info);
 			}
@@ -3765,7 +3856,7 @@ static int mxc_epdc_fb_ioctl(struct fb_info *info, unsigned int cmd,
 		}
 	case MXCFB_SET_AUTO_UPDATE_MODE:
 		{
-			//printk("mxc_epdc_fb_ioctl -> MXCFB_SET_AUTO_UPDATE_MODE\n");
+			//printk(KERN_DEBUG"mxc_epdc_fb_ioctl -> MXCFB_SET_AUTO_UPDATE_MODE\n");
 			u32 auto_mode = 0;
 			if (!get_user(auto_mode, (__u32 __user *) arg))
 				ret = mxc_epdc_fb_set_auto_update(auto_mode,
@@ -3774,7 +3865,7 @@ static int mxc_epdc_fb_ioctl(struct fb_info *info, unsigned int cmd,
 		}
 	case MXCFB_SET_UPDATE_SCHEME:
 		{
-			//printk("mxc_epdc_fb_ioctl -> MXCFB_SET_UPDATE_SCHEME\n");
+			//printk(KERN_DEBUG"mxc_epdc_fb_ioctl -> MXCFB_SET_UPDATE_SCHEME\n");
 			u32 upd_scheme = 0;
 			if (!get_user(upd_scheme, (__u32 __user *) arg))
 				ret = mxc_epdc_fb_set_upd_scheme(upd_scheme,
@@ -3783,8 +3874,13 @@ static int mxc_epdc_fb_ioctl(struct fb_info *info, unsigned int cmd,
 		}
 	case MXCFB_SEND_UPDATE:
 		{
-			//printk("mxc_epdc_fb_ioctl -> MXCFB_SEND_UPDATE\n");
+#if 0
+			printk(KERN_DEBUG"mxc_epdc_fb_ioctl -> MXCFB_SEND_UPDATE\n");
 			t1=__ktime_get_real_seconds();
+			
+			if (mutex_lock_interruptible(&hard_lock) < 0)
+				return -ERESTARTSYS;
+#endif
 			struct mxcfb_update_data upd_data;
 			if (!copy_from_user(&upd_data, argp,
 				sizeof(upd_data))) {
@@ -3795,16 +3891,21 @@ static int mxc_epdc_fb_ioctl(struct fb_info *info, unsigned int cmd,
 			} else {
 				ret = -EFAULT;
 			}
+		
+#if 0	
+			mutex_unlock(&hard_lock);
+			
 			t2=__ktime_get_real_seconds();
 			/*printk("mxc_epdc_fb_ioctl -> MXCFB_SEND_UPDATE waveform_mode=%d <- done time taken [sec=%lu]\n",
 					upd_data.waveform_mode,t2-t1);*/
+#endif
 
 			break;
 		}
 	case MXCFB_WAIT_FOR_UPDATE_COMPLETE:
 		{
-			//printk("mxc_epdc_fb_ioctl -> MXCFB_WAIT_FOR_UPDATE_COMPLETE\n");
-			t1=__ktime_get_real_seconds();
+			//printk(KERN_DEBUG"mxc_epdc_fb_ioctl -> MXCFB_WAIT_FOR_UPDATE_COMPLETE\n");
+			//t1=__ktime_get_real_seconds();
 			struct mxcfb_update_marker_data upd_marker_data;
 			if (!copy_from_user(&upd_marker_data, argp,
 				sizeof(upd_marker_data))) {
@@ -3816,19 +3917,19 @@ static int mxc_epdc_fb_ioctl(struct fb_info *info, unsigned int cmd,
 			} else {
 				ret = -EFAULT;
 			}
-			t2=__ktime_get_real_seconds();
-			//printk("mxc_epdc_fb_ioctl -> MXCFB_WAIT_FOR_UPDATE_COMPLETE  <- done time taken [sec=%lu]\n",t2-t1);
+			//t2=__ktime_get_real_seconds();
+			//printk(KERN_DEBUG"mxc_epdc_fb_ioctl -> MXCFB_WAIT_FOR_UPDATE_COMPLETE  <- done time taken [sec=%lu]\n",t2-t1);
 
 			break;
 		}
 
 	case MXCFB_SET_PWRDOWN_DELAY:
 		{
-			//printk("mxc_epdc_fb_ioctl -> MXCFB_SET_PWRDOWN_DELAY\n");
+			//printk(KERN_DEBUG"mxc_epdc_fb_ioctl -> MXCFB_SET_PWRDOWN_DELAY\n");
 			int delay = 0;
 			if (!get_user(delay, (__u32 __user *) arg))
 			{
-				//printk("delay=%d\n",delay);
+				//printk(KERN_DEBUG"delay=%d\n",delay);
 				ret =
 				    mxc_epdc_fb_set_pwrdown_delay(delay, info);
 			}
@@ -3837,7 +3938,7 @@ static int mxc_epdc_fb_ioctl(struct fb_info *info, unsigned int cmd,
 
 	case MXCFB_GET_PWRDOWN_DELAY:
 		{
-			//printk("mxc_epdc_fb_ioctl -> MXCFB_GET_PWRDOWN_DELAY\n");
+			//printk(KERN_DEBUG"mxc_epdc_fb_ioctl -> MXCFB_GET_PWRDOWN_DELAY\n");
 			int pwrdown_delay = mxc_epdc_get_pwrdown_delay(info);
 			if (put_user(pwrdown_delay,
 				(int __user *)argp))
@@ -3848,7 +3949,7 @@ static int mxc_epdc_fb_ioctl(struct fb_info *info, unsigned int cmd,
 
 	case MXCFB_GET_WORK_BUFFER:
 		{
-			//printk("mxc_epdc_fb_ioctl -> MXCFB_GET_WORK_BUFFER\n");
+			//printk(KERN_DEBUG"mxc_epdc_fb_ioctl -> MXCFB_GET_WORK_BUFFER\n");
 			/* copy the epdc working buffer to the user space */
 			struct mxc_epdc_fb_data *fb_data = info ?
 				(struct mxc_epdc_fb_data *)info:g_fb_data;
@@ -3875,6 +3976,8 @@ static int mxc_epdc_fb_ioctl(struct fb_info *info, unsigned int cmd,
 	return ret;
 }
 
+#undef CONFIG_FB_MXC_EINK_AUTO_UPDATE_MODE
+
 #ifdef CONFIG_FB_MXC_EINK_AUTO_UPDATE_MODE
 static void mxc_epdc_fb_update_pages(struct mxc_epdc_fb_data *fb_data,
 				     u16 y1, u16 y2)
@@ -3892,7 +3995,7 @@ static void mxc_epdc_fb_update_pages(struct mxc_epdc_fb_data *fb_data,
 	update.temp = TEMP_USE_AMBIENT;
 	update.flags = 0;
 
-	//printk("[x=%d,y=%d,w=%d,h=%d]\n",update.update_region.left,update.update_region.width,update.update_region.top,update.update_region.height);
+	//printk(KERN_DEBUG"[x=%d,y=%d,w=%d,h=%d]\n",update.update_region.left,update.update_region.width,update.update_region.top,update.update_region.height);
 
 	mxc_epdc_fb_send_update(&update, &fb_data->info);
 }
@@ -3957,7 +4060,7 @@ void mxc_epdc_fb_flush_updates(struct mxc_epdc_fb_data *fb_data)
 		ret = wait_for_completion_timeout(&fb_data->updates_done,
 						msecs_to_jiffies(8000));
 		if (!ret)
-			dev_dbg(fb_data->dev,
+			dev_err(fb_data->dev,
 				"Flush updates timeout! ret = 0x%x\n", ret);
 
 		mutex_lock(&fb_data->queue_mutex);
@@ -3981,7 +4084,7 @@ static int mxc_epdc_fb_blank(int blank, struct fb_info *info)
 
 	switch (blank) {
 	case FB_BLANK_POWERDOWN:
-		//printk("------> FB_BLANK_POWERDOWN\n");
+		//printk(KERN_DEBUG"------> FB_BLANK_POWERDOWN\n");
 		mxc_epdc_fb_flush_updates(fb_data);
 		/* Wait for powerdown */
 		mutex_lock(&fb_data->power_mutex);
@@ -4012,7 +4115,7 @@ static int mxc_epdc_fb_blank(int blank, struct fb_info *info)
 			ret = wait_for_completion_timeout(&fb_data->powerdown_compl,
 				msecs_to_jiffies(5000));
 			if (!ret) {
-				dev_dbg(fb_data->dev,
+				dev_err(fb_data->dev,
 					"No powerdown received!\n");
 				return -ETIMEDOUT;
 			}
@@ -4158,8 +4261,10 @@ static irqreturn_t mxc_epdc_irq_handler(int irq, void *dev_id)
 		return IRQ_HANDLED;
 
 	if (__raw_readl(EPDC_IRQ) & EPDC_IRQ_TCE_UNDERRUN_IRQ) {
-		dev_dbg(fb_data->dev,
+#if 0
+		dev_err(fb_data->dev,
 			"TCE underrun! Will continue to update panel\n");
+#endif
 		/* Clear TCE underrun IRQ */
 		__raw_writel(EPDC_IRQ_TCE_UNDERRUN_IRQ, EPDC_IRQ_CLEAR);
 	}
@@ -4351,7 +4456,7 @@ static void epdc_intr_work_func(struct work_struct *work)
 	/* Is Working Buffer busy? */
 	if (epdc_wb_busy) {
 		/* Can't submit another update until WB is done */
-	//printk("Can't submit another update until WB is done\n");
+	//printk(KERN_DEBUG"Can't submit another update until WB is done\n");
 		mutex_unlock(&fb_data->queue_mutex);
 		return;
 	}
@@ -4365,7 +4470,7 @@ static void epdc_intr_work_func(struct work_struct *work)
 
 		/* Signal completion if submit workqueue was waiting on WB */
 		if (fb_data->waiting_for_wb) {
-	//printk("Signal completion if submit workqueue was waiting on WB \n");
+	//printk(KERN_DEBUG"Signal completion if submit workqueue was waiting on WB \n");
 			complete(&fb_data->update_res_free);
 			fb_data->waiting_for_wb = false;
 		}
@@ -4646,7 +4751,7 @@ static void epdc_intr_work_func(struct work_struct *work)
 
 		/* Schedule task to submit collision and pending update */
 		if (!fb_data->powering_down){
-			//printk("!fb_data->powering_down, calling queue_work\n");
+			//printk(KERN_DEBUG"!fb_data->powering_down, calling queue_work\n");
 			queue_work(fb_data->epdc_submit_workqueue,
 				&fb_data->epdc_submit_work);
 		}
@@ -4764,7 +4869,7 @@ static void epdc_intr_work_func(struct work_struct *work)
 		fb_data->wv_modes_update = false;
 	}
 
-	//printk(" from workqueue -> epdc_submit_update\n");
+	//printk(KERN_DEBUG" from workqueue -> epdc_submit_update\n");
 	epdc_submit_update(fb_data->cur_update->lut_num,
 			   fb_data->cur_update->update_desc->upd_data.waveform_mode,
 			   fb_data->cur_update->update_desc->upd_data.update_mode,
@@ -4819,7 +4924,7 @@ static void draw_mode0(struct mxc_epdc_fb_data *fb_data)
 		msleep(100);
 	}
 
-	dev_dbg(fb_data->dev, "Mode0 init failed!\n");
+	dev_err(fb_data->dev, "Mode0 init failed!\n");
 
 	return;
 }
@@ -4854,7 +4959,7 @@ static void mxc_epdc_fb_fw_handler(const struct firmware *fw,
 			"imx/epdc/epdc.fw", fb_data->dev, GFP_KERNEL, fb_data,
 			mxc_epdc_fb_fw_handler);
 		if (ret)
-			dev_dbg(fb_data->dev,
+			dev_err(fb_data->dev,
 				"Failed request_firmware_nowait err %d\n", ret);
 
 		return;
@@ -4887,7 +4992,7 @@ static void mxc_epdc_fb_fw_handler(const struct firmware *fw,
 						&fb_data->waveform_buffer_phys,
 						GFP_DMA | GFP_KERNEL);
 	if (fb_data->waveform_buffer_virt == NULL) {
-		dev_dbg(fb_data->dev, "Can't allocate mem for waveform!\n");
+		dev_err(fb_data->dev, "Can't allocate mem for waveform!\n");
 		return;
 	}
 
@@ -4929,7 +5034,7 @@ static void mxc_epdc_fb_fw_handler(const struct firmware *fw,
 		if (((rounded_pix_clk >= target_pix_clk + target_pix_clk/100) ||
 			(rounded_pix_clk <= target_pix_clk - target_pix_clk/100)))
 			/* Still can't get a good clock, provide warning */
-			dev_dbg(fb_data->dev, "Unable to get an accurate EPDC pix clk"
+			dev_err(fb_data->dev, "Unable to get an accurate EPDC pix clk"
 				"desired = %lu, actual = %lu\n", target_pix_clk,
 				rounded_pix_clk);
 	}
@@ -4942,7 +5047,7 @@ static void mxc_epdc_fb_fw_handler(const struct firmware *fw,
 	epdc_init_sequence(fb_data);
 
 
-	//printk("--------> after epdc_init_sequence\n");
+	//printk(KERN_DEBUG"--------> after epdc_init_sequence\n");
 
 	/* Disable clocks */
 	clk_disable_unprepare(fb_data->epdc_clk_axi);
@@ -4961,7 +5066,7 @@ static void mxc_epdc_fb_fw_handler(const struct firmware *fw,
 		yres = screeninfo->yres;
 	}
 
-	//printk("xres=%d,yres=%d\n",xres,yres);
+	//printk(KERN_DEBUG"xres=%d,yres=%d\n",xres,yres);
 
 	update.update_region.left = 0;
 	update.update_region.width = xres;
@@ -4978,13 +5083,13 @@ static void mxc_epdc_fb_fw_handler(const struct firmware *fw,
 
 	mxc_epdc_fb_send_update(&update, &fb_data->info);
 	
-	//printk("--------> after mxc_epdc_fb_send_update\n");
+	//printk(KERN_DEBUG"--------> after mxc_epdc_fb_send_update\n");
 
 	/* Block on initial update */
 	ret = mxc_epdc_fb_wait_update_complete(&upd_marker_data,
 		&fb_data->info);
 	if (ret < 0)
-		dev_dbg(fb_data->dev,
+		dev_err(fb_data->dev,
 			"Wait for initial update complete failed."
 			" Error = 0x%x", ret);
 }
@@ -5088,7 +5193,7 @@ static int mxc_epdc_fb_probe(struct platform_device *pdev)
 	int enable_gpio;
 	enum of_gpio_flags flag;
 	unsigned short *wk_p;
-
+	
 	if (!np)
 		return -EINVAL;
 
@@ -5113,7 +5218,7 @@ static int mxc_epdc_fb_probe(struct platform_device *pdev)
 		}
 		fb_data->gpr = syscon_node_to_regmap(node);
 		if (IS_ERR(fb_data->gpr)) {
-			dev_dbg(&pdev->dev, "failed to get gpr regmap\n");
+			dev_err(&pdev->dev, "failed to get gpr regmap\n");
 			ret = PTR_ERR(fb_data->gpr);
 			goto out_fbdata;
 		}
@@ -5128,7 +5233,7 @@ static int mxc_epdc_fb_probe(struct platform_device *pdev)
 	if (of_find_property(np, "en-gpios", NULL)) {
 		enable_gpio = of_get_named_gpio_flags(np, "en-gpios", 0, &flag);
 		if (enable_gpio == -EPROBE_DEFER) {
-			dev_dbg(&pdev->dev, "GPIO requested is not"
+			dev_info(&pdev->dev, "GPIO requested is not"
 				"here yet, deferring the probe\n");
 			return -EPROBE_DEFER;
 		}
@@ -5143,7 +5248,7 @@ static int mxc_epdc_fb_probe(struct platform_device *pdev)
 						    GPIOF_OUT_INIT_HIGH,
 						    "en_pins");
 			if (ret) {
-				dev_dbg(&pdev->dev, "failed to request gpio"
+				dev_err(&pdev->dev, "failed to request gpio"
 					" %d: %d\n", enable_gpio, ret);
 				return -EINVAL;
 			}
@@ -5335,7 +5440,7 @@ static int mxc_epdc_fb_probe(struct platform_device *pdev)
 		break;
 
 	default:
-		dev_dbg(&pdev->dev, "unsupported bitwidth %d\n",
+		dev_err(&pdev->dev, "unsupported bitwidth %d\n",
 			fb_data->default_bpp);
 		ret = -EINVAL;
 		goto out_dma_fb;
@@ -5375,14 +5480,14 @@ static int mxc_epdc_fb_probe(struct platform_device *pdev)
 
 	fb_data->epdc_clk_axi = clk_get(fb_data->dev, "epdc_axi");
 	if (IS_ERR(fb_data->epdc_clk_axi)) {
-		dev_dbg(&pdev->dev, "Unable to get EPDC AXI clk."
+		dev_err(&pdev->dev, "Unable to get EPDC AXI clk."
 			"err = %d\n", (int)fb_data->epdc_clk_axi);
 		ret = -ENODEV;
 		goto out_dma_fb;
 	}
 	fb_data->epdc_clk_pix = clk_get(fb_data->dev, "epdc_pix");
 	if (IS_ERR(fb_data->epdc_clk_pix)) {
-		dev_dbg(&pdev->dev, "Unable to get EPDC pix clk."
+		dev_err(&pdev->dev, "Unable to get EPDC pix clk."
 			"err = %d\n", (int)fb_data->epdc_clk_pix);
 		ret = -ENODEV;
 		goto out_dma_fb;
@@ -5508,7 +5613,7 @@ static int mxc_epdc_fb_probe(struct platform_device *pdev)
 			       &fb_data->working_buffer_phys,
 			       GFP_DMA | GFP_KERNEL);
 	if (fb_data->working_buffer_virt == NULL) {
-		dev_dbg(&pdev->dev, "Can't allocate mem for working buf!\n");
+		dev_err(&pdev->dev, "Can't allocate mem for working buf!\n");
 		ret = -ENOMEM;
 		goto out_copybuffer;
 	}
@@ -5526,7 +5631,7 @@ static int mxc_epdc_fb_probe(struct platform_device *pdev)
 			       &fb_data->tmp_working_buffer_phys,
 			       GFP_DMA | GFP_KERNEL);
 	if (fb_data->tmp_working_buffer_virt == NULL) {
-		dev_dbg(&pdev->dev, "Can't allocate mem for tmp working buf!\n");
+		dev_err(&pdev->dev, "Can't allocate mem for tmp working buf!\n");
 		ret = -ENOMEM;
 		goto out_copybuffer;
 	}
@@ -5534,7 +5639,7 @@ static int mxc_epdc_fb_probe(struct platform_device *pdev)
 	/* Initialize EPDC pins */
 	pinctrl = devm_pinctrl_get_select_default(&pdev->dev);
 	if (IS_ERR(pinctrl)) {
-		dev_dbg(&pdev->dev, "can't get/select pinctrl\n");
+		dev_err(&pdev->dev, "can't get/select pinctrl\n");
 		ret = PTR_ERR(pinctrl);
 		goto out_copybuffer;
 	}
@@ -5568,17 +5673,17 @@ static int mxc_epdc_fb_probe(struct platform_device *pdev)
 	INIT_DELAYED_WORK(&fb_data->epdc_done_work, epdc_done_work_func);
 	fb_data->epdc_submit_workqueue = alloc_workqueue("EPDC Submit",
 					WQ_MEM_RECLAIM | WQ_HIGHPRI |
-					WQ_CPU_INTENSIVE | WQ_UNBOUND, 1);
+					WQ_CPU_INTENSIVE | WQ_UNBOUND , 1);
 	INIT_WORK(&fb_data->epdc_submit_work, epdc_submit_work_func);
 	fb_data->epdc_intr_workqueue = alloc_workqueue("EPDC Interrupt",
 					WQ_MEM_RECLAIM | WQ_HIGHPRI |
-					WQ_CPU_INTENSIVE | WQ_UNBOUND, 1);
+					WQ_CPU_INTENSIVE | WQ_UNBOUND , 1);
 	INIT_WORK(&fb_data->epdc_intr_work, epdc_intr_work_func);
 
 	/* Retrieve EPDC IRQ num */
 	irq = platform_get_irq(pdev, 0);
 	if (irq < 0) {
-		dev_dbg(&pdev->dev, "cannot get IRQ resource\n");
+		dev_err(&pdev->dev, "cannot get IRQ resource\n");
 		ret = -ENODEV;
 		goto out_dma_work_buf;
 	}
@@ -5588,7 +5693,7 @@ static int mxc_epdc_fb_probe(struct platform_device *pdev)
 	ret = devm_request_irq(&pdev->dev, fb_data->epdc_irq,
 				mxc_epdc_irq_handler, 0, "epdc", fb_data);
 	if (ret) {
-		dev_dbg(&pdev->dev, "request_irq (%d) failed with error %d\n",
+		dev_err(&pdev->dev, "request_irq (%d) failed with error %d\n",
 			fb_data->epdc_irq, ret);
 		ret = -ENODEV;
 		goto out_dma_work_buf;
@@ -5602,28 +5707,28 @@ static int mxc_epdc_fb_probe(struct platform_device *pdev)
 	/* get pmic regulators */
 	fb_data->display_regulator = devm_regulator_get(&pdev->dev, "DISPLAY");
 	if (IS_ERR(fb_data->display_regulator)) {
-		dev_dbg(&pdev->dev, "Unable to get display PMIC regulator."
+		dev_err(&pdev->dev, "Unable to get display PMIC regulator."
 			"err = 0x%x\n", (int)fb_data->display_regulator);
 		ret = -ENODEV;
 		goto out_dma_work_buf;
 	}
 	fb_data->vcom_regulator = devm_regulator_get(&pdev->dev, "VCOM");
 	if (IS_ERR(fb_data->vcom_regulator)) {
-		dev_dbg(&pdev->dev, "Unable to get VCOM regulator."
+		dev_err(&pdev->dev, "Unable to get VCOM regulator."
 			"err = 0x%x\n", (int)fb_data->vcom_regulator);
 		ret = -ENODEV;
 		goto out_dma_work_buf;
 	}
 	fb_data->v3p3_regulator = devm_regulator_get(&pdev->dev, "V3P3");
 	if (IS_ERR(fb_data->v3p3_regulator)) {
-		dev_dbg(&pdev->dev, "Unable to get V3P3 regulator."
+		dev_err(&pdev->dev, "Unable to get V3P3 regulator."
 			"err = 0x%x\n", (int)fb_data->vcom_regulator);
 		ret = -ENODEV;
 		goto out_dma_work_buf;
 	}
 
 	if (device_create_file(info->dev, &fb_attrs[0]))
-		dev_dbg(&pdev->dev, "Unable to create file from fb_attrs\n");
+		dev_err(&pdev->dev, "Unable to create file from fb_attrs\n");
 
 	fb_data->cur_update = NULL;
 
@@ -5695,7 +5800,7 @@ static int mxc_epdc_fb_probe(struct platform_device *pdev)
 	/* Initialize color map for conversion of 8-bit gray pixels */
 	fb_data->pxp_conf.proc_data.lut_map = kmalloc(256, GFP_KERNEL);
 	if (fb_data->pxp_conf.proc_data.lut_map == NULL) {
-		dev_dbg(&pdev->dev, "Can't allocate mem for lut map!\n");
+		dev_err(&pdev->dev, "Can't allocate mem for lut map!\n");
 		ret = -ENOMEM;
 		goto out_dma_work_buf;
 	}
@@ -5738,7 +5843,7 @@ static int mxc_epdc_fb_probe(struct platform_device *pdev)
 	/* Register FB */
 	ret = register_framebuffer(info);
 	if (ret) {
-		dev_dbg(&pdev->dev,
+		dev_err(&pdev->dev,
 			"register_framebuffer failed with error %d\n", ret);
 		goto out_lutmap;
 	}
@@ -5750,7 +5855,7 @@ static int mxc_epdc_fb_probe(struct platform_device *pdev)
 #ifdef DEFAULT_PANEL_HW_INIT
 	ret = mxc_epdc_fb_init_hw((struct fb_info *)fb_data);
 	if (ret) {
-		dev_dbg(&pdev->dev, "Failed to initialize HW!\n");
+		dev_err(&pdev->dev, "Failed to initialize HW!\n");
 	}
 #endif
 
@@ -6025,7 +6130,7 @@ static int pxp_chan_init(struct mxc_epdc_fb_data *fb_data)
 	dma_cap_set(DMA_PRIVATE, mask);
 	chan = dma_request_channel(mask, chan_filter, NULL);
 	if (!chan) {
-		dev_dbg(fb_data->dev, "Unsuccessfully received channel!!!!\n");
+		dev_err(fb_data->dev, "Unsuccessfully received channel!!!!\n");
 		return -EBUSY;
 	}
 
@@ -6064,7 +6169,7 @@ static int pxp_wfe_a_process_clear_workingbuffer(struct mxc_epdc_fb_data *fb_dat
 			 * PxP channel init failed, and we can't use the
 			 * PxP until the PxP DMA driver has loaded, so we abort
 			 */
-			dev_dbg(fb_data->dev, "PxP chan init failed\n");
+			dev_err(fb_data->dev, "PxP chan init failed\n");
 			return -ENODEV;
 		}
 	}
@@ -6083,7 +6188,7 @@ static int pxp_wfe_a_process_clear_workingbuffer(struct mxc_epdc_fb_data *fb_dat
 						     DMA_PREP_INTERRUPT,
 						     NULL);
 	if (!txd) {
-		dev_dbg(fb_data->info.device,
+		dev_err(fb_data->info.device,
 			"Error preparing a DMA transaction descriptor.\n");
 		return -EIO;
 	}
@@ -6169,7 +6274,7 @@ static int pxp_wfe_a_process_clear_workingbuffer(struct mxc_epdc_fb_data *fb_dat
 	/* Submitting our TX starts the PxP processing task */
 	cookie = txd->tx_submit(txd);
 	if (cookie < 0) {
-		dev_dbg(fb_data->info.device, "Error sending FB through PxP\n");
+		dev_err(fb_data->info.device, "Error sending FB through PxP\n");
 		return -EIO;
 	}
 
@@ -6191,7 +6296,7 @@ static int pxp_clear_wb_work_func(struct mxc_epdc_fb_data *fb_data)
 	mutex_lock(&fb_data->pxp_mutex);
 	ret = pxp_wfe_a_process_clear_workingbuffer(fb_data, fb_data->cur_mode->vmode->xres, fb_data->cur_mode->vmode->yres);
 	if (ret) {
-		dev_dbg(fb_data->dev, "Unable to submit PxP update task.\n");
+		dev_err(fb_data->dev, "Unable to submit PxP update task.\n");
 		mutex_unlock(&fb_data->pxp_mutex);
 		return ret;
 	}
@@ -6200,14 +6305,14 @@ static int pxp_clear_wb_work_func(struct mxc_epdc_fb_data *fb_data)
 	/* If needed, enable EPDC HW while ePxP is processing */
 	if ((fb_data->power_state == POWER_STATE_OFF)
 		|| fb_data->powering_down) {
-	//printk("--------> powerup from pxp_clear_wb_work_func\n");
+	//printk(KERN_DEBUG"--------> powerup from pxp_clear_wb_work_func\n");
 		epdc_powerup(fb_data);
 	}
 
 	/* This is a blocking call, so upon return PxP tx should be done */
 	ret = pxp_complete_update(fb_data, &hist_stat);
 	if (ret) {
-		dev_dbg(fb_data->dev, "Unable to complete PxP update task: clear wb process\n");
+		dev_err(fb_data->dev, "Unable to complete PxP update task: clear wb process\n");
 		mutex_unlock(&fb_data->pxp_mutex);
 		return ret;
 	}
@@ -6246,7 +6351,7 @@ static int pxp_legacy_process(struct mxc_epdc_fb_data *fb_data,
 			 * PxP channel init failed, and we can't use the
 			 * PxP until the PxP DMA driver has loaded, so we abort
 			 */
-			dev_dbg(fb_data->dev, "PxP chan init failed\n");
+			dev_err(fb_data->dev, "PxP chan init failed\n");
 			return -ENODEV;
 		}
 	}
@@ -6265,7 +6370,7 @@ static int pxp_legacy_process(struct mxc_epdc_fb_data *fb_data,
 						     DMA_PREP_INTERRUPT,
 						     NULL);
 	if (!txd) {
-		dev_dbg(fb_data->info.device,
+		dev_err(fb_data->info.device,
 			"Error preparing a DMA transaction descriptor.\n");
 		return -EIO;
 	}
@@ -6344,7 +6449,7 @@ static int pxp_legacy_process(struct mxc_epdc_fb_data *fb_data,
 	/* Submitting our TX starts the PxP processing task */
 	cookie = txd->tx_submit(txd);
 	if (cookie < 0) {
-		dev_dbg(fb_data->info.device, "Error sending FB through PxP\n");
+		dev_err(fb_data->info.device, "Error sending FB through PxP\n");
 		return -EIO;
 	}
 
@@ -6383,7 +6488,7 @@ static int pxp_process_dithering(struct mxc_epdc_fb_data *fb_data,
 			 * PxP channel init failed, and we can't use the
 			 * PxP until the PxP DMA driver has loaded, so we abort
 			 */
-			dev_dbg(fb_data->dev, "PxP chan init failed\n");
+			dev_err(fb_data->dev, "PxP chan init failed\n");
 			return -ENODEV;
 		}
 	}
@@ -6402,7 +6507,7 @@ static int pxp_process_dithering(struct mxc_epdc_fb_data *fb_data,
 						     DMA_PREP_INTERRUPT,
 						     NULL);
 	if (!txd) {
-		dev_dbg(fb_data->info.device,
+		dev_err(fb_data->info.device,
 			"Error preparing a DMA transaction descriptor.\n");
 		return -EIO;
 	}
@@ -6484,7 +6589,7 @@ static int pxp_process_dithering(struct mxc_epdc_fb_data *fb_data,
 	/* Submitting our TX starts the PxP processing task */
 	cookie = txd->tx_submit(txd);
 	if (cookie < 0) {
-		dev_dbg(fb_data->info.device, "Error sending FB through PxP\n");
+		dev_err(fb_data->info.device, "Error sending FB through PxP\n");
 		return -EIO;
 	}
 
@@ -6531,7 +6636,7 @@ static int pxp_wfe_a_process(struct mxc_epdc_fb_data *fb_data,
 			 * PxP channel init failed, and we can't use the
 			 * PxP until the PxP DMA driver has loaded, so we abort
 			 */
-			dev_dbg(fb_data->dev, "PxP chan init failed\n");
+			dev_err(fb_data->dev, "PxP chan init failed\n");
 			return -ENODEV;
 		}
 	}
@@ -6550,7 +6655,7 @@ static int pxp_wfe_a_process(struct mxc_epdc_fb_data *fb_data,
 						     DMA_PREP_INTERRUPT,
 						     NULL);
 	if (!txd) {
-		dev_dbg(fb_data->info.device,
+		dev_err(fb_data->info.device,
 			"Error preparing a DMA transaction descriptor.\n");
 		return -EIO;
 	}
@@ -6688,7 +6793,7 @@ static int pxp_wfe_a_process(struct mxc_epdc_fb_data *fb_data,
 	/* Submitting our TX starts the PxP processing task */
 	cookie = txd->tx_submit(txd);
 	if (cookie < 0) {
-		dev_dbg(fb_data->info.device, "Error sending FB through PxP\n");
+		dev_err(fb_data->info.device, "Error sending FB through PxP\n");
 		return -EIO;
 	}
 
@@ -6728,7 +6833,7 @@ static int pxp_wfe_b_process_update(struct mxc_epdc_fb_data *fb_data,
 			 * PxP channel init failed, and we can't use the
 			 * PxP until the PxP DMA driver has loaded, so we abort
 			 */
-			dev_dbg(fb_data->dev, "PxP chan init failed\n");
+			dev_err(fb_data->dev, "PxP chan init failed\n");
 			return -ENODEV;
 		}
 	}
@@ -6747,7 +6852,7 @@ static int pxp_wfe_b_process_update(struct mxc_epdc_fb_data *fb_data,
 						     DMA_PREP_INTERRUPT,
 						     NULL);
 	if (!txd) {
-		dev_dbg(fb_data->info.device,
+		dev_err(fb_data->info.device,
 			"Error preparing a DMA transaction descriptor.\n");
 		return -EIO;
 	}
@@ -6843,7 +6948,7 @@ static int pxp_wfe_b_process_update(struct mxc_epdc_fb_data *fb_data,
 	/* Submitting our TX starts the PxP processing task */
 	cookie = txd->tx_submit(txd);
 	if (cookie < 0) {
-		dev_dbg(fb_data->info.device, "Error sending FB through PxP\n");
+		dev_err(fb_data->info.device, "Error sending FB through PxP\n");
 		return -EIO;
 	}
 
@@ -6864,7 +6969,7 @@ static int pxp_complete_update(struct mxc_epdc_fb_data *fb_data, u32 *hist_stat)
 	 */
 	ret = wait_for_completion_timeout(&fb_data->pxp_tx_cmpl, HZ * 2);
 	if (ret <= 0) {
-		dev_dbg(fb_data->info.device,
+		dev_info(fb_data->info.device,
 			 "PxP operation failed due to %s\n",
 			 ret < 0 ? "user interrupt" : "timeout");
 		dma_release_channel(&fb_data->pxp_chan->dma_chan);
@@ -7024,3 +7129,4 @@ MODULE_AUTHOR("Freescale Semiconductor, Inc.");
 MODULE_DESCRIPTION("MXC EPDC V2 framebuffer driver");
 MODULE_LICENSE("GPL");
 MODULE_SUPPORTED_DEVICE("fb");
+

@@ -144,7 +144,8 @@ static int bq27xxx_battery_i2c_probe(struct i2c_client *client,
 	int ret;
 	char *name;
 	int num;
-	
+
+	//return 0;
 	//client->irq = gpio_to_irq(200);
 
 	/* Get new ID for the new battery device */

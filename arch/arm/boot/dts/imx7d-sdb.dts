@@ -148,6 +148,14 @@
 		gpio = <&gpio1 4 GPIO_ACTIVE_LOW>;
 		status = "disabled";
 	};
+
+	reg_epd_vcom: regulator-epd-vcom {
+                compatible = "regulator-fixed";
+                regulator-name = "EPD_VCOM";
+                gpio = <&gpio4 14 GPIO_ACTIVE_LOW>;
+                enable-active-high;
+                vin-supply = <&reg_epdpmic>;
+        };
 	
 	reg_sensors: regulator-sensors {
 		compatible = "regulator-fixed";
@@ -186,6 +194,7 @@
 			"Ext Spk", "SPK_RP",
 			"Ext Spk", "SPK_RN",
 			"LINPUT1", "AMIC",
+			"RINPUT1", "AMIC",
 			"AMIC", "MICB";
 	};
 
@@ -265,6 +274,7 @@
 	pinctrl-0 = <&pinctrl_epdc0>;
 	V3P3-supply = <&V3P3_reg>;
 	VCOM-supply = <&VCOM_reg>;
+	/*VCOM-supply = <&reg_epdpmic>;*/
 	DISPLAY-supply = <&DISPLAY_reg>;
 	status = "okay";
 };
@@ -333,7 +343,7 @@
 
 &mipi_csi {
 	clock-frequency = <240000000>;
-	status = "okay";
+	status = "disabled";
 	port {
 		mipi_sensor_ep: endpoint@1 {
 			remote-endpoint = <&ov5640_mipi_ep>;
@@ -458,6 +468,7 @@
 };
 
 &i2c2 {
+	clock-frequency = <24000000>;
 	pinctrl-names = "default";
 	pinctrl-0 = <&pinctrl_i2c2>;
 	status = "okay";
@@ -500,10 +511,12 @@
 		reg = <0x55>;
 		interrupt-parent = <&gpio7>;
 		interrupts = <8 IRQ_TYPE_LEVEL_LOW>;
+		status = "disabled";
 	};	
 };
 
 &i2c3 {
+	clock-frequency = <100000>;
 	pinctrl-names = "default";
 	pinctrl-0 = <&pinctrl_i2c3>;
 	status = "okay";
@@ -521,6 +534,7 @@
 	};
 
 	tps6518: tps6518@68 {
+                //status = "disabled";
 		pinctrl-names = "default";
 		pinctrl-0 = <&pinctrl_tps6518>;
 		compatible = "ti,tps6518x";
@@ -565,10 +579,29 @@
 			};
 		};
 	};
+
+	epd_pmic: sy7636a@62 {
+                compatible = "silergy,sy7636a";
+                reg = <0x62>;
+                status = "okay";
+                pinctrl-names = "default", "sleep";
+                pinctrl-0 = <&pinctrl_epdpmic>;
+                pinctrl-1 = <&pinctrl_epdpmic>;
+                #thermal-sensor-cells = <0>;
+
+                epd-pwr-good-gpios = <&gpio2 31 GPIO_ACTIVE_LOW>;
+                regulators {
+                        compatible = "silergy,sy7636a-regulator";
+                        reg_epdpmic: VCOM {
+                                regulator-name = "VCOM";
+                        };
+                };
+        };
+
 	
 	
 		tsc@24 {
-			status = "okay";
+			//status = "disabled";
 			compatible = "parade,pt_i2c_adapter";
 			reg = <0x24>;
 			interrupt-parent = <&gpio6>;
@@ -714,7 +747,7 @@
 	pinctrl-0 = <&pinctrl_lcdif>;
 	lcd-supply = <&reg_lcd_3v3>;
 	display = <&display0>;
-	status = "okay";
+	status = "disabled";
 
 	display0: display@0 {
 		bits-per-pixel = <16>;
@@ -943,7 +976,7 @@
 				MX7D_PAD_ENET1_RGMII_TD0__ENET1_RGMII_TD0	0x1
 				MX7D_PAD_ENET1_RGMII_TD1__ENET1_RGMII_TD1	0x1
 				MX7D_PAD_ENET1_RGMII_TD2__ENET1_RGMII_TD2	0x1
-				MX7D_PAD_ENET1_RGMII_TD3__ENET1_RGMII_TD3	0x1
+				/*MX7D_PAD_ENET1_RGMII_TD3__ENET1_RGMII_TD3	0x1*/
 				MX7D_PAD_ENET1_RGMII_TX_CTL__ENET1_RGMII_TX_CTL	0x1
 				MX7D_PAD_ENET1_RGMII_RXC__ENET1_RGMII_RXC	0x1
 				MX7D_PAD_ENET1_RGMII_RD0__ENET1_RGMII_RD0	0x1
@@ -1147,6 +1180,15 @@
 			>;
 		};
 		pinctrl_tps6518: tps6518grp-1 {
+			fsl,pins = <
+				MX7D_PAD_EPDC_PWR_STAT__GPIO2_IO31	0x80000000  /* pwrgood */
+				MX7D_PAD_I2C4_SCL__GPIO4_IO14		0x80000000  /* vcom_ctrl */
+				MX7D_PAD_EPDC_SDCE3__GPIO2_IO23		0x80000000  /* wakeup */
+				MX7D_PAD_EPDC_SDCE2__GPIO2_IO22		0x80000000  /* pwr int */
+				MX7D_PAD_EPDC_SDCE1__GPIO2_IO21		0x80000000  /* powerup */
+			>;
+		};
+		pinctrl_epdpmic: epdpmicgrp {
 			fsl,pins = <
 				MX7D_PAD_EPDC_PWR_STAT__GPIO2_IO31	0x80000000  /* pwrgood */
 				MX7D_PAD_I2C4_SCL__GPIO4_IO14		0x80000000  /* vcom_ctrl */

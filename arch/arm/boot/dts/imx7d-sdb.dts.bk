@@ -70,6 +70,7 @@
 		num-chipselects = <1>;
 		#address-cells = <1>;
 		#size-cells = <0>;
+		status = "disabled";
 
 		extended_io: gpio-expander@0 {
 			compatible = "fairchild,74hc595";
@@ -87,19 +88,16 @@
 		regulator-name = "usb_otg1_vbus";
 		regulator-min-microvolt = <5000000>;
 		regulator-max-microvolt = <5000000>;
-		gpio = <&gpio1 12 GPIO_ACTIVE_HIGH>;
-		enable-active-high;
+		status = "disabled";
 	};
 
 	reg_usb_otg2_vbus: regulator-usb-otg2-vbus {
 		compatible = "regulator-fixed";
 		regulator-name = "usb_otg2_vbus";
 		pinctrl-names = "default";
-		pinctrl-0 = <&pinctrl_usb_otg2_vbus_reg>;
 		regulator-min-microvolt = <5000000>;
 		regulator-max-microvolt = <5000000>;
-		gpio = <&gpio1 7 GPIO_ACTIVE_HIGH>;
-		enable-active-high;
+		status = "disabled";
 	};
 
 	reg_vref_1v8: regulator-vref-1v8 {
@@ -482,8 +480,27 @@
 	bq25895@6a {
 		compatible = "ti,bq25895";
 		reg = <0x6a>;
+                pinctrl-0 = <&pinctrl_charger_in>;
+                gpio = <&gpio1 7 GPIO_ACTIVE_LOW>;
+                interrupt-parent = <&gpio1>;
+                interrupts = <7 IRQ_TYPE_EDGE_FALLING>;
+		ti,charge-current = <2048000>;
+		ti,battery-regulation-voltage = <4352000>;
+		ti,termination-current = <256000>; 
+		ti,precharge-current = <128000>; /* uA */
+		ti,minimum-sys-voltage = <3700000>; /* uV */
+		ti,boost-voltage = <5000000>; /* uV */
+		ti,boost-max-current = <500000>; /* uA */
 	};
 	
+	bq27220@55{
+		pinctrl-names = "default";
+		pinctrl-0 = <&pinctrl_bq27220>;		
+		compatible = "ti,bq27220";
+		reg = <0x55>;
+		interrupt-parent = <&gpio7>;
+		interrupts = <8 IRQ_TYPE_LEVEL_LOW>;
+	};	
 };
 
 &i2c3 {
@@ -504,6 +521,7 @@
 	};
 
 	tps6518: tps6518@68 {
+		pinctrl-names = "default";
 		pinctrl-0 = <&pinctrl_tps6518>;
 		compatible = "ti,tps6518x";
 		reg = <0x68>;
@@ -512,16 +530,20 @@
 		pwr_seq1 = <0x30>;
 		pwr_seq2 = <0x33>;
 	
+		//upseq0 = <0xe1>;	
+		//upseq1 = <0x55>;
+		//dwnseq0 = <0x1e>;
+		//dwnseq1 = <0xe0>;
 		upseq0 = <0xe1>;	
-		upseq1 = <0x55>;
+		upseq1 = <0xff>;
 		dwnseq0 = <0x1e>;
-		dwnseq1 = <0xe0>;
+		dwnseq1 = <0x00>;
                 
                 SENSOR-supply = <&reg_sensors>;
 		
 		gpio_pmic_pwrgood = <&gpio2 31 0>;
 		gpio_pmic_vcom_ctrl = <&gpio4 14 0>;
-		gpio_pmic_v3p3_ctrl = <&gpio2 30 0>;
+		//gpio_pmic_v3p3_ctrl = <&gpio2 30 0>;
 		gpio_pmic_wakeup = <&gpio2 23 0>;
 		gpio_pmic_intr = <&gpio2 22 0>;
 		gpio_pmic_powerup = <&gpio2 21 0>;
@@ -543,6 +565,109 @@
 			};
 		};
 	};
+	
+	
+		tsc@24 {
+			status = "okay";
+			compatible = "parade,pt_i2c_adapter";
+			reg = <0x24>;
+			interrupt-parent = <&gpio6>;
+			interrupts = <12 IRQ_TYPE_EDGE_FALLING>;
+			parade,adapter_id = "pt_i2c_adapter";
+			
+			pinctrl-names = "default";
+			pinctrl-0 = <&pinctrl_parade_touch>;
+
+			parade,core {
+				parade,name = "pt_core";
+
+				parade,irq_gpio = <&gpio6 12 0>;
+				parade,rst_gpio = <&gpio6 15 0>;
+				parade,vddi_gpio = <&gpio2 30 0>;
+				parade,hid_desc_register = <1>;
+				/* 
+				 * PT_CORE_FLAG_NONE = 0x00
+				 * PT_CORE_FLAG_POWEROFF_ON_SLEEP = 0x02
+				 * PT_CORE_FLAG_RESTORE_PARAMETERS = 0x04
+				 * PT_CORE_FLAG_DEEP_STANDBY = 0x08
+				 * PT_CORE_FLAG_SKIP_SYS_SLEEP = 0x10
+				 * PT_CORE_FLAG_SKIP_RUNTIME = 0x20
+				 * PT_CORE_FLAG_SKIP_RESUME = 0x40
+				 */
+				parade,flags = <4>;
+				/* PT_CORE_EWG_NONE */
+				parade,easy_wakeup_gesture = <0>;
+				/* 0:AUTO 1:PIP1_ONLY 2:PIP2_CAPABLE*/
+				parade,config_dut_generation = <1>;
+				/* 0:False 1:True*/
+				parade,watchdog_force_stop = <0>;
+				/* 
+				 * PT_PANEL_ID_DISABLE = 0x00
+				 * PT_PANEL_ID_BY_BL = 0x01
+				 * PT_PANEL_ID_BY_SYS_INFO = 0x02
+				 * PT_PANEL_ID_BY_MFG_DATA  = 0x04
+				 */
+				parade,panel_id_support = <0>;
+				parade,btn_keys = <172 /* KEY_HOMEPAGE */
+					   	   /* previously was KEY_HOME, new Android versions use KEY_HOMEPAGE */
+				               139 /* KEY_MENU */
+				               158 /* KEY_BACK */
+				               217 /* KEY_SEARCH */
+				               114 /* KEY_VOLUMEDOWN */
+				               115 /* KEY_VOLUMEUP */
+				               212 /* KEY_CAMERA */
+				               116>; /* KEY_POWER */
+				parade,btn_keys-tag = <0>;
+
+				parade,mt {
+					parade,name = "pt_mt";
+
+					parade,inp_dev_name = "pt_mt";
+					/*
+					 * PT_MT_FLAG_NONE = 0x00
+					 * PT_MT_FLAG_FLIP = 0x08
+					 * PT_MT_FLAG_INV_X = 0x10
+					 * PT_MT_FLAG_INV_Y = 0x20
+					 * PT_MT_FLAG_VKEYS = 0x40
+					 */
+					parade,flags = <0x00>;
+					parade,abs =
+						/* ABS_MT_POSITION_X, PT_ABS_MIN_X, PT_ABS_MAX_X, 0, 0 */
+						<0x35 0 880 0 0
+						/* ABS_MT_POSITION_Y, PT_ABS_MIN_Y, PT_ABS_MAX_Y, 0, 0 */
+						0x36 0 1280 0 0
+						/* ABS_MT_PRESSURE, PT_ABS_MIN_P, PT_ABS_MAX_P, 0, 0 */
+						0x3a 0 255 0 0
+						/* PT_IGNORE_VALUE, PT_ABS_MIN_W, PT_ABS_MAX_W, 0, 0 */
+						0xffff 0 255 0 0
+						/* ABS_MT_TRACKING_ID, PT_ABS_MIN_T, PT_ABS_MAX_T, 0, 0 */
+						0x39 0 15 0 0
+						/* ABS_MT_TOUCH_MAJOR, 0, 255, 0, 0 */
+						0x30 0 255 0 0
+						/* ABS_MT_TOUCH_MINOR, 0, 255, 0, 0 */
+						0x31 0 255 0 0
+						/* ABS_MT_ORIENTATION, -127, 127, 0, 0 */
+						0x34 0xffffff81 127 0 0
+						/* ABS_MT_TOOL_TYPE, 0, MT_TOOL_MAX, 0, 0 */
+						0x37 0 1 0 0
+						/* ABS_DISTANCE, 0, 255, 0, 0 */
+						0x19 0 255 0 0>;
+
+					parade,vkeys_x = <720>;
+					parade,vkeys_y = <1280>;
+
+					parade,virtual_keys = /* KeyCode CenterX CenterY Width Height */
+						/* KEY_BACK */
+						<158 90 1360 160 180
+						/* KEY_MENU */
+						139 270 1360 160 180
+						/* KEY_HOMEPAGE */
+						172 450 1360 160 180
+						/* KEY SEARCH */
+						217 630 1360 160 180>;
+				};
+			};
+		};
 };
 
 &i2c4 {
@@ -575,6 +700,7 @@
 		AVDD-supply = <&vgen6_reg>;
 		mclk = <24000000>;
 		mclk_source = <0>;
+		status = "disabled";
 		port {
 			ov5640_mipi_ep: endpoint {
 				remote-endpoint = <&mipi_sensor_ep>;
@@ -588,7 +714,7 @@
 	pinctrl-0 = <&pinctrl_lcdif>;
 	lcd-supply = <&reg_lcd_3v3>;
 	display = <&display0>;
-	status = "okay";
+	status = "disabled";
 
 	display0: display@0 {
 		bits-per-pixel = <16>;
@@ -618,7 +744,7 @@
 
 &pcie {
 	reset-gpio = <&extended_io 1 GPIO_ACTIVE_LOW>;
-	status = "okay";
+	status = "disabled";
 };
 
 &reg_1p0d {
@@ -648,7 +774,7 @@
 			  <&clks IMX7D_SAI3_ROOT_CLK>;
 	assigned-clock-parents = <&clks IMX7D_PLL_AUDIO_POST_DIV>;
 	assigned-clock-rates = <0>, <884736000>, <36864000>;
-	status = "okay";
+	status = "disabled";
 };
 
 &sai3 {
@@ -787,11 +913,11 @@
 			>;
 		};
 
-		pinctrl_epdc_elan_touch: epdc_elan_touch_grp {
+		pinctrl_parade_touch: parade_touch_grp {
 			fsl,pins = <
 				MX7D_PAD_SAI1_RX_DATA__GPIO6_IO12 0x59
 				MX7D_PAD_SAI1_TX_DATA__GPIO6_IO15 0x1b
-				MX7D_PAD_SAI1_TX_BCLK__GPIO6_IO13 0x80000000
+				MX7D_PAD_EPDC_PWR_COM__GPIO2_IO30	0x80000000  /* v3p3 control */
 			>;
 		};
 		pinctrl_mipi_dsi_reset: mipi_dsi_reset_grp {
@@ -1023,15 +1149,19 @@
 		pinctrl_tps6518: tps6518grp-1 {
 			fsl,pins = <
 				MX7D_PAD_EPDC_PWR_STAT__GPIO2_IO31	0x80000000  /* pwrgood */
-				MX7D_PAD_EPDC_PWR_COM__GPIO2_IO30	0x80000000  /* v3p3 control */
 				MX7D_PAD_I2C4_SCL__GPIO4_IO14		0x80000000  /* vcom_ctrl */
 				MX7D_PAD_EPDC_SDCE3__GPIO2_IO23		0x80000000  /* wakeup */
 				MX7D_PAD_EPDC_SDCE2__GPIO2_IO22		0x80000000  /* pwr int */
 				MX7D_PAD_EPDC_SDCE1__GPIO2_IO21		0x80000000  /* powerup */
-				MX7D_PAD_EPDC_BDR0__GPIO2_IO28		0x80000000  /* bdr0 */
-				MX7D_PAD_EPDC_BDR1__GPIO2_IO29		0x80000000  /* bdr1 */
 			>;
 		};
+	
+		pinctrl_bq27220: pinctrl_bq27220-grp {
+			fsl,pins = <
+				MX7D_PAD_ENET1_RGMII_TD2__GPIO7_IO8 0x15
+			>;
+		};
+
 		pinctrl_spi4: spi4grp {
 			fsl,pins = <
 				MX7D_PAD_GPIO1_IO09__GPIO1_IO9	0x59
@@ -1249,16 +1379,15 @@
 		>;
 	};
 
-	pinctrl_usb_otg2_vbus_reg: usbotg2vbusreggrp {
-		fsl,pins = <
-			MX7D_PAD_LPSR_GPIO1_IO07__GPIO1_IO7	  0x14
-		>;
-	};
-
 	pinctrl_sai3_mclk: sai3grp_mclk {
 		fsl,pins = <
 			MX7D_PAD_LPSR_GPIO1_IO03__SAI3_MCLK	0x1f
 		>;
 	};
-
+		
+	pinctrl_charger_in: chargeringrp {
+		fsl,pins = <
+			MX7D_PAD_LPSR_GPIO1_IO07__GPIO1_IO7	  0x14
+		>;
+	};
 };

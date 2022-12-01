@@ -63,7 +63,7 @@ int tps6518x_reg_read(int reg_num, unsigned int *reg_val)
 {
 	int result;
 	
-	printk("tps6518x_reg_read\n");
+	//printk("tps6518x_reg_read\n");
 
 	if (tps6518x_client == NULL)
 		return PMIC_ERROR;
@@ -75,7 +75,7 @@ int tps6518x_reg_read(int reg_num, unsigned int *reg_val)
 		return PMIC_ERROR;
 	}
 	
-	printk("tps6518x_reg_read success reg_num=0x%x,reg_val=0x%x\n",reg_num,result);
+	//printk("tps6518x_reg_read success reg_num=0x%x,reg_val=0x%x\n",reg_num,result);
 
 	*reg_val = result;
 	return PMIC_SUCCESS;
@@ -85,7 +85,7 @@ int tps6518x_reg_write(int reg_num, const unsigned int reg_val)
 {
 	int result;
 
-	printk("tps6518x_reg_write\n");
+//	printk("tps6518x_reg_write\n");
 
 	if (tps6518x_client == NULL)
 		return PMIC_ERROR;
@@ -97,7 +97,7 @@ int tps6518x_reg_write(int reg_num, const unsigned int reg_val)
 		return PMIC_ERROR;
 	}
 	
-	printk("tps6518x_reg_write success reg_num=0x%x, reg_val=0x%x\n",reg_num,reg_val);
+//	printk("tps6518x_reg_write success reg_num=0x%x, reg_val=0x%x\n",reg_num,reg_val);
 
 	return PMIC_SUCCESS;
 }
@@ -132,7 +132,7 @@ static int tps6518x_probe(struct i2c_client *client,
 	struct device_node *np = client->dev.of_node;
 	int ret = 0;
 
-	printk("tps6518x_probe calling\n");
+//	printk("tps6518x_probe calling\n");
 
 	if (!np)
 		return -ENODEV;
@@ -179,7 +179,7 @@ static int tps6518x_probe(struct i2c_client *client,
 
 	dev_info(&client->dev, "PMIC TPS6518x for eInk display\n");
 
-	printk("tps6518x_probe success\n");
+//	printk("tps6518x_probe success\n");
 
 	return ret;
 
