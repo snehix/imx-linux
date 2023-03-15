@@ -372,7 +372,7 @@ SND_SOC_DAPM_MIXER("Left Output Mixer", WM8960_POWER3, 3, 0,
 	&wm8960_loutput_mixer[0],
 	ARRAY_SIZE(wm8960_loutput_mixer)),
 SND_SOC_DAPM_MIXER("Right Output Mixer", WM8960_POWER3, 2, 0,
-	&wm8960_routput_mixer[1],
+	&wm8960_routput_mixer[0],
 	ARRAY_SIZE(wm8960_routput_mixer)),
 
 SND_SOC_DAPM_PGA("LOUT1 PGA", WM8960_POWER2, 6, 0, NULL, 0),
@@ -398,6 +398,13 @@ SND_SOC_DAPM_MIXER("Mono Output Mixer", WM8960_POWER2, 1, 0,
 	&wm8960_mono_out[0],
 	ARRAY_SIZE(wm8960_mono_out)),
 };
+
+static const struct snd_soc_dapm_widget wm8960_dapm_widgets_out3_1[] = {
+SND_SOC_DAPM_MIXER("Mono Output Mixer 1", WM8960_POWER2, 1, 0,
+	&wm8960_mono_out[1],
+	ARRAY_SIZE(wm8960_mono_out)),
+};
+
 
 /* Represent OUT3 as a PGA so that it gets turned on with LOUT1/ROUT1 */
 static const struct snd_soc_dapm_widget wm8960_dapm_widgets_capless[] = {
@@ -489,9 +496,12 @@ static int wm8960_add_widgets(struct snd_soc_component *component)
 		snd_soc_dapm_add_routes(dapm, audio_paths_capless,
 					ARRAY_SIZE(audio_paths_capless));
 	} else {
+		snd_soc_dapm_new_controls(dapm, wm8960_dapm_widgets_out3_1,
+					  ARRAY_SIZE(wm8960_dapm_widgets_out3_1));
+		
 		snd_soc_dapm_new_controls(dapm, wm8960_dapm_widgets_out3,
 					  ARRAY_SIZE(wm8960_dapm_widgets_out3));
-
+	
 		snd_soc_dapm_add_routes(dapm, audio_paths_out3,
 					ARRAY_SIZE(audio_paths_out3));
 	}
